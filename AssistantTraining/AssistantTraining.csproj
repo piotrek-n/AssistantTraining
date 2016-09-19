@@ -130,10 +130,30 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Web.config" />
+    <Content Include="Views\Workers\Create.cshtml" />
+    <Content Include="Views\Workers\Delete.cshtml" />
+    <Content Include="Views\Workers\Details.cshtml" />
+    <Content Include="Views\Workers\Edit.cshtml" />
+    <Content Include="Views\Workers\Index.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\GroupInstructions\Create.cshtml" />
+    <Content Include="Views\GroupInstructions\Delete.cshtml" />
+    <Content Include="Views\GroupInstructions\Details.cshtml" />
+    <Content Include="Views\GroupInstructions\Edit.cshtml" />
+    <Content Include="Views\GroupInstructions\Index.cshtml" />
+    <Content Include="Views\Instructions\Create.cshtml" />
+    <Content Include="Views\Instructions\Delete.cshtml" />
+    <Content Include="Views\Instructions\Details.cshtml" />
+    <Content Include="Views\Instructions\Edit.cshtml" />
+    <Content Include="Views\Instructions\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\GroupInstructionsController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InstructionsController.cs" />
+    <Compile Include="Controllers\WorkersController.cs" />
     <Compile Include="DAL\AssistantTrainingContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -163,7 +183,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201609182022308_InitialCreate.resx">
