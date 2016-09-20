@@ -1,13 +1,13 @@
-﻿using System;
+﻿using AssistantTraining.DAL;
+using AssistantTraining.Models;
+using AssistantTraining.Repositories;
+using AssistantTraining.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using AssistantTraining.DAL;
-using AssistantTraining.Models;
 
 namespace AssistantTraining.Controllers
 {
@@ -18,7 +18,31 @@ namespace AssistantTraining.Controllers
         // GET: Workers
         public ActionResult Index()
         {
-            return View(db.Workers.ToList());
+            var allWorker = db.Workers.ToList();
+            var workerRepository = new WorkerRepository();
+            var groups = workerRepository.GetAllGroups();
+
+            List<WorkerGroupViewModel> lstWorkerGroups = new List<WorkerGroupViewModel>();
+
+            foreach (var item in allWorker)
+            {
+                var workerGroup = new WorkerGroupViewModel();
+
+                workerGroup.ID = item.ID;
+                workerGroup.FirstMidName = item.FirstMidName;
+                workerGroup.LastName = item.LastName;
+                workerGroup.Tag = item.Tag;
+                workerGroup.SelectedIds = db.GroupInstructions.Where(x => x.WorkerId.Equals(item.ID)).Select(x => x.GroupId.ToString()).ToArray();
+                workerGroup.WorkerGroups = groups;
+                workerGroup.Items = groups.Select(x => new SelectListItem
+                {
+                    Value = x.ID.ToString(),
+                    Text = x.GroupName
+                });
+
+                lstWorkerGroups.Add(workerGroup);
+            }
+            return View(lstWorkerGroups);
         }
 
         // GET: Workers/Details/5
@@ -39,32 +63,66 @@ namespace AssistantTraining.Controllers
         // GET: Workers/Create
         public ActionResult Create()
         {
-            var groups = db.GroupInstructions.Select(c => new {
-                GroupID = c.ID,
-                GroupName = c.GroupName
-            }).ToList();
-            ViewBag.Groups = new MultiSelectList(groups, "GroupID", "GroupName");
-            return View();
+            //var groups = db.Groups.Select(c => new
+            //{
+            //    GroupID = c.ID,
+            //    GroupName = c.GroupName
+            //}).ToList();
+            //ViewBag.Groups = new MultiSelectList(groups, "GroupID", "GroupName");
+
+            var workerGroup = new WorkerGroupViewModel();
+            var workerRepository = new WorkerRepository();
+            var groups = workerRepository.GetAllGroups();
+
+            workerGroup.WorkerGroups = groups;
+            workerGroup.Items = groups.Select(x => new SelectListItem
+            {
+                Value = x.ID.ToString(),
+                Text = x.GroupName
+            });
+
+            return View(workerGroup);
         }
 
         // POST: Workers/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,LastName,FirstMidName,TimeOfCreation,TimeOfModification,Tag")] Worker worker)
+        public ActionResult Create(WorkerGroupViewModel workerGroup)
         {
             if (ModelState.IsValid)
             {
+                var worker = new Worker();
                 worker.TimeOfCreation = DateTime.Now;
                 worker.TimeOfModification = DateTime.Now;
+                worker.LastName = workerGroup.LastName;
+                worker.FirstMidName = workerGroup.FirstMidName;
+                worker.Tag = workerGroup.Tag;
 
                 db.Workers.Add(worker);
                 db.SaveChanges();
+
+                if (workerGroup.SelectedIds != null && workerGroup.SelectedIds.Count() > 0)
+                {
+                    foreach (var item in workerGroup.SelectedIds)
+                    {
+                        var groupInstructions = new GroupInstruction()
+                        {
+                            WorkerId = worker.ID,
+                            TimeOfCreation = DateTime.Now,
+                            TimeOfModification = DateTime.Now,
+                            GroupId = Int32.Parse(item)
+                        };
+                        db.GroupInstructions.Add(groupInstructions);
+                        db.SaveChanges();
+                    }
+                }
+
                 return RedirectToAction("Index");
             }
 
-            return View(worker);
+            return View(workerGroup);
         }
 
         // GET: Workers/Edit/5
@@ -74,28 +132,100 @@ namespace AssistantTraining.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Worker worker = db.Workers.Find(id);
+
+            var workerGroup = new WorkerGroupViewModel();
+            var workerRepository = new WorkerRepository();
+            var groups = workerRepository.GetAllGroups();
+
+            workerGroup.WorkerGroups = groups;
+            workerGroup.Items = groups.Select(x => new SelectListItem
+            {
+                Value = x.ID.ToString(),
+                Text = x.GroupName
+            });
+
+            workerGroup.FirstMidName = worker.FirstMidName;
+            workerGroup.LastName = worker.LastName;
+            workerGroup.ID = worker.ID;
+            workerGroup.Tag = worker.Tag;
+            workerGroup.SelectedIds = db.GroupInstructions.Where(x => x.WorkerId.Equals(worker.ID)).Select(x => x.GroupId.ToString()).ToArray();
+
             if (worker == null)
             {
                 return HttpNotFound();
             }
-            return View(worker);
+            return View(workerGroup);
         }
 
         // POST: Workers/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,LastName,FirstMidName,TimeOfCreation,TimeOfModification,Tag")] Worker worker)
+        public ActionResult Edit(WorkerGroupViewModel workerGroup)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(worker).State = EntityState.Modified;
+                var worker = new Worker();
+                worker.ID = workerGroup.ID;
+                worker.LastName = workerGroup.LastName;
+                worker.FirstMidName = workerGroup.FirstMidName;
+                worker.Tag = workerGroup.Tag;
+                worker.TimeOfModification = DateTime.Now;
+
+                db.Workers.Attach(worker);
+                db.Entry(worker).Property(X => X.FirstMidName).IsModified = true;
+                db.Entry(worker).Property(X => X.LastName).IsModified = true;
+                db.Entry(worker).Property(X => X.Tag).IsModified = true;
+                db.Entry(worker).Property(X => X.TimeOfModification).IsModified = true;
+
+                if (workerGroup.SelectedIds != null && workerGroup.SelectedIds.Count() > 0)
+                {
+                    var wGroups = db.GroupInstructions.Where(w => w.WorkerId == workerGroup.ID).ToList();
+
+                    foreach (var item in workerGroup.SelectedIds)
+                    {
+                        if ((wGroups.Where(x => x.WorkerId.Equals(workerGroup.ID) && x.GroupId.Equals(Int32.Parse(item))).FirstOrDefault() == null) || wGroups.Count() == 0)
+                        {
+                            var groupInstructions = new GroupInstruction()
+                            {
+                                WorkerId = worker.ID,
+                                TimeOfCreation = DateTime.Now,
+                                TimeOfModification = DateTime.Now,
+                                GroupId = Int32.Parse(item)
+                            };
+                            db.GroupInstructions.Add(groupInstructions);
+                            db.SaveChanges();
+                        }
+                    }
+                    foreach (var item in wGroups)
+                    {
+                        if (!workerGroup.SelectedIds.Contains(item.GroupId.ToString()))
+                        {
+                            db.GroupInstructions.Remove(item);
+                            db.SaveChanges();
+                        }
+                    }
+                }
+                else
+                {
+                    //Usuń wszystkie
+
+                    var wGroups = db.GroupInstructions.Where(w => w.WorkerId == workerGroup.ID);
+
+                    foreach (var g in wGroups)
+                    {
+                        db.GroupInstructions.Remove(g);
+                    }
+                    db.SaveChanges();
+                }
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(worker);
+            return View(workerGroup);
         }
 
         // GET: Workers/Delete/5

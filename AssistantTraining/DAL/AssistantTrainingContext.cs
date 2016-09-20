@@ -13,5 +13,7 @@ namespace AssistantTraining.DAL
         public DbSet<Worker> Workers { get; set; }
         public DbSet<Instruction> Instructions { get; set; }
         public DbSet<GroupInstruction> GroupInstructions { get; set; }
+
+        public System.Data.Entity.DbSet<AssistantTraining.Models.Group> Groups { get; set; }
     }
 }

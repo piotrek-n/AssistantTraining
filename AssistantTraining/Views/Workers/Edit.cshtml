@@ -1,4 +1,4 @@
-﻿@model AssistantTraining.Models.Worker
+﻿@model AssistantTraining.ViewModel.WorkerGroupViewModel
 
 @{
     ViewBag.Title = "Edit";
@@ -34,26 +34,18 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.TimeOfCreation, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.TimeOfCreation, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TimeOfCreation, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.TimeOfModification, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.TimeOfModification, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TimeOfModification, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
             @Html.LabelFor(model => model.Tag, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Tag, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Tag, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Items, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.DropDownList("GroupID", (MultiSelectList)ViewBag.Groups, new { multiple = "multiple", @class = "form-control" })*@
+                @Html.ListBoxFor(x => x.SelectedIds, Model.Items, new { multiple = "multiple", @class = "form-control" })
             </div>
         </div>
 

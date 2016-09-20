@@ -1,10 +1,10 @@
-﻿@model IEnumerable<AssistantTraining.Models.Worker>
+﻿@model IEnumerable<AssistantTraining.ViewModel.WorkerGroupViewModel>
 
 @{
     ViewBag.Title = "Index";
 }
 
-
+<h2>Workers</h2>
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
@@ -17,14 +17,9 @@
             @Html.DisplayNameFor(model => model.FirstMidName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TimeOfCreation)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TimeOfModification)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.Tag)
         </th>
+        <th>Grupy</th>
         <th></th>
     </tr>
 
@@ -37,13 +32,11 @@
             @Html.DisplayFor(modelItem => item.FirstMidName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.TimeOfCreation)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TimeOfModification)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.Tag)
+        </td>
+        <td>
+            @string.Join(" ", item.Items.Where(x => item.SelectedIds.Contains(x.Value)).Select(x => x.Text).ToArray())
+            @*@Html.DisplayFor(modelItem => string.Join(" ", item.Items.Where(x => item.SelectedIds.Contains(x.Value)).Select(x => x.Text).ToArray()))*@
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |

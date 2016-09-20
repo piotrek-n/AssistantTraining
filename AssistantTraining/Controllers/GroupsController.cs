@@ -11,112 +11,117 @@ using AssistantTraining.Models;
 
 namespace AssistantTraining.Controllers
 {
-    public class InstructionsController : Controller
+    public class GroupsController : Controller
     {
         private AssistantTrainingContext db = new AssistantTrainingContext();
 
-        // GET: Instructions
+        // GET: Groups
         public ActionResult Index()
         {
-            var instructions = db.Instructions.Include(i => i.GroupInstruction);
-            return View(instructions.ToList());
+            return View(db.Groups.ToList());
         }
 
-        // GET: Instructions/Details/5
+        // GET: Groups/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Instruction instruction = db.Instructions.Find(id);
-            if (instruction == null)
+            Group group = db.Groups.Find(id);
+            if (group == null)
             {
                 return HttpNotFound();
             }
-            return View(instruction);
+            return View(group);
         }
 
-        // GET: Instructions/Create
+        // GET: Groups/Create
         public ActionResult Create()
         {
-            ViewBag.GroupInstructionId = new SelectList(db.GroupInstructions, "ID", "GroupName");
             return View();
         }
 
-        // POST: Instructions/Create
+        // POST: Groups/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name,Version,TimeOfCreation,TimeOfModification,Tag,GroupInstructionId")] Instruction instruction)
+        public ActionResult Create([Bind(Include = "ID,GroupName,TimeOfCreation,TimeOfModification,Tag")] Group group)
         {
             if (ModelState.IsValid)
             {
-                db.Instructions.Add(instruction);
+                group.TimeOfCreation = DateTime.Now;
+                group.TimeOfModification = DateTime.Now;
+
+                db.Groups.Add(group);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.GroupInstructionId = new SelectList(db.GroupInstructions, "ID", "GroupName", instruction.GroupInstructionId);
-            return View(instruction);
+            return View(group);
         }
 
-        // GET: Instructions/Edit/5
+        // GET: Groups/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Instruction instruction = db.Instructions.Find(id);
-            if (instruction == null)
+            Group group = db.Groups.Find(id);
+            if (group == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.GroupInstructionId = new SelectList(db.GroupInstructions, "ID", "GroupName", instruction.GroupInstructionId);
-            return View(instruction);
+            return View(group);
         }
 
-        // POST: Instructions/Edit/5
+        // POST: Groups/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,Version,TimeOfCreation,TimeOfModification,Tag,GroupInstructionId")] Instruction instruction)
+        public ActionResult Edit([Bind(Include = "ID,GroupName,TimeOfCreation,TimeOfModification,Tag")] Group group)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(instruction).State = EntityState.Modified;
+                group.TimeOfModification = DateTime.Now;
+
+                db.Groups.Attach(group);
+                db.Entry(group).Property(X => X.GroupName).IsModified = true;
+                db.Entry(group).Property(X => X.Tag).IsModified = true;
+                db.Entry(group).Property(X => X.TimeOfModification).IsModified = true;
+
+                //db.Entry(group).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.GroupInstructionId = new SelectList(db.GroupInstructions, "ID", "GroupName", instruction.GroupInstructionId);
-            return View(instruction);
+            return View(group);
         }
 
-        // GET: Instructions/Delete/5
+        // GET: Groups/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Instruction instruction = db.Instructions.Find(id);
-            if (instruction == null)
+            Group group = db.Groups.Find(id);
+            if (group == null)
             {
                 return HttpNotFound();
             }
-            return View(instruction);
+            return View(group);
         }
 
-        // POST: Instructions/Delete/5
+        // POST: Groups/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Instruction instruction = db.Instructions.Find(id);
-            db.Instructions.Remove(instruction);
+            Group group = db.Groups.Find(id);
+            db.Groups.Remove(group);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

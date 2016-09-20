@@ -118,6 +118,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <None Include="Properties\PublishProfiles\test.inventum24.pl - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -129,30 +130,21 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\Workers\Create.cshtml" />
     <Content Include="Views\Workers\Delete.cshtml" />
     <Content Include="Views\Workers\Details.cshtml" />
     <Content Include="Views\Workers\Edit.cshtml" />
     <Content Include="Views\Workers\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\GroupInstructions\Create.cshtml" />
-    <Content Include="Views\GroupInstructions\Delete.cshtml" />
-    <Content Include="Views\GroupInstructions\Details.cshtml" />
-    <Content Include="Views\GroupInstructions\Edit.cshtml" />
-    <Content Include="Views\GroupInstructions\Index.cshtml" />
-    <Content Include="Views\Instructions\Create.cshtml" />
-    <Content Include="Views\Instructions\Delete.cshtml" />
-    <Content Include="Views\Instructions\Details.cshtml" />
-    <Content Include="Views\Instructions\Edit.cshtml" />
-    <Content Include="Views\Instructions\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\GroupInstructionsController.cs" />
+    <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\InstructionsController.cs" />
     <Compile Include="Controllers\WorkersController.cs" />
     <Compile Include="DAL\AssistantTrainingContext.cs" />
     <Compile Include="Global.asax.cs">
@@ -162,11 +154,22 @@
     <Compile Include="Migrations\201609182022308_InitialCreate.Designer.cs">
       <DependentUpon>201609182022308_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609191324349_AddGroupTable.cs" />
+    <Compile Include="Migrations\201609191324349_AddGroupTable.Designer.cs">
+      <DependentUpon>201609191324349_AddGroupTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609191946521_ChangedKeys.cs" />
+    <Compile Include="Migrations\201609191946521_ChangedKeys.Designer.cs">
+      <DependentUpon>201609191946521_ChangedKeys.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Group.cs" />
     <Compile Include="Models\GroupInstruction.cs" />
     <Compile Include="Models\Instruction.cs" />
     <Compile Include="Models\Worker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\WorkerRepository.cs" />
+    <Compile Include="ViewModel\WorkerGroupViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -174,6 +177,11 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Groups\Create.cshtml" />
+    <Content Include="Views\Groups\Delete.cshtml" />
+    <Content Include="Views\Groups\Details.cshtml" />
+    <Content Include="Views\Groups\Edit.cshtml" />
+    <Content Include="Views\Groups\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -187,6 +195,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201609182022308_InitialCreate.resx">
       <DependentUpon>201609182022308_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609191324349_AddGroupTable.resx">
+      <DependentUpon>201609191324349_AddGroupTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609191946521_ChangedKeys.resx">
+      <DependentUpon>201609191946521_ChangedKeys.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

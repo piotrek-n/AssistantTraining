@@ -1,9 +1,10 @@
-﻿@model IEnumerable<AssistantTraining.Models.GroupInstruction>
+﻿@model IEnumerable<AssistantTraining.Models.Group>
 
 @{
     ViewBag.Title = "Index";
 }
 
+<h2>Index</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -12,12 +13,6 @@
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.GroupName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TimeOfCreation)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TimeOfModification)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Tag)
@@ -29,12 +24,6 @@
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.GroupName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TimeOfCreation)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TimeOfModification)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Tag)
