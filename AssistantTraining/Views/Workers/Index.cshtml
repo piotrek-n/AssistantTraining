@@ -6,8 +6,19 @@
 
 <h2>Workers</h2>
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @*@Html.ActionLink("Create New", "Create", new { @class = "btn btn-default" })*@
+    @*@Html.ActionLink("Export to Excel", "Excel", new {@class = "btn btn-default" })*@
+
+    <a href="@Url.Action("Create", "Workers")" class="btn btn-default">
+        Create New
+        <span class="glyphicon" aria-hidden="true"></span>
+    </a>
+    <a href="@Url.Action("Excel", "Workers")" class="btn btn-default">
+        Export to Excel
+        <span class="glyphicon" aria-hidden="true"></span>
+    </a>
 </p>
+
 <table class="table">
     <tr>
         <th>

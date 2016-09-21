@@ -250,3 +250,6 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+# Care! MVC has nested web.configs int its views folder.
+# Only ignore the one in the root
+/AssistantTraining/[Ww]eb.config

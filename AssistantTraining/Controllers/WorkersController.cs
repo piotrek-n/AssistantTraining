@@ -2,9 +2,11 @@
 using AssistantTraining.Models;
 using AssistantTraining.Repositories;
 using AssistantTraining.ViewModel;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -251,6 +253,33 @@ namespace AssistantTraining.Controllers
             Worker worker = db.Workers.Find(id);
             db.Workers.Remove(worker);
             db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Excel()
+        {
+
+            var workers = db.Workers.ToList();
+
+            using (ExcelPackage pck = new ExcelPackage())
+            {
+                ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Workers");
+                ws.Cells["A1"].LoadFromCollection(workers, true);
+                // Load your collection "accounts"
+
+                Byte[] fileBytes = pck.GetAsByteArray();
+                Response.Clear();
+                Response.Buffer = true;
+                Response.AddHeader("content-disposition", "attachment;filename=DataTable.xlsx");
+                // Replace filename with your custom Excel-sheet name.
+
+                Response.Charset = "";
+                Response.ContentType = "application/vnd.ms-excel";
+                StringWriter sw = new StringWriter();
+                Response.BinaryWrite(fileBytes);
+                Response.End();
+            }
+
             return RedirectToAction("Index");
         }
 
