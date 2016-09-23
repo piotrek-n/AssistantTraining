@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace AssistantTraining.ViewModel
 {
-    public class InstructionGroupViewModel
+    public class InstructionIndexData
     {
         public int ID { get; set; }
 

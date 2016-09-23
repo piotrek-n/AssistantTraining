@@ -9,10 +9,10 @@ namespace AssistantTraining.Models
         public int ID { get; set; }
 
         public int InstructionId { get; set; }
-        public Instruction Instruction { get; set; }
+        public virtual Instruction Instruction { get; set; }
 
         public int WorkerId { get; set; }
-        public Worker Worker { get; set; }
+        public virtual Worker Worker { get; set; }
 
         [ScaffoldColumn(true)]
         [DisplayName("Czas utworzenia")]

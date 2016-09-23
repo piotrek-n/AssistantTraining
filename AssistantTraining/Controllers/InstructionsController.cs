@@ -22,11 +22,11 @@ namespace AssistantTraining.Controllers
             var workerRepository = new WorkerRepository();
             var groups = workerRepository.GetAllGroups();
 
-            List<InstructionGroupViewModel> lstInstructionGroups = new List<InstructionGroupViewModel>();
+            List<InstructionIndexData> lstInstructionGroups = new List<InstructionIndexData>();
 
             foreach (var item in allInstructions)
             {
-                var instructioGroup = new InstructionGroupViewModel();
+                var instructioGroup = new InstructionIndexData();
 
                 instructioGroup.ID = item.ID;
                 instructioGroup.Name = item.Name;
@@ -58,7 +58,7 @@ namespace AssistantTraining.Controllers
                 return HttpNotFound();
             }
 
-            InstructionGroupViewModel instructionGroupViewModel = new InstructionGroupViewModel();
+            InstructionIndexData instructionGroupViewModel = new InstructionIndexData();
             var workerRepository = new WorkerRepository();
             var groups = workerRepository.GetAllGroups();
 
@@ -81,7 +81,7 @@ namespace AssistantTraining.Controllers
         // GET: Instructions/Create
         public ActionResult Create()
         {
-            var instructionGroup = new InstructionGroupViewModel();
+            var instructionGroup = new InstructionIndexData();
             var workerRepository = new WorkerRepository();
             var groups = workerRepository.GetAllGroups();
 
@@ -99,7 +99,7 @@ namespace AssistantTraining.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(InstructionGroupViewModel instructionGroupViewModel)
+        public ActionResult Create(InstructionIndexData instructionGroupViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -132,7 +132,7 @@ namespace AssistantTraining.Controllers
                 return HttpNotFound();
             }
 
-            InstructionGroupViewModel instructionGroupViewModel = new InstructionGroupViewModel();
+            InstructionIndexData instructionGroupViewModel = new InstructionIndexData();
             var workerRepository = new WorkerRepository();
             var groups = workerRepository.GetAllGroups();
 
@@ -153,7 +153,7 @@ namespace AssistantTraining.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(InstructionGroupViewModel instructionGroupViewModel)
+        public ActionResult Edit(InstructionIndexData instructionGroupViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -192,7 +192,7 @@ namespace AssistantTraining.Controllers
                 return HttpNotFound();
             }
 
-            InstructionGroupViewModel instructionGroupViewModel = new InstructionGroupViewModel();
+            InstructionIndexData instructionGroupViewModel = new InstructionIndexData();
             var workerRepository = new WorkerRepository();
             var groups = workerRepository.GetAllGroups();
 
