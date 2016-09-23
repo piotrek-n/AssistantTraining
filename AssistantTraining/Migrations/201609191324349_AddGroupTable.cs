@@ -1,8 +1,7 @@
 namespace AssistantTraining.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class AddGroupTable : DbMigration
     {
         public override void Up()
@@ -10,22 +9,22 @@ namespace AssistantTraining.Migrations
             CreateTable(
                 "dbo.Groups",
                 c => new
-                    {
-                        ID = c.Int(nullable: false, identity: true),
-                        GroupName = c.String(),
-                        TimeOfCreation = c.DateTime(nullable: false),
-                        TimeOfModification = c.DateTime(nullable: false),
-                        Tag = c.String(),
-                    })
+                {
+                    ID = c.Int(nullable: false, identity: true),
+                    GroupName = c.String(),
+                    TimeOfCreation = c.DateTime(nullable: false),
+                    TimeOfModification = c.DateTime(nullable: false),
+                    Tag = c.String(),
+                })
                 .PrimaryKey(t => t.ID);
-            
+
             AddColumn("dbo.GroupInstructions", "GroupId", c => c.Int(nullable: false));
             CreateIndex("dbo.GroupInstructions", "GroupId");
             AddForeignKey("dbo.GroupInstructions", "GroupId", "dbo.Groups", "ID", cascadeDelete: true);
             DropColumn("dbo.GroupInstructions", "GroupName");
             DropColumn("dbo.GroupInstructions", "Tag");
         }
-        
+
         public override void Down()
         {
             AddColumn("dbo.GroupInstructions", "Tag", c => c.String());

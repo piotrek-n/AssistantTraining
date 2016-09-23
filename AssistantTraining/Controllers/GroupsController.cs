@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using AssistantTraining.DAL;
+using AssistantTraining.Models;
+using System;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using AssistantTraining.DAL;
-using AssistantTraining.Models;
 
 namespace AssistantTraining.Controllers
 {
@@ -43,7 +39,7 @@ namespace AssistantTraining.Controllers
         }
 
         // POST: Groups/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -78,7 +74,7 @@ namespace AssistantTraining.Controllers
         }
 
         // POST: Groups/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -93,7 +89,6 @@ namespace AssistantTraining.Controllers
                 db.Entry(group).Property(X => X.Tag).IsModified = true;
                 db.Entry(group).Property(X => X.TimeOfModification).IsModified = true;
 
-                //db.Entry(group).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

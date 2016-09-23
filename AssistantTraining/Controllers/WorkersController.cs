@@ -65,13 +65,6 @@ namespace AssistantTraining.Controllers
         // GET: Workers/Create
         public ActionResult Create()
         {
-            //var groups = db.Groups.Select(c => new
-            //{
-            //    GroupID = c.ID,
-            //    GroupName = c.GroupName
-            //}).ToList();
-            //ViewBag.Groups = new MultiSelectList(groups, "GroupID", "GroupName");
-
             var workerGroup = new WorkerGroupViewModel();
             var workerRepository = new WorkerRepository();
             var groups = workerRepository.GetAllGroups();
@@ -258,7 +251,6 @@ namespace AssistantTraining.Controllers
 
         public ActionResult Excel()
         {
-
             var workers = db.Workers.ToList();
 
             using (ExcelPackage pck = new ExcelPackage())

@@ -1,8 +1,7 @@
 namespace AssistantTraining.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class ChangedKeys : DbMigration
     {
         public override void Up()
@@ -20,7 +19,7 @@ namespace AssistantTraining.Migrations
             AddForeignKey("dbo.GroupInstructions", "WorkerId", "dbo.Workers", "ID", cascadeDelete: true);
             DropColumn("dbo.Instructions", "GroupInstructionId");
         }
-        
+
         public override void Down()
         {
             AddColumn("dbo.Instructions", "GroupInstructionId", c => c.Int(nullable: false));
