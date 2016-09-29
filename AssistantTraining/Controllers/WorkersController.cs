@@ -2,6 +2,7 @@
 using AssistantTraining.Models;
 using AssistantTraining.Repositories;
 using AssistantTraining.ViewModel;
+using Microsoft.AspNet.Identity;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ using System.Web.Mvc;
 
 namespace AssistantTraining.Controllers
 {
+    [Authorize]
     public class WorkersController : Controller
     {
         private AssistantTrainingContext db = new AssistantTrainingContext();

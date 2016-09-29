@@ -22,11 +22,18 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Workers", "Index", "Workers")</li>
-                    <li>@Html.ActionLink("Groups", "Index", "Groups")</li>
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <li>@Html.ActionLink("Groups", "Index", "Groups")</li>
+                    }
                     <li>@Html.ActionLink("Instructions", "Index", "Instructions")</li>
-                    <li>@Html.ActionLink("Trainings", "Index", "Trainings")</li>
-
+                    <li>@Html.ActionLink("Trainings", "Index", "Training")</li>
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <li>@Html.ActionLink("Users", "Index", "Account")</li>
+                    }
                 </ul>
+                @Html.Partial("_LoginPartial")
             </div>
         </div>
     </div>
@@ -41,5 +48,9 @@
 
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <link href="@Url.Content("~/Content/Gridmvc.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/gridmvc.min.js")" type="text/javascript"> </script>
+    @RenderSection("scripts", required: false)
 </body>
 </html>

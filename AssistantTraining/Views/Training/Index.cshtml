@@ -1,7 +1,46 @@
-﻿
+﻿@model AssistantTraining.ViewModel.TrainingIndexData
+@using GridMvc.Html
 @{
     ViewBag.Title = "Index";
 }
 
 <h2>Index</h2>
 
+@Html.Grid(Model.items.Select(x => x.Worker).Distinct().ToList()).Columns(columns =>
+{
+    columns.Add(foo => foo.FirstMidName).Titled("Imię").Sortable(true).SetWidth(110);
+    columns.Add(foo => foo.LastName).Titled("Nazwisko").Sortable(true).Filterable(true).SetWidth(110);
+    columns.Add()
+        .Encoded(false)
+        .Sanitized(false)
+        .SetWidth(30)
+        .Titled("Obowiązkowe instrukcje/Data szkolenia")
+        .RenderValueAs(foo => Instruction(foo.ID));
+    /* Adding not mapped column, that renders body, using inline Razor html helper */
+    columns.Add()
+        .Encoded(false)
+        .Sanitized(false)
+        .SetWidth(30)
+        .RenderValueAs(foo => Edit(foo.ID));
+
+}).WithPaging(5)
+
+@helper Instruction(int Id)
+{
+
+    foreach (var gi in Model.items.Where(x => x.WorkId.Equals(Id)))
+    {
+            @gi.Instruction.Name <b> @if (gi.Training != null)
+            {@gi.Training.TimeOfCreation}</b>    <br />
+    }
+
+}
+
+@helper Edit(int Id)
+{
+
+    @Html.ActionLink("Select", "Index", new { id = Id })  <b> | </b>
+        @Html.ActionLink("Edit", "Edit", new { id = Id })  <b> | </b>
+        @Html.ActionLink("Details", "Details", new { id = Id }) <b> | </b>
+        @Html.ActionLink("Delete", "Delete", new { id = Id }) <b> | </b>
+}

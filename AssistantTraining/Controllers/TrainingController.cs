@@ -9,6 +9,7 @@ using System.Data.Entity;
 
 namespace AssistantTraining.Controllers
 {
+    [Authorize]
     public class TrainingController : Controller
     {
         /* Staff Training*/
@@ -45,21 +46,16 @@ namespace AssistantTraining.Controllers
         {
             var viewModel = new TrainingIndexData();
 
-            viewModel.Trainings = db.Trainings
-                                    .Include(t => t.Instruction)
-                                    .Include(t => t.Worker)
-                                    .OrderBy(t => t.Worker.LastName);
-
             var lst = (from w in db.Workers
                        join gi in db.GroupInstructions on w.ID equals gi.WorkerId
-                       join i in db.Instructions on gi.ID equals i.GroupId 
-                       //join t in db.Trainings on w.ID equals t.WorkerId
+                       join i in db.Instructions on gi.GroupId equals i.GroupId 
                        join t in db.Trainings on new { wID = w.ID , iID = i.ID } equals new { wID = t.WorkerId, iID = t.InstructionId }
                        into gj
                        from e in gj.DefaultIfEmpty()
-                       select new { w, e }
-                       );
-
+                       select new TrainingItemIndexData{ WorkId=w.ID, Worker =w, Instruction =i, Training =e}
+                       //select new {w, i= (new InstructionExt(w.ID,i)),e = (new TrainingExt{ WorkerID = w.ID }) }
+                       ).OrderBy(x=>x.Worker.LastName).ToList();
+            viewModel.items = lst;
 
             return View(viewModel);
         }

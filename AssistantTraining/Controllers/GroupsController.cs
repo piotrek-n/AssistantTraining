@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace AssistantTraining.Controllers
 {
+    [Authorize]
     public class GroupsController : Controller
     {
         private AssistantTrainingContext db = new AssistantTrainingContext();

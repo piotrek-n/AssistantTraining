@@ -11,6 +11,7 @@ using System.Web.Mvc;
 
 namespace AssistantTraining.Controllers
 {
+    [Authorize]
     public class InstructionsController : Controller
     {
         private AssistantTrainingContext db = new AssistantTrainingContext();
