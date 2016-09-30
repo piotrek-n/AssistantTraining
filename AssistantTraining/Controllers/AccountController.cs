@@ -13,6 +13,7 @@ using AssistantTraining.ViewModel;
 using AssistantTraining.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 using AssistantTraining.DAL;
+using System.Net;
 
 namespace AssistantTraining.Controllers
 {
@@ -31,7 +32,88 @@ namespace AssistantTraining.Controllers
             UserManager = userManager;
             SignInManager = signInManager;
         }
+        public ActionResult Create()
+        {
+            var roles = db.Roles.ToList();
+            var user = new ApplicationUser();
+            var appUser  = new UserCreateData();
+            appUser.Items = roles.Select(r => new SelectListItem()
+            {
+                Value = r.Id,
+                Text = r.Name
+            });
+            return View(appUser);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(UserCreateData userVM)
+        {
+            if(ModelState.IsValid)
+            {
 
+                var selectedRole = db.Roles.Where(r => r.Id.Equals(userVM.SelectedId)).FirstOrDefault();
+
+                if (null != selectedRole)
+                {
+                    if (!db.Users.Any(u => u.UserName == userVM.Name))
+                    {
+                        var store = new UserStore<ApplicationUser>(db);
+                        var manager = new UserManager<ApplicationUser>(store);
+                        var user = new ApplicationUser { UserName = userVM.Name };
+
+                        manager.Create(user, userVM.Password);
+                        manager.AddToRole(user.Id, selectedRole.Name);
+                    }
+                }
+                return RedirectToAction("Index");
+            }
+            return View(userVM);
+    
+        }
+
+        public ActionResult Index()
+        {
+            var users = db.Users.ToList();
+            var roles = db.Roles.ToList();
+            return View(Tuple.Create(users, roles));
+        }
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var users = db.Users.ToList();
+            var roles = db.Roles.ToList();
+            return View(Tuple.Create(users, roles));
+        }
+        public ActionResult Delete(string id)
+        {
+            if (String.IsNullOrEmpty(id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var users = db.Users.Find(id);
+            
+            if (users == null)
+            {
+                return HttpNotFound();
+            }
+
+            var roles = db.Roles.ToList();
+            return View(Tuple.Create(users, roles));
+        }
+
+        // POST: Workers/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(string id)
+        {
+            var user = db.Users.Find(id);
+            db.Users.Remove(user);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
         public ApplicationSignInManager SignInManager
         {
             get
@@ -68,23 +150,30 @@ namespace AssistantTraining.Controllers
         [AllowAnonymous]
         public ActionResult Check(string id)
         {
-            if (!db.Roles.Any(r => r.Name == "Administrator"))
+            //var roleName = "Administrator";
+            //var userName = "admin"; 
+            //var roleName = "Engineer";
+            //var userName = "eng";
+            var roleName = "Operator";
+            var userName = "ope";
+
+            if (!db.Roles.Any(r => r.Name == roleName))
             {
                 var store = new RoleStore<IdentityRole>(db);
                 var manager = new RoleManager<IdentityRole>(store);
-                var role = new IdentityRole { Name = "Administrator" };
+                var role = new IdentityRole { Name = roleName };
 
                 manager.Create(role);
             }
 
-            if (!db.Users.Any(u => u.UserName == "admin"))
+            if (!db.Users.Any(u => u.UserName == userName))
             {
                 var store = new UserStore<ApplicationUser>(db);
                 var manager = new UserManager<ApplicationUser>(store);
-                var user = new ApplicationUser { UserName = "admin" };
+                var user = new ApplicationUser { UserName = userName };
 
                 manager.Create(user, "ChangeItAsap!");
-                manager.AddToRole(user.Id, "Administrator");
+                manager.AddToRole(user.Id, roleName);
             }
             return null;
         }

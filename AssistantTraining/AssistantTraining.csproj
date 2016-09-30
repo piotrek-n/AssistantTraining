@@ -177,6 +177,12 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Grid.mvc.readme" />
+    <Compile Include="App_GlobalResources\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
@@ -258,6 +264,7 @@
     <Compile Include="ViewModel\InstructionIndexData.cs" />
     <Compile Include="ViewModel\ManageViewModels.cs" />
     <Compile Include="ViewModel\TrainingIndexData.cs" />
+    <Compile Include="ViewModel\UserCreateData.cs" />
     <Compile Include="ViewModel\WorkerGroupViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -282,6 +289,10 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.min.js.map" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Account\Edit.cshtml" />
+    <Content Include="Views\Account\Delete.cshtml" />
+    <Content Include="Views\Account\Create.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -294,6 +305,11 @@
     <Folder Include="Views\Manage\" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="App_GlobalResources\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609182022308_InitialCreate.resx">
       <DependentUpon>201609182022308_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>

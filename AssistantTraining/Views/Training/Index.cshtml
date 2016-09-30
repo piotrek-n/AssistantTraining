@@ -38,8 +38,7 @@
 
 @helper Edit(int Id)
 {
-
-    @Html.ActionLink("Select", "Index", new { id = Id })  <b> | </b>
+        @Html.ActionLink("Select", "Index", new { id = Id })  <b> | </b>
         @Html.ActionLink("Edit", "Edit", new { id = Id })  <b> | </b>
         @Html.ActionLink("Details", "Details", new { id = Id }) <b> | </b>
         @Html.ActionLink("Delete", "Delete", new { id = Id }) <b> | </b>

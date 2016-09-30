@@ -1,0 +1,50 @@
+﻿@model Tuple<List<AssistantTraining.Models.ApplicationUser>, List<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>>
+@using GridMvc.Html
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Users</h2>
+<p>
+    <a href="@Url.Action("Create", "Account")" class="btn btn-default">
+        Create New
+        <span class="glyphicon" aria-hidden="true"></span>
+    </a>
+</p>
+
+@Html.Grid(Model.Item1.ToList()).Columns(columns =>
+{
+    columns.Add(foo => foo.UserName).Titled("UserName").Sortable(true).SetWidth(110);
+    columns.Add()
+    .Encoded(false)
+    .Sanitized(false)
+    .SetWidth(30)
+    .Titled("Rola")
+    .RenderValueAs(foo => Roles(foo.Id));
+
+    /* Adding not mapped column, that renders body, using inline Razor html helper */
+    columns.Add()
+        .Encoded(false)
+        .Sanitized(false)
+        .SetWidth(30)
+        .RenderValueAs(foo => Edit(foo.Id));
+
+}).WithPaging(5)
+
+@helper Roles(string Id)
+{
+
+foreach (var u in Model.Item1.Where(x => x.Id.Equals(Id)))
+{
+    @Model.Item2.Where(i => i.Id.Equals(u.Roles.First().RoleId)).Select(n=>n.Name).FirstOrDefault() 
+}
+
+
+}
+
+@helper Edit(string Id)
+{
+    @Html.ActionLink("Edit", "Edit", new { id = Id })  <b> | </b>
+    @Html.ActionLink("Delete", "Delete", new { id = Id }) 
+}
+
