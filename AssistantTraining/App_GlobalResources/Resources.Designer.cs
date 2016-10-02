@@ -61,6 +61,15 @@ namespace AssistantTraining.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Niepoprawny format email.
+        /// </summary>
+        public static string EmailFormat {
+            get {
+                return ResourceManager.GetString("EmailFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Długość łańcucha znaków musi być większa lub równa 8 znaków. Hasło musi  być alfanumeryczne..
         /// </summary>
         public static string MinLenghtFiled {

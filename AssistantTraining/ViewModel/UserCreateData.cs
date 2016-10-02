@@ -15,11 +15,15 @@ namespace AssistantTraining.ViewModel
         [Required(ErrorMessageResourceType = typeof(Resources),ErrorMessageResourceName = "RequiredFiled")]
         public string Name { get; set; }
 
+        [DisplayName("E-mail")]
+        [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "RequiredFiled")]
+        [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "EmailFormat")]
+        public string Email { get; set; }
+
         [Display(Name = "Password", ResourceType = typeof(Resources))]
         [DataType(DataType.Password)]
-        [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "RequiredFiled")]
-        [RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "MinLenghtFiled")]
-        //[StringLength(16, ErrorMessageResourceName = "PasswordMustBeBetweenMinAndMaxCharacters", ErrorMessageResourceType = typeof(Resources), MinimumLength = 6)]
+        //[Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "RequiredFiled")]
+        [RegularExpression(@"^$|^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "MinLenghtFiled")]
         public string Password { get; set; }
         [Required]
         public string SelectedId { get; set; }

@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="EmailFormat" xml:space="preserve">
+    <value>Niepoprawny format email</value>
+  </data>
   <data name="MinLenghtFiled" xml:space="preserve">
     <value>Długość łańcucha znaków musi być większa lub równa 8 znaków. Hasło musi  być alfanumeryczne.</value>
   </data>

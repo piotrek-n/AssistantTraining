@@ -1,19 +1,17 @@
 ﻿using AssistantTraining.App_Start;
+using AssistantTraining.DAL;
+using AssistantTraining.Models;
+using AssistantTraining.ViewModel;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
 using System;
-using System.Globalization;
 using System.Linq;
-using System.Security.Claims;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using AssistantTraining.ViewModel;
-using AssistantTraining.Models;
-using Microsoft.AspNet.Identity.EntityFramework;
-using AssistantTraining.DAL;
-using System.Net;
 
 namespace AssistantTraining.Controllers
 {
@@ -32,11 +30,12 @@ namespace AssistantTraining.Controllers
             UserManager = userManager;
             SignInManager = signInManager;
         }
+
         public ActionResult Create()
         {
             var roles = db.Roles.ToList();
             var user = new ApplicationUser();
-            var appUser  = new UserCreateData();
+            var appUser = new UserCreateData();
             appUser.Items = roles.Select(r => new SelectListItem()
             {
                 Value = r.Id,
@@ -44,13 +43,13 @@ namespace AssistantTraining.Controllers
             });
             return View(appUser);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(UserCreateData userVM)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-
                 var selectedRole = db.Roles.Where(r => r.Id.Equals(userVM.SelectedId)).FirstOrDefault();
 
                 if (null != selectedRole)
@@ -61,6 +60,9 @@ namespace AssistantTraining.Controllers
                         var manager = new UserManager<ApplicationUser>(store);
                         var user = new ApplicationUser { UserName = userVM.Name };
 
+                        user.EmailConfirmed = true;
+                        user.PasswordHash = UserManager.PasswordHasher.HashPassword(userVM.Password);
+
                         manager.Create(user, userVM.Password);
                         manager.AddToRole(user.Id, selectedRole.Name);
                     }
@@ -68,7 +70,6 @@ namespace AssistantTraining.Controllers
                 return RedirectToAction("Index");
             }
             return View(userVM);
-    
         }
 
         public ActionResult Index()
@@ -77,16 +78,71 @@ namespace AssistantTraining.Controllers
             var roles = db.Roles.ToList();
             return View(Tuple.Create(users, roles));
         }
-        public ActionResult Edit(int? id)
+
+        public ActionResult Edit(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var users = db.Users.ToList();
             var roles = db.Roles.ToList();
-            return View(Tuple.Create(users, roles));
+            var selectedUser = db.Users.FirstOrDefault(x => x.Id.Equals(id));
+
+            var user = new ApplicationUser();
+            var appUser = new UserCreateData();
+            appUser.Name = selectedUser.UserName;
+            appUser.Email = selectedUser.Email;
+            appUser.SelectedId = selectedUser.Roles.First().RoleId;
+
+            appUser.Items = roles.Select(r => new SelectListItem()
+            {
+                Value = r.Id,
+                Text = r.Name
+            });
+            return View(appUser);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(UserCreateData userVM)
+        {
+            if (ModelState.IsValid)
+            {
+                var userApp = UserManager.Users.Where(x => x.UserName == userVM.Name).FirstOrDefault();
+                if (userApp != null) //chk for dupes
+                {
+                    var user = UserManager.FindByName(userVM.Name);
+                    user.Email = userVM.Email;
+                    user.EmailConfirmed = true;
+                    if (!String.IsNullOrEmpty(userVM.Password))
+                    {
+                        user.PasswordHash = UserManager.PasswordHasher.HashPassword(userVM.Password);
+                    }
+
+                    IdentityResult result = await UserManager.UpdateAsync(user);
+
+                    if (result.Succeeded)
+                    {
+                        var oldRoleId = user.Roles.SingleOrDefault().RoleId;
+                        var oldRoleName = db.Roles.SingleOrDefault(r => r.Id == oldRoleId).Name;
+                        var newRoleName = db.Roles.SingleOrDefault(r => r.Id == userVM.SelectedId).Name;
+
+                        if (oldRoleName != newRoleName)
+                        {
+                            UserManager.RemoveFromRole(user.Id, oldRoleName);
+                            UserManager.AddToRole(user.Id, newRoleName);
+                        }
+
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+
+                    //await SignInAsync(user, true);//user is cached until logout so do this to clear cache
+                }
+            }
+            return View(userVM);
+        }
+
         public ActionResult Delete(string id)
         {
             if (String.IsNullOrEmpty(id))
@@ -94,7 +150,7 @@ namespace AssistantTraining.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var users = db.Users.Find(id);
-            
+
             if (users == null)
             {
                 return HttpNotFound();
@@ -114,6 +170,7 @@ namespace AssistantTraining.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
         public ApplicationSignInManager SignInManager
         {
             get
@@ -146,12 +203,14 @@ namespace AssistantTraining.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
+
         private AssistantTrainingContext db = new AssistantTrainingContext();
+
         [AllowAnonymous]
         public ActionResult Check(string id)
         {
             //var roleName = "Administrator";
-            //var userName = "admin"; 
+            //var userName = "admin";
             //var roleName = "Engineer";
             //var userName = "eng";
             var roleName = "Operator";
@@ -197,10 +256,13 @@ namespace AssistantTraining.Controllers
             {
                 case SignInStatus.Success:
                     return RedirectToLocal(returnUrl);
+
                 case SignInStatus.LockedOut:
                     return View("Lockout");
+
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
@@ -233,17 +295,19 @@ namespace AssistantTraining.Controllers
                 return View(model);
             }
 
-            // The following code protects for brute force attacks against the two factor codes. 
-            // If a user enters incorrect codes for a specified amount of time then the user account 
-            // will be locked out for a specified amount of time. 
+            // The following code protects for brute force attacks against the two factor codes.
+            // If a user enters incorrect codes for a specified amount of time then the user account
+            // will be locked out for a specified amount of time.
             // You can configure the account lockout settings in IdentityConfig
             var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
                     return RedirectToLocal(model.ReturnUrl);
+
                 case SignInStatus.LockedOut:
                     return View("Lockout");
+
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid code.");
@@ -329,7 +393,7 @@ namespace AssistantTraining.Controllers
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
                 // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
+                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                 // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
                 // return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
@@ -451,10 +515,13 @@ namespace AssistantTraining.Controllers
             {
                 case SignInStatus.Success:
                     return RedirectToLocal(returnUrl);
+
                 case SignInStatus.LockedOut:
                     return View("Lockout");
+
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
+
                 case SignInStatus.Failure:
                 default:
                     // If the user does not have an account, then prompt the user to create an account
@@ -541,6 +608,7 @@ namespace AssistantTraining.Controllers
         }
 
         #region Helpers
+
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
@@ -597,6 +665,7 @@ namespace AssistantTraining.Controllers
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
-        #endregion
+
+        #endregion Helpers
     }
 }
