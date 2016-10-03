@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<AssistantTraining.ViewModel.WorkerGroupViewModel>
+@using GridMvc.Html
 
 @{
     ViewBag.Title = "Index";
@@ -8,53 +9,55 @@
 <p>
     @*@Html.ActionLink("Create New", "Create", new { @class = "btn btn-default" })*@
     @*@Html.ActionLink("Export to Excel", "Excel", new {@class = "btn btn-default" })*@
-
+    @if (User.IsInRole("Administrator"))
+    {
     <a href="@Url.Action("Create", "Workers")" class="btn btn-default">
         Create New
         <span class="glyphicon" aria-hidden="true"></span>
     </a>
+    }
     <a href="@Url.Action("Excel", "Workers")" class="btn btn-default">
         Export to Excel
         <span class="glyphicon" aria-hidden="true"></span>
     </a>
 </p>
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.LastName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstMidName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Tag)
-        </th>
-        <th>Grupy</th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstMidName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Tag)
-        </td>
-        <td>
-            @string.Join(" ", item.Items.Where(x => item.SelectedIds.Contains(x.Value)).Select(x => x.Text).ToArray())
-            @*@Html.DisplayFor(modelItem => string.Join(" ", item.Items.Where(x => item.SelectedIds.Contains(x.Value)).Select(x => x.Text).ToArray()))*@
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
+@Html.Grid(Model).Columns(columns =>
+{
+    columns.Add(foo => foo.LastName).Titled("Nazwisko").Sortable(true).Filterable(true).SetWidth(110);
+    columns.Add(foo => foo.FirstMidName).Titled("Imię").Sortable(true).Filterable(true).SetWidth(110);
+    columns.Add(foo => foo.Tag).Titled("Tag").Sortable(true).SetWidth(110);
+    /* Adding not mapped column, that renders body, using inline Razor html helper */
+    columns.Add()
+    .Encoded(false)
+    .Sanitized(false)
+    .SetWidth(30)
+    .RenderValueAs(foo => Groups(foo));
+
+    columns.Add()
+        .Encoded(false)
+        .Sanitized(false)
+        .SetWidth(30)
+        .RenderValueAs(foo => Edit(foo.ID));
+
+}).WithPaging(10)
+
+@helper Edit(int Id)
+{
+    @Html.ActionLink("Details", "Details", new { id = Id })
+
+if (User.IsInRole("Administrator"))
+{
+        @:| @Html.ActionLink("Edit", "Edit", new { id = Id })
+    }
+    if (User.IsInRole("Administrator"))
+    {
+        @:| @Html.ActionLink("Delete", "Delete", new { id = Id })
+    }
 }
 
-</table>
+@helper Groups(AssistantTraining.ViewModel.WorkerGroupViewModel item)
+{
+   @String.Join(" ", item.Items.Where(x => item.SelectedIds.Contains(x.Value)).Select(x => x.Text).ToArray())
+}

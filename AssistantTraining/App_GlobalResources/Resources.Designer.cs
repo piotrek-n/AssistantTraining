@@ -70,7 +70,7 @@ namespace AssistantTraining.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Długość łańcucha znaków musi być większa lub równa 8 znaków. Hasło musi  być alfanumeryczne..
+        ///   Looks up a localized string similar to Długość łańcucha znaków musi być większa lub równa 4 znaków. Hasło musi  być alfanumeryczne..
         /// </summary>
         public static string MinLenghtFiled {
             get {

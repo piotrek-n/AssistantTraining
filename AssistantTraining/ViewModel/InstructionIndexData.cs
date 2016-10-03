@@ -14,6 +14,10 @@ namespace AssistantTraining.ViewModel
 
         [DisplayName("Nazwa")]
         public string Name { get; set; }
+
+        [DisplayName("Numer")]
+        public string Number { get; set; }
+
         [DisplayName("Wersja")]
         public string Version { get; set; }
 

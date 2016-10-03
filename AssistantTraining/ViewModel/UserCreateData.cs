@@ -23,7 +23,7 @@ namespace AssistantTraining.ViewModel
         [Display(Name = "Password", ResourceType = typeof(Resources))]
         [DataType(DataType.Password)]
         //[Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "RequiredFiled")]
-        [RegularExpression(@"^$|^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "MinLenghtFiled")]
+        [RegularExpression(@"^$|^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$", ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "MinLenghtFiled")]
         public string Password { get; set; }
         [Required]
         public string SelectedId { get; set; }

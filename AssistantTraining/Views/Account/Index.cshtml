@@ -29,22 +29,18 @@
         .SetWidth(30)
         .RenderValueAs(foo => Edit(foo.Id));
 
-}).WithPaging(5)
+}).WithPaging(10)
 
 @helper Roles(string Id)
 {
-
-foreach (var u in Model.Item1.Where(x => x.Id.Equals(Id)))
-{
-    @Model.Item2.Where(i => i.Id.Equals(u.Roles.First().RoleId)).Select(n=>n.Name).FirstOrDefault() 
-}
-
-
+    foreach (var u in Model.Item1.Where(x => x.Id.Equals(Id)))
+    {
+            @Model.Item2.Where(i => i.Id.Equals(u.Roles.First().RoleId)).Select(n => n.Name).FirstOrDefault()
+    }
 }
 
 @helper Edit(string Id)
 {
     @Html.ActionLink("Edit", "Edit", new { id = Id })  <b> | </b>
-    @Html.ActionLink("Delete", "Delete", new { id = Id }) 
+    @Html.ActionLink("Delete", "Delete", new { id = Id })
 }
-

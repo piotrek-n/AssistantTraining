@@ -221,6 +221,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InstructionsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\TrainingController.cs" />
     <Compile Include="Controllers\WorkersController.cs" />
     <Compile Include="DAL\AssistantTrainingContext.cs" />
@@ -249,6 +250,10 @@
     <Compile Include="Migrations\201609272107465_AddAuth.cs" />
     <Compile Include="Migrations\201609272107465_AddAuth.Designer.cs">
       <DependentUpon>201609272107465_AddAuth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610031742085_Added-ColumnNumber-TableInstruction.cs" />
+    <Compile Include="Migrations\201610031742085_Added-ColumnNumber-TableInstruction.Designer.cs">
+      <DependentUpon>201610031742085_Added-ColumnNumber-TableInstruction.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
@@ -293,6 +298,7 @@
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Account\Delete.cshtml" />
     <Content Include="Views\Account\Create.cshtml" />
+    <Content Include="Views\Reports\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -324,6 +330,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609272107465_AddAuth.resx">
       <DependentUpon>201609272107465_AddAuth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610031742085_Added-ColumnNumber-TableInstruction.resx">
+      <DependentUpon>201610031742085_Added-ColumnNumber-TableInstruction.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

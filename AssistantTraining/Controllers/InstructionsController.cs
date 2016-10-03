@@ -31,6 +31,7 @@ namespace AssistantTraining.Controllers
 
                 instructioGroup.ID = item.ID;
                 instructioGroup.Name = item.Name;
+                instructioGroup.Number = item.Number;
                 instructioGroup.Version = item.Version;
                 instructioGroup.SelectedId = item.GroupId.ToString();
                 instructioGroup.Items = groups.Select(x => new SelectListItem
@@ -139,6 +140,7 @@ namespace AssistantTraining.Controllers
 
             instructionGroupViewModel.Name = instruction.Name;
             instructionGroupViewModel.Version = instruction.Version;
+            instructionGroupViewModel.Number = instruction.Number;
 
             instructionGroupViewModel.Items = groups.Select(x => new SelectListItem
             {

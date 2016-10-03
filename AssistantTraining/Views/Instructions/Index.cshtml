@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<AssistantTraining.ViewModel.InstructionIndexData>
-
+@using GridMvc.Html
 @{
     ViewBag.Title = "Index";
 }
@@ -7,37 +7,36 @@
 <h2>Index</h2>
 
 <p>
+@if (User.IsInRole("Administrator") || User.IsInRole("Engineer"))
+{
     @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Version)
-        </th>
-        <th>Grupa</th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Version)
-        </td>
-        <td>
-            @string.Join(" ", item.Items.Where(x => x.Value.Equals(item.SelectedId)).Select(x => x.Text).ToArray())
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
 }
+</p>
 
-</table>
+@Html.Grid(Model).Columns(columns =>
+{
+    columns.Add(foo => foo.Name).Titled("Nazwa").Sortable(true).Filterable(true).SetWidth(110);
+    columns.Add(foo => foo.Number).Titled("Numer").Sortable(true).Filterable(true).SetWidth(110);
+    columns.Add(foo => foo.Version).Titled("Wersja").Sortable(true).Filterable(true).SetWidth(110);
+    /* Adding not mapped column, that renders body, using inline Razor html helper */
+    columns.Add()
+        .Encoded(false)
+        .Sanitized(false)
+        .SetWidth(30)
+        .RenderValueAs(foo => Edit(foo.ID));
+
+}).WithPaging(10)
+
+@helper Edit(int Id)
+{
+            @Html.ActionLink("Details", "Details", new { id = Id })
+
+            if(User.IsInRole("Administrator") || User.IsInRole("Engineer"))
+            {
+                @:| @Html.ActionLink("Edit", "Edit", new { id = Id })  
+            }
+            if (User.IsInRole("Administrator"))
+            {
+                 @:| @Html.ActionLink("Delete", "Delete", new { id = Id })
+            }
+}

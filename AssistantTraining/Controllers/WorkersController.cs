@@ -253,7 +253,7 @@ namespace AssistantTraining.Controllers
 
         public ActionResult Excel()
         {
-            var workers = db.Workers.ToList();
+            var workers = db.Workers.Select(w=>new { Name = w.FirstMidName, LastName = w.LastName }).ToList();
 
             using (ExcelPackage pck = new ExcelPackage())
             {

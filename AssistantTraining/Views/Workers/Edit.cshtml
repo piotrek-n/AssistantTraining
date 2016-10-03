@@ -46,6 +46,9 @@
             <div class="col-md-10">
                 @*@Html.DropDownList("GroupID", (MultiSelectList)ViewBag.Groups, new { multiple = "multiple", @class = "form-control" })*@
                 @Html.ListBoxFor(x => x.SelectedIds, Model.Items, new { multiple = "multiple", @class = "form-control" })
+                <div>
+                    @Html.Label("W celu wybrania wielu pól należy użyć klawisza Shift", htmlAttributes: new { @class = "control-label" })
+                </div>
             </div>
         </div>
 
