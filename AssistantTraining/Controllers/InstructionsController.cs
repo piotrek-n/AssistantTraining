@@ -60,19 +60,41 @@ namespace AssistantTraining.Controllers
                 return HttpNotFound();
             }
 
-            InstructionIndexData instructionGroupViewModel = new InstructionIndexData();
+            InstructionDetailsData instructionGroupViewModel = new InstructionDetailsData();
             var workerRepository = new WorkerRepository();
-            var groups = workerRepository.GetAllGroups();
+            List<int> idsGroups = new List<int>();
+            idsGroups.Add(instruction.GroupId);
+            var groups = workerRepository.GetGroupsById(idsGroups);
 
             instructionGroupViewModel.Name = instruction.Name;
             instructionGroupViewModel.Version = instruction.Version;
-            instructionGroupViewModel.SelectedId = instruction.GroupId.ToString();
-
+            instructionGroupViewModel.Groups = groups;
+            //instructionGroupViewModel.SelectedId = instruction.GroupId.ToString();
             instructionGroupViewModel.Items = groups.Select(x => new SelectListItem
             {
                 Value = x.ID.ToString(),
                 Text = x.GroupName
             });
+
+            instructionGroupViewModel.instructionVsTrainingList =
+                             (from gi in db.GroupInstructions
+                              join i in db.Instructions on gi.GroupId equals i.GroupId
+                              join t in db.Trainings
+                                    on new { InstructionId = i.ID, WorkerId = gi.WorkerId }
+                                equals new { t.InstructionId, t.WorkerId } into t_join
+                              from t in t_join.DefaultIfEmpty()
+                              where i.ID == id
+                              select new InstructionVsTrainingData
+                              {
+                                  WorkerLastName = gi.Worker.LastName,
+                                  WorkerFirstMidName = gi.Worker.FirstMidName,
+                                  InstructionName = i.Name,
+                                  GroupId = (int?)gi.GroupId,
+                                  InstructionVersion = i.Version,
+                                  InstructionNumber= i.Number,
+                                  DateOfTraining = (DateTime?)t.DateOfTraining
+                              }).ToList();
+
             if (instructionGroupViewModel == null)
             {
                 return HttpNotFound();

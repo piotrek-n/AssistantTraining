@@ -266,7 +266,9 @@
     <Compile Include="Repositories\WorkerRepository.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModel\AccountViewModels.cs" />
+    <Compile Include="ViewModel\InstructionDetailsData.cs" />
     <Compile Include="ViewModel\InstructionIndexData.cs" />
+    <Compile Include="ViewModel\InstructionVsTrainingData.cs" />
     <Compile Include="ViewModel\ManageViewModels.cs" />
     <Compile Include="ViewModel\TrainingIndexData.cs" />
     <Compile Include="ViewModel\UserCreateData.cs" />
