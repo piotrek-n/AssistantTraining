@@ -9,7 +9,10 @@
 <p>
 @if (User.IsInRole("Administrator") || User.IsInRole("Engineer"))
 {
-    @Html.ActionLink("Create New", "Create")
+    <a href="@Url.Action("Create", "Instructions")" class="btn btn-default">
+        Create New
+        <span class="glyphicon" aria-hidden="true"></span>
+    </a>
 }
 </p>
 

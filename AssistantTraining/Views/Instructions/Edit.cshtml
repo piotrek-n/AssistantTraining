@@ -60,7 +60,7 @@
                             <div class="modal-body">
                                 Are you sure you want to change the version? After saving will create a new version of the instruction.
 
-                                @Html.EditorFor(model => model.Version, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.EditorFor(model => model.Version, new { htmlAttributes = new { @class = "form-control", @id="NewVersion" }})
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -77,8 +77,10 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Items, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(x => x.SelectedId, Model.Items, new { @class = "form-control" })
+                @*@Html.DropDownListFor(x => x.SelectedId, Model.Items, new { @class = "form-control" })*@
                 @*@Html.DropDownList("Name", Model.Items, "Dropdown", new { @class = "form-control" })*@
+
+                @Html.ListBoxFor(x => x.SelectedIds, Model.Items, new { multiple = "multiple", @class = "form-control" })
             </div>
         </div>
 
@@ -95,6 +97,8 @@
     @Html.ActionLink("Back to List", "Index")
 </div>
 
+@Html.Hidden("RedirectTo", Url.Action("AddNewVersion", "Instructions", new { id = "ID", version = "VERSION" }));
+
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
@@ -103,8 +107,12 @@
 
     $(document).ready(function () {
         $('#save-event').on('click',
-                    function (evt) {
-                        console.log('triggered');
+                    function (evt) {                        
+                        $('#myModal').modal('toggle');
+                        var id = $("#ID").val(); 
+                        var version = $("#NewVersion").val();
+                        var url = $("#RedirectTo").val().replace('ID', id).replace('VERSION', version);
+                        location.href = url;
                     }
         );
     });

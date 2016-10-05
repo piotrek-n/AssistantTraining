@@ -167,15 +167,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Gridmvc.css" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Grid.mvc.readme" />
     <Compile Include="App_GlobalResources\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -186,10 +185,20 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="Properties\PublishProfiles\test.inventum24.pl - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\bootstrap3-typeahead.js" />
+    <Content Include="Scripts\bootstrap3-typeahead.min.js" />
     <Content Include="Scripts\gridmvc.js" />
     <Content Include="Scripts\gridmvc.lang.ru.js" />
     <Content Include="Scripts\gridmvc.min.js" />
@@ -255,10 +264,27 @@
     <Compile Include="Migrations\201610031742085_Added-ColumnNumber-TableInstruction.Designer.cs">
       <DependentUpon>201610031742085_Added-ColumnNumber-TableInstruction.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610042110362_ChangeNameTableFromGroupInstructionToGroupWorker.cs" />
+    <Compile Include="Migrations\201610042110362_ChangeNameTableFromGroupInstructionToGroupWorker.Designer.cs">
+      <DependentUpon>201610042110362_ChangeNameTableFromGroupInstructionToGroupWorker.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610051640518_AddedTableInstructionGroup.cs" />
+    <Compile Include="Migrations\201610051640518_AddedTableInstructionGroup.Designer.cs">
+      <DependentUpon>201610051640518_AddedTableInstructionGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610051750242_ChangeTypeFkGroupId.cs" />
+    <Compile Include="Migrations\201610051750242_ChangeTypeFkGroupId.Designer.cs">
+      <DependentUpon>201610051750242_ChangeTypeFkGroupId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610051840232_RemoveGroupIdFromInstruction.cs" />
+    <Compile Include="Migrations\201610051840232_RemoveGroupIdFromInstruction.Designer.cs">
+      <DependentUpon>201610051840232_RemoveGroupIdFromInstruction.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\Group.cs" />
-    <Compile Include="Models\GroupInstruction.cs" />
+    <Compile Include="Models\InstructionGroup.cs" />
+    <Compile Include="Models\GroupWorker.cs" />
     <Compile Include="Models\Instruction.cs" />
     <Compile Include="Models\Training.cs" />
     <Compile Include="Models\Worker.cs" />
@@ -335,6 +361,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610031742085_Added-ColumnNumber-TableInstruction.resx">
       <DependentUpon>201610031742085_Added-ColumnNumber-TableInstruction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610042110362_ChangeNameTableFromGroupInstructionToGroupWorker.resx">
+      <DependentUpon>201610042110362_ChangeNameTableFromGroupInstructionToGroupWorker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610051640518_AddedTableInstructionGroup.resx">
+      <DependentUpon>201610051640518_AddedTableInstructionGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610051750242_ChangeTypeFkGroupId.resx">
+      <DependentUpon>201610051750242_ChangeTypeFkGroupId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610051840232_RemoveGroupIdFromInstruction.resx">
+      <DependentUpon>201610051840232_RemoveGroupIdFromInstruction.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

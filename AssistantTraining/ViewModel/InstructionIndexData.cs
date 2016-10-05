@@ -26,6 +26,8 @@ namespace AssistantTraining.ViewModel
 
         public string SelectedId { get; set; }
 
+        public string[] SelectedIds { get; set; }
+
         [DisplayName("Grupy")]
         public IEnumerable<SelectListItem> Items { get; set; }
 

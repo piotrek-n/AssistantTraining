@@ -13,9 +13,11 @@ namespace AssistantTraining.DAL
 
         public DbSet<Worker> Workers { get; set; }
         public DbSet<Instruction> Instructions { get; set; }
-        public DbSet<GroupInstruction> GroupInstructions { get; set; }
+        public DbSet<GroupWorker> GroupWorkers { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Training> Trainings { get; set; }
+
+        public DbSet<InstructionGroup> InstructionGroups { get; set; }
 
         public static AssistantTrainingContext Create()
         {

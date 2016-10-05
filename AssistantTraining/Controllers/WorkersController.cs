@@ -36,7 +36,7 @@ namespace AssistantTraining.Controllers
                 workerGroup.FirstMidName = item.FirstMidName;
                 workerGroup.LastName = item.LastName;
                 workerGroup.Tag = item.Tag;
-                workerGroup.SelectedIds = db.GroupInstructions.Where(x => x.WorkerId.Equals(item.ID)).Select(x => x.GroupId.ToString()).ToArray();
+                workerGroup.SelectedIds = db.GroupWorkers.Where(x => x.WorkerId.Equals(item.ID)).Select(x => x.GroupId.ToString()).ToArray();
                 workerGroup.WorkerGroups = groups;
                 workerGroup.Items = groups.Select(x => new SelectListItem
                 {
@@ -104,14 +104,14 @@ namespace AssistantTraining.Controllers
                 {
                     foreach (var item in workerGroup.SelectedIds)
                     {
-                        var groupInstructions = new GroupInstruction()
+                        var groupInstructions = new GroupWorker()
                         {
                             WorkerId = worker.ID,
                             TimeOfCreation = DateTime.Now,
                             TimeOfModification = DateTime.Now,
                             GroupId = Int32.Parse(item)
                         };
-                        db.GroupInstructions.Add(groupInstructions);
+                        db.GroupWorkers.Add(groupInstructions);
                         db.SaveChanges();
                     }
                 }
@@ -147,7 +147,7 @@ namespace AssistantTraining.Controllers
             workerGroup.LastName = worker.LastName;
             workerGroup.ID = worker.ID;
             workerGroup.Tag = worker.Tag;
-            workerGroup.SelectedIds = db.GroupInstructions.Where(x => x.WorkerId.Equals(worker.ID)).Select(x => x.GroupId.ToString()).ToArray();
+            workerGroup.SelectedIds = db.GroupWorkers.Where(x => x.WorkerId.Equals(worker.ID)).Select(x => x.GroupId.ToString()).ToArray();
 
             if (worker == null)
             {
@@ -180,20 +180,20 @@ namespace AssistantTraining.Controllers
 
                 if (workerGroup.SelectedIds != null && workerGroup.SelectedIds.Count() > 0)
                 {
-                    var wGroups = db.GroupInstructions.Where(w => w.WorkerId == workerGroup.ID).ToList();
+                    var wGroups = db.GroupWorkers.Where(w => w.WorkerId == workerGroup.ID).ToList();
 
                     foreach (var item in workerGroup.SelectedIds)
                     {
                         if ((wGroups.Where(x => x.WorkerId.Equals(workerGroup.ID) && x.GroupId.Equals(Int32.Parse(item))).FirstOrDefault() == null) || wGroups.Count() == 0)
                         {
-                            var groupInstructions = new GroupInstruction()
+                            var groupInstructions = new GroupWorker()
                             {
                                 WorkerId = worker.ID,
                                 TimeOfCreation = DateTime.Now,
                                 TimeOfModification = DateTime.Now,
                                 GroupId = Int32.Parse(item)
                             };
-                            db.GroupInstructions.Add(groupInstructions);
+                            db.GroupWorkers.Add(groupInstructions);
                             db.SaveChanges();
                         }
                     }
@@ -201,7 +201,7 @@ namespace AssistantTraining.Controllers
                     {
                         if (!workerGroup.SelectedIds.Contains(item.GroupId.ToString()))
                         {
-                            db.GroupInstructions.Remove(item);
+                            db.GroupWorkers.Remove(item);
                             db.SaveChanges();
                         }
                     }
@@ -210,11 +210,11 @@ namespace AssistantTraining.Controllers
                 {
                     //Usuń wszystkie
 
-                    var wGroups = db.GroupInstructions.Where(w => w.WorkerId == workerGroup.ID);
+                    var wGroups = db.GroupWorkers.Where(w => w.WorkerId == workerGroup.ID);
 
                     foreach (var g in wGroups)
                     {
-                        db.GroupInstructions.Remove(g);
+                        db.GroupWorkers.Remove(g);
                     }
                     db.SaveChanges();
                 }

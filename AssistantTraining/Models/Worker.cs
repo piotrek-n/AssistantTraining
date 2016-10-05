@@ -25,6 +25,6 @@ namespace AssistantTraining.Models
 
         public string Tag { get; set; }
 
-        public virtual ICollection<GroupInstruction> GroupInstructions { get; set; }
+        public virtual ICollection<GroupWorker> GroupInstructions { get; set; }
     }
 }

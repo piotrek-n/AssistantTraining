@@ -46,9 +46,12 @@ namespace AssistantTraining.Controllers
         {
             var viewModel = new TrainingIndexData();
 
+
+
             var lst = (from w in db.Workers
-                       join gi in db.GroupInstructions on w.ID equals gi.WorkerId
-                       join i in db.Instructions on gi.GroupId equals i.GroupId 
+                       join gw in db.GroupWorkers on w.ID equals gw.WorkerId
+                       join ig in db.InstructionGroups on new { GroupId = gw.GroupId } equals new { GroupId = Convert.ToInt32(ig.GroupId) }
+                       join i in db.Instructions on ig.InstructionId equals i.ID
                        join t in db.Trainings on new { wID = w.ID , iID = i.ID } equals new { wID = t.WorkerId, iID = t.InstructionId }
                        into gj
                        from e in gj.DefaultIfEmpty()

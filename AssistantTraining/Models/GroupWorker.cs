@@ -2,7 +2,7 @@
 
 namespace AssistantTraining.Models
 {
-    public class GroupInstruction
+    public class GroupWorker
     {
         public int ID { get; set; }
         public DateTime TimeOfCreation { get; set; }

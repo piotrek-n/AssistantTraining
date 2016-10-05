@@ -6,6 +6,7 @@
 
 <h2>Index</h2>
 
+
 @Html.Grid(Model.items.Select(x => x.Worker).Distinct().ToList()).Columns(columns =>
 {
     columns.Add(foo => foo.FirstMidName).Titled("Imię").Sortable(true).SetWidth(110);
@@ -43,3 +44,15 @@
         @Html.ActionLink("Details", "Details", new { id = Id }) <b> | </b>
         @Html.ActionLink("Delete", "Delete", new { id = Id }) <b> | </b>
 }
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/bootstrap3-typeahead.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+//http://frankzyj2010.blogspot.com/2016/06/how-to-apply-typeahead-with-aspnet-mvc.html
+<script type="text/javascript">
+
+</script>
+
