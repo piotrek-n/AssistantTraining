@@ -48,19 +48,42 @@ namespace AssistantTraining.Controllers
 
 
 
-            var lst = (from w in db.Workers
-                       join gw in db.GroupWorkers on w.ID equals gw.WorkerId
-                       join ig in db.InstructionGroups on new { GroupId = gw.GroupId } equals new { GroupId = Convert.ToInt32(ig.GroupId) }
-                       join i in db.Instructions on ig.InstructionId equals i.ID
-                       join t in db.Trainings on new { wID = w.ID , iID = i.ID } equals new { wID = t.WorkerId, iID = t.InstructionId }
-                       into gj
-                       from e in gj.DefaultIfEmpty()
-                       select new TrainingItemIndexData{ WorkId=w.ID, Worker =w, Instruction =i, Training =e}
-                       //select new {w, i= (new InstructionExt(w.ID,i)),e = (new TrainingExt{ WorkerID = w.ID }) }
-                       ).OrderBy(x=>x.Worker.LastName).ToList();
-            viewModel.items = lst;
+            //var lst = (from w in db.Workers
+            //           join gw in db.GroupWorkers on w.ID equals gw.WorkerId
+            //           join ig in db.InstructionGroups on new { GroupId = gw.GroupId } equals new { GroupId = Convert.ToInt32(ig.GroupId) }
+            //           join i in db.Instructions on ig.InstructionId equals i.ID
+            //           join t in db.Trainings on new { wID = w.ID , iID = i.ID } equals new { wID = t.WorkerId, iID = t.InstructionId }
+            //           into gj
+            //           from e in gj.DefaultIfEmpty()
+            //           select new TrainingItemIndexData{ WorkId=w.ID, Worker =w, Instruction =i, Training =e}
+            //           //select new {w, i= (new InstructionExt(w.ID,i)),e = (new TrainingExt{ WorkerID = w.ID }) }
+            //           ).OrderBy(x=>x.Worker.LastName).ToList();
+            viewModel.items = null;
 
             return View(viewModel);
         }
+
+        public JsonResult GetNumberInstructions(string query)
+        {
+            var ins = (from i in db.Instructions where i.Number.Contains(query) select i.Number).ToList();
+
+            return Json(ins, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetNumberTrainings(string query)
+        {
+            List<string> tab = new List<string>();
+            tab.Add("aaa");
+            tab.Add("bbb");
+            tab.Add("ccc");
+
+            return Json(tab.Where(s => s.Contains(query)), JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Search(string instruction, string training)
+        {
+            var viewModel = new TrainingIndexData();
+            return View(viewModel);
+        }
+
     }
 }
