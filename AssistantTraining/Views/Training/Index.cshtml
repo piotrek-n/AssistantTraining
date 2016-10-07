@@ -1,129 +1,22 @@
-﻿@model AssistantTraining.ViewModel.TrainingIndexData
-@using GridMvc.Html
-@{
-    ViewBag.Title = "Index";
+﻿@{
+    ViewBag.Title = "Home Page";
 }
-
-
-@*<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="~/Scripts/bootstrap3-typeahead.min.js"></script>
-    <script type="text/javascript" src="../js/typeahead/0.9.3/typeahead.min.js"></script>
-    <script src="~/Scripts/jquery.validate.min.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>*@
-
-
-
-<script type="text/javascript">
-    //$(document).ready(function(){
-    //    var $input = $('.typeahead');
-    //    $input.typeahead({
-    //        source: [{ id: "someId1", name: "Display name 1" },
-    //                    { id: "someId2", name: "Display name 2" }],
-    //        autoSelect: true
-    //    });
-    //    $input.change(function () {
-    //        var current = $input.typeahead("getActive");
-    //        if (current) {
-    //            // Some item from your model is active!
-    //            if (current.name == $input.val()) {
-    //                // This means the exact match is found. Use toLowerCase() if you want case insensitive match.
-    //            } else {
-    //                // This means it is only a partial match, you can either add a new item
-    //                // or take the active if you don't want new items
-    //            }
-    //        } else {
-    //            // Nothing is active so it is a new value (or maybe empty value)
-    //        }
-    //    });
-    //});
-</script>
-
-
-<title>Bootstrap Typeahead with Ajax Example</title>
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
-
-<h2>Trainings</h2>
-<div>
-
-    <form class="form-inline">
-        <div class="form-group">
-            <label for="thInstructions">Instruction:</label>
-            <input type="text" id="thInstructions" style="display: inline-block;" class="typeahead form-control" autocomplete="off" spellcheck="false">
-        </div>
-        <div class="form-group">
-            <label for="thTrainings">Training:</label>
-            <input type="text" id="thTrainings" style="display: inline-block;" class="typeahead form-control" autocomplete="off" spellcheck="false">
-        </div>
-        <button type="button" class="btn btn-default">
-            <span class="glyphicon glyphicon-search"></span> Search
-        </button>
-    </form>
-
-
+@section styles {
+    @Styles.Render("~/Content/gridmvc")
+}
+<div class="row">
+    @Html.Action("GetGrid")
 </div>
-@*
-    http://www.aspsnippets.com/Articles/ASPNet-MVC-jQuery-AJAX-and-JSON-Example.aspx
-    http://frankzyj2010.blogspot.com/2016/06/how-to-apply-typeahead-with-aspnet-mvc.html
-*@
-<script type="text/javascript">
-
-    $('input#thInstructions').typeahead({
-        source: function (query, process) {
-            return $.get('/Training/GetNumberInstructions', { query: query }, function (data) {
-                console.log(data);
-                return process(data);
-            });
-        }
-    });
-    $('input#thTrainings').typeahead({
-        source: function (query, process) {
-            return $.get('/Training/GetNumberTrainings', { query: query }, function (data) {
-                console.log(data);
-                return process(data);
-            });
-        }
-    });
-
-</script>
-
-@*@Html.Grid(Model.items.Select(x => x.Worker).Distinct().ToList()).Columns(columns =>
-    {
-        columns.Add(foo => foo.FirstMidName).Titled("Imię").Sortable(true).SetWidth(110);
-        columns.Add(foo => foo.LastName).Titled("Nazwisko").Sortable(true).Filterable(true).SetWidth(110);
-        columns.Add()
-            .Encoded(false)
-            .Sanitized(false)
-            .SetWidth(30)
-            .Titled("Obowiązkowe instrukcje/Data szkolenia")
-            .RenderValueAs(foo => Instruction(foo.ID));
-        /* Adding not mapped column, that renders body, using inline Razor html helper */
-        columns.Add()
-            .Encoded(false)
-            .Sanitized(false)
-            .SetWidth(30)
-            .RenderValueAs(foo => Edit(foo.ID));
-
-    }).WithPaging(5)*@
-
-@helper Instruction(int Id)
-{
-
-foreach (var gi in Model.items.Where(x => x.WorkId.Equals(Id)))
-{
-        @gi.Instruction.Name <b>
-            @if (gi.Training != null)
-            {@gi.Training.TimeOfCreation}
-        </b>    <br />
-}
-
-}
-
-@helper Edit(int Id)
-{
-    @Html.ActionLink("Select", "Index", new { id = Id })  <b> | </b>
-    @Html.ActionLink("Edit", "Edit", new { id = Id })  <b> | </b>
-    @Html.ActionLink("Details", "Details", new { id = Id }) <b> | </b>
-    @Html.ActionLink("Delete", "Delete", new { id = Id }) <b> | </b>
-}
+@*@section scripts {
+    @Scripts.Render("~/bundles/gridmvc")
+    @Scripts.Render("~/bundles/application/Training")
+}*@
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/ladda-bootstrap/ladda.min.js"></script>
+<script src="~/Scripts/ladda-bootstrap/spin.min.js"></script>
+<script src="~/Scripts/URI.js"></script>
+<script src="~/Scripts/gridmvc.min.js"></script>
+<script src="~/Scripts/gridmvc-ext.js"></script>
+<script src="~/Scripts/Application/Training.js"></script>

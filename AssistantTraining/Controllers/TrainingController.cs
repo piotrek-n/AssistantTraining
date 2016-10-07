@@ -6,6 +6,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using AssistantTraining.Helpers;
+using AssistantTraining.Repositories;
 
 namespace AssistantTraining.Controllers
 {
@@ -42,26 +44,26 @@ namespace AssistantTraining.Controllers
 
         private AssistantTrainingContext db = new AssistantTrainingContext();
 
-        public ActionResult Index(int? id)
-        {
-            var viewModel = new TrainingIndexData();
+        //public ActionResult Index(int? id)
+        //{
+        //    var viewModel = new TrainingIndexData();
 
 
 
-            //var lst = (from w in db.Workers
-            //           join gw in db.GroupWorkers on w.ID equals gw.WorkerId
-            //           join ig in db.InstructionGroups on new { GroupId = gw.GroupId } equals new { GroupId = Convert.ToInt32(ig.GroupId) }
-            //           join i in db.Instructions on ig.InstructionId equals i.ID
-            //           join t in db.Trainings on new { wID = w.ID , iID = i.ID } equals new { wID = t.WorkerId, iID = t.InstructionId }
-            //           into gj
-            //           from e in gj.DefaultIfEmpty()
-            //           select new TrainingItemIndexData{ WorkId=w.ID, Worker =w, Instruction =i, Training =e}
-            //           //select new {w, i= (new InstructionExt(w.ID,i)),e = (new TrainingExt{ WorkerID = w.ID }) }
-            //           ).OrderBy(x=>x.Worker.LastName).ToList();
-            viewModel.items = null;
+        //    //var lst = (from w in db.Workers
+        //    //           join gw in db.GroupWorkers on w.ID equals gw.WorkerId
+        //    //           join ig in db.InstructionGroups on new { GroupId = gw.GroupId } equals new { GroupId = Convert.ToInt32(ig.GroupId) }
+        //    //           join i in db.Instructions on ig.InstructionId equals i.ID
+        //    //           join t in db.Trainings on new { wID = w.ID , iID = i.ID } equals new { wID = t.WorkerId, iID = t.InstructionId }
+        //    //           into gj
+        //    //           from e in gj.DefaultIfEmpty()
+        //    //           select new TrainingItemIndexData{ WorkId=w.ID, Worker =w, Instruction =i, Training =e}
+        //    //           //select new {w, i= (new InstructionExt(w.ID,i)),e = (new TrainingExt{ WorkerID = w.ID }) }
+        //    //           ).OrderBy(x=>x.Worker.LastName).ToList();
+        //    viewModel.items = null;
 
-            return View(viewModel);
-        }
+        //    return View(viewModel);
+        //}
 
         public JsonResult GetNumberInstructions(string query)
         {
@@ -83,6 +85,41 @@ namespace AssistantTraining.Controllers
         {
             var viewModel = new TrainingIndexData();
             return View(viewModel);
+        }
+
+        private const string GRID_PARTIAL_PATH = "~/Views/Training/_TrainingGrid.cshtml";
+
+        private IGridMvcHelper gridMvcHelper;
+        public TrainingController()
+        {
+            this.gridMvcHelper = new GridMvcHelper();
+        }
+
+
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        [ChildActionOnly]
+        public ActionResult GetGrid()
+        {
+            var repos = new WorkerRepository();
+            var items = repos.GetTrainings().OrderBy(p => 0); 
+            var grid = this.gridMvcHelper.GetAjaxGrid(items);
+
+            return PartialView(GRID_PARTIAL_PATH, grid);
+        }
+
+        [HttpGet]
+        public ActionResult GridPager(int? page)
+        {
+            var repos = new WorkerRepository();
+            var items = repos.GetTrainings().OrderBy(p => 0);
+            var grid = this.gridMvcHelper.GetAjaxGrid(items, page);
+            object jsonData = this.gridMvcHelper.GetGridJsonData(grid, GRID_PARTIAL_PATH, this);
+
+            return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
 
     }

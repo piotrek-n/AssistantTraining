@@ -24,5 +24,11 @@ namespace AssistantTraining.Repositories
             List<Group> groups = db.Groups.Where(g => ids.Contains(g.ID)).OrderBy(x => x.GroupName).ToList();
             return groups;
         }
+
+        public IQueryable<Training> GetTrainings()
+        {
+            var trainings = db.Trainings.AsQueryable<Training>();
+            return trainings;
+        }
     }
 }

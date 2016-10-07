@@ -1,0 +1,13 @@
+﻿@using GridMvc.Html
+@using GridMvc.Sorting
+@model Grid.Mvc.Ajax.GridExtensions.AjaxGrid<AssistantTraining.Models.Training>
+@(
+    Html.Grid(Model).Named("TrainingGrid")
+        .Columns(columns =>
+        {
+            columns.Add(f => f.Instruction.Name).Titled("Instruction Name");
+            columns.Add(f => f.Worker.LastName).Titled("Last Name");
+        })
+        .Filterable()
+        .Sortable()
+        .WithPaging(5))

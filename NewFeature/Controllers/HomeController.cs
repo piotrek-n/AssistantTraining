@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NewFeature.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -23,5 +24,17 @@ namespace NewFeature.Controllers
 
             return Json(tab.Where(s => s.Contains(query)), JsonRequestBehavior.AllowGet);
         }
-     }
+
+        [HttpPost]
+        public JsonResult AjaxMethod(string name)
+        {
+            PersonModel person = new PersonModel
+            {
+                Name = name,
+                DateTime = DateTime.Now.ToString()
+            };
+            return Json(person);
+        }
+
+    }
 }
