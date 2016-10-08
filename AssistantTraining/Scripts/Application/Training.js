@@ -8,3 +8,13 @@
         getPagedData: pagingUrl
     });
 }())
+
+$('input.typeahead').typeahead({
+    source: function (query, process) {
+        return $.get('/Training/GetNumberTrainings', { query: query }, function (data) {
+            console.log(data);
+            return process(data);
+        });
+    }
+});
+

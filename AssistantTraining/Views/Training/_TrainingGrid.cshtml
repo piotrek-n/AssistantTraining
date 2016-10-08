@@ -1,6 +1,13 @@
 ﻿@using GridMvc.Html
 @using GridMvc.Sorting
 @model Grid.Mvc.Ajax.GridExtensions.AjaxGrid<AssistantTraining.Models.Training>
+
+<div class="bs-example">
+    <h2>Type your favorite car name</h2>
+    <input type="text" class="typeahead form-control" autocomplete="off" spellcheck="false">
+</div>
+
+
 @(
     Html.Grid(Model).Named("TrainingGrid")
         .Columns(columns =>
@@ -11,3 +18,5 @@
         .Filterable()
         .Sortable()
         .WithPaging(5))
+
+

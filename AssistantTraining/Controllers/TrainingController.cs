@@ -81,6 +81,7 @@ namespace AssistantTraining.Controllers
             return Json(tab.Where(s => s.Contains(query)), JsonRequestBehavior.AllowGet);
         }
 
+
         public ActionResult Search(string instruction, string training)
         {
             var viewModel = new TrainingIndexData();

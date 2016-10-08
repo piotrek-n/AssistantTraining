@@ -10,8 +10,7 @@ namespace AssistantTraining.App_Start
     {
         public static void RegisterBundles(BundleCollection bundles)
         {
-            //bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-            //            "~/Scripts/jquery.validate*"));
+
             RegisterStyleBundles(bundles);
             RegisterScriptBundles(bundles);
         }
@@ -32,6 +31,9 @@ namespace AssistantTraining.App_Start
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
+                        "~/Scripts/jquery.validate*"));
+
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
@@ -43,7 +45,10 @@ namespace AssistantTraining.App_Start
                       "~/Scripts/gridmvc-ext.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/application/Training").Include(
-                      "~/Scripts/Application/Training.js"));
+          "~/Scripts/Application/Training.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/typeahead").Include(
+                      "~/Scripts/bootstrap3-typeahead.min.js"));
         }
     }
 }
