@@ -161,6 +161,21 @@ namespace AssistantTraining.Controllers
                 db.Instructions.Add(instruction);
                 db.SaveChanges();
 
+                TrainingName tn = new TrainingName();
+                tn.Name = String.Empty;
+                tn.Number = instructionGroupViewModel.NumberOfTraining;
+                db.TrainingNames.Add(tn);
+                db.SaveChanges();
+
+                TrainingGroup tg = new TrainingGroup();
+                tg.TrainingNameId = tn.ID;
+                tg.InstructionId = instruction.ID;
+                tg.TimeOfCreation = DateTime.Now;
+                tg.TimeOfModification = DateTime.Now;
+
+                db.TrainingGroups.Add(tg);
+                db.SaveChanges();
+
                 if (instructionGroupViewModel.SelectedIds != null && instructionGroupViewModel.SelectedIds.Count() > 0)
                 {
                     foreach (var item in instructionGroupViewModel.SelectedIds)
@@ -192,13 +207,14 @@ namespace AssistantTraining.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var instruction = db.Instructions.Find(id);
+            //var trainingGroups = db.TrainingGroups.Include("TrainingName").Where(x => x.InstructionId.Equals(id));
 
             if (instruction == null)
             {
                 return HttpNotFound();
             }
 
-            InstructionIndexData instructionGroupViewModel = new InstructionIndexData();
+            InstructionEditData instructionGroupViewModel = new InstructionEditData();
             var workerRepository = new WorkerRepository();
             var groups = workerRepository.GetAllGroups();
 
@@ -230,7 +246,7 @@ namespace AssistantTraining.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(InstructionIndexData instructionGroupViewModel)
+        public ActionResult Edit([Bind(Include = "ID,Name,Number,Version,SelectedIds")]InstructionEditData instructionGroupViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -377,6 +393,15 @@ namespace AssistantTraining.Controllers
             tn.Name = String.Empty;
             tn.Number = training;
             db.TrainingNames.Add(tn);
+            db.SaveChanges();
+
+            TrainingGroup tg = new TrainingGroup();
+            tg.TrainingNameId = tn.ID;
+            tg.InstructionId = newInstruction.ID;
+            tg.TimeOfCreation = DateTime.Now;
+            tg.TimeOfModification = DateTime.Now;
+
+            db.TrainingGroups.Add(tg);
             db.SaveChanges();
 
             var ids =

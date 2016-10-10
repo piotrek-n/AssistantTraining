@@ -1,18 +1,38 @@
 ﻿@using GridMvc.Html
 @using GridMvc.Sorting
-@model Grid.Mvc.Ajax.GridExtensions.AjaxGrid<AssistantTraining.Models.Training>
+@model Grid.Mvc.Ajax.GridExtensions.AjaxGrid<AssistantTraining.Models.TrainingGroup>
 
 
 @(
     Html.Grid(Model).Named("TrainingGrid")
         .Columns(columns =>
         {
-            columns.Add(f => f.TrainingName).Titled("Training Number");
-            columns.Add(f => f.Instruction.Name).Titled("Instruction Number");
-            columns.Add(f => f.Worker.LastName).Titled("Select");
+            columns.Add(f => f.TrainingName.Number).Titled("Training Number").SetWidth(110);
+            columns.Add(f => f.Instruction.Number).Titled("Instruction Number").SetWidth(110);
+            //columns.Add(f => f.Instruction.Number).Titled("Instruction Number").SetWidth(110); 
+            columns.Add()
+                    .Encoded(false)
+                    .Sanitized(false)
+                    .SetWidth(30)
+                    .RenderValueAs(f => Edit(f.TrainingNameId));
         })
         .Filterable()
         .Sortable()
-        .WithPaging(5))
+        .WithPaging(10))
+
+@helper Edit(int Id)
+{           <a href="@Id" id="untrained">@Id</a>
+            @Html.ActionLink("Untrained", "Details", new { id = Id })
+            @:| @Html.ActionLink("Trained", "Details", new { id = Id })
+
+if (User.IsInRole("Administrator") || User.IsInRole("Engineer"))
+{
+                @*@:| @Html.ActionLink("Edit", "Edit", new { id = Id })*@
+            }
+            if (User.IsInRole("Administrator"))
+            {
+                @*@:| @Html.ActionLink("Delete", "Delete", new { id = Id })*@
+            }
+}
 
 

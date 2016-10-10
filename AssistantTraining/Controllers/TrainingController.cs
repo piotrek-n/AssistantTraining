@@ -84,6 +84,7 @@ namespace AssistantTraining.Controllers
         }
 
         private const string GRID_PARTIAL_PATH = "~/Views/Training/_TrainingGrid.cshtml";
+        private const string GRID_WORKER_PARTIAL_PATH = "~/Views/Training/_TrainingWorkersGrid.cshtml";
 
         private IGridMvcHelper gridMvcHelper;
         public TrainingController()
@@ -105,6 +106,16 @@ namespace AssistantTraining.Controllers
             var grid = this.gridMvcHelper.GetAjaxGrid(items);
 
             return PartialView(GRID_PARTIAL_PATH, grid);
+        }
+
+        [AjaxChildActionOnly]
+        public PartialViewResult GetWorkerGrid(string term)
+        {
+            var repos = new WorkerRepository();
+            var items = repos.GetTrainings().OrderBy(p => 0);
+            var grid = this.gridMvcHelper.GetAjaxGrid(items);
+
+            return PartialView(GRID_WORKER_PARTIAL_PATH, grid);
         }
 
         [HttpGet]

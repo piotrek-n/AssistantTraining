@@ -306,6 +306,18 @@
     <Compile Include="Migrations\201610091700144_AddTableTrainingName.Designer.cs">
       <DependentUpon>201610091700144_AddTableTrainingName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610101211458_AddingTableTrainingGroup.cs" />
+    <Compile Include="Migrations\201610101211458_AddingTableTrainingGroup.Designer.cs">
+      <DependentUpon>201610101211458_AddingTableTrainingGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610101718359_ChangedTableTraining.cs" />
+    <Compile Include="Migrations\201610101718359_ChangedTableTraining.Designer.cs">
+      <DependentUpon>201610101718359_ChangedTableTraining.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610102111494_AddedIcollectionTrainingGruop.cs" />
+    <Compile Include="Migrations\201610102111494_AddedIcollectionTrainingGruop.Designer.cs">
+      <DependentUpon>201610102111494_AddedIcollectionTrainingGruop.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\Group.cs" />
@@ -313,6 +325,7 @@
     <Compile Include="Models\GroupWorker.cs" />
     <Compile Include="Models\Instruction.cs" />
     <Compile Include="Models\Training.cs" />
+    <Compile Include="Models\TrainingGroup.cs" />
     <Compile Include="Models\TrainingName.cs" />
     <Compile Include="Models\Worker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -320,6 +333,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModel\AccountViewModels.cs" />
     <Compile Include="ViewModel\InstructionDetailsData.cs" />
+    <Compile Include="ViewModel\InstructionEditData.cs" />
     <Compile Include="ViewModel\InstructionIndexData.cs" />
     <Compile Include="ViewModel\InstructionVsTrainingData.cs" />
     <Compile Include="ViewModel\ManageViewModels.cs" />
@@ -356,6 +370,7 @@
     <Content Include="Views\Reports\Index.cshtml" />
     <Content Include="Views\Shared\_AjaxGridPager.cshtml" />
     <Content Include="Views\Training\_TrainingGrid.cshtml" />
+    <Content Include="Views\Training\_TrainingWorkersGrid.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -405,6 +420,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610091700144_AddTableTrainingName.resx">
       <DependentUpon>201610091700144_AddTableTrainingName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610101211458_AddingTableTrainingGroup.resx">
+      <DependentUpon>201610101211458_AddingTableTrainingGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610101718359_ChangedTableTraining.resx">
+      <DependentUpon>201610101718359_ChangedTableTraining.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610102111494_AddedIcollectionTrainingGruop.resx">
+      <DependentUpon>201610102111494_AddedIcollectionTrainingGruop.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

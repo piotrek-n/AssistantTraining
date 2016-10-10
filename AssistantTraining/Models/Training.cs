@@ -4,14 +4,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AssistantTraining.Models
 {
-    public class Training
+    public class TrainingNames
     {
         public int ID { get; set; }
 
         public int InstructionId { get; set; }
         public virtual Instruction Instruction { get; set; }
 
-        public int TrainingId { get; set; }
+        public int TrainingNameId { get; set; }
         public virtual TrainingName TrainingName { get; set; }
 
         public int WorkerId { get; set; }

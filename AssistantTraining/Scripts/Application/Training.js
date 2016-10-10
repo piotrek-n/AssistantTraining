@@ -33,8 +33,6 @@ $(document).ready(function () {
 
     $("#idInstructionForm").submit(function (e) {
        
-        //$("#refGrid").load('/Training/GetGrid');
-
         var val = $('#srch-term-instruction').val();
         $.ajax({
             url: "Training/GetGrid",
@@ -46,6 +44,14 @@ $(document).ready(function () {
         });
         e.preventDefault(); //STOP default action
 
+    });
+
+    $('a').click(function (event) {
+        event.preventDefault();
+        var value = $(this).attr("href");
+        var id = $(this).attr("id");
+        alert('UntrainedWorkers');
+        return false; //for good measure
     });
 });
 

@@ -25,9 +25,11 @@ namespace AssistantTraining.Repositories
             return groups;
         }
 
-        public IQueryable<Training> GetTrainings()
+        public IQueryable<TrainingGroup> GetTrainings()
         {
-            var trainings = db.Trainings.AsQueryable<Training>();
+
+
+            var trainings = db.TrainingGroups.Include("Instruction").Include("TrainingNames").AsQueryable<TrainingGroup>();
             return trainings;
         }
     }
