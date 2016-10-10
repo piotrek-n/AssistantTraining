@@ -44,8 +44,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Antlr3.Runtime, Version=3.4.1.9004, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -134,8 +134,8 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="WebGrease, Version=1.5.2.14234, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -259,6 +259,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AjaxChildActionOnlyAttribute.cs" />
     <Compile Include="Helpers\GridMvcHelper.cs" />
     <Compile Include="Helpers\IGridMvcHelper.cs" />
     <Compile Include="Migrations\201609182022308_InitialCreate.cs" />
@@ -301,6 +302,10 @@
     <Compile Include="Migrations\201610051840232_RemoveGroupIdFromInstruction.Designer.cs">
       <DependentUpon>201610051840232_RemoveGroupIdFromInstruction.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610091700144_AddTableTrainingName.cs" />
+    <Compile Include="Migrations\201610091700144_AddTableTrainingName.Designer.cs">
+      <DependentUpon>201610091700144_AddTableTrainingName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\Group.cs" />
@@ -308,6 +313,7 @@
     <Compile Include="Models\GroupWorker.cs" />
     <Compile Include="Models\Instruction.cs" />
     <Compile Include="Models\Training.cs" />
+    <Compile Include="Models\TrainingName.cs" />
     <Compile Include="Models\Worker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\WorkerRepository.cs" />
@@ -396,6 +402,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610051840232_RemoveGroupIdFromInstruction.resx">
       <DependentUpon>201610051840232_RemoveGroupIdFromInstruction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610091700144_AddTableTrainingName.resx">
+      <DependentUpon>201610091700144_AddTableTrainingName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

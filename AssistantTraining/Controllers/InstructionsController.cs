@@ -2,9 +2,11 @@
 using AssistantTraining.Models;
 using AssistantTraining.Repositories;
 using AssistantTraining.ViewModel;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -69,7 +71,7 @@ namespace AssistantTraining.Controllers
             {
                 return HttpNotFound();
             }
-
+            ViewData["IdInstruction"] = id;
             InstructionDetailsData instructionGroupViewModel = new InstructionDetailsData();
             var workerRepository = new WorkerRepository();
             List<int> idsGroups = new List<int>();
@@ -349,7 +351,7 @@ namespace AssistantTraining.Controllers
             base.Dispose(disposing);
         }
 
-        public ActionResult AddNewVersion(int? id,string version)
+        public ActionResult AddNewVersion(int? id,string version,string training)
         {
             if (id == null)
             {
@@ -369,6 +371,12 @@ namespace AssistantTraining.Controllers
             newInstruction.TimeOfModification = DateTime.Now;
             newInstruction.Number = instruction.Number;
             db.Instructions.Add(newInstruction);
+            db.SaveChanges();
+
+            TrainingName tn = new TrainingName();
+            tn.Name = String.Empty;
+            tn.Number = training;
+            db.TrainingNames.Add(tn);
             db.SaveChanges();
 
             var ids =
@@ -398,6 +406,56 @@ namespace AssistantTraining.Controllers
             }
 
             return RedirectToAction("Details", new { id = newInstruction.ID });
+        }
+        public ActionResult Excel(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+
+                var instructionVsTrainingList =
+                             (from w in db.Workers
+                              join wg in db.GroupWorkers on w.ID equals wg.WorkerId
+                              join gi in db.InstructionGroups on wg.GroupId equals gi.GroupId
+                              join i in db.Instructions on gi.InstructionId equals i.ID
+                              join t in db.Trainings
+                                    on new { InstructionId = i.ID, WorkerId = wg.WorkerId }
+                                equals new { t.InstructionId, t.WorkerId } into t_join
+                              from t in t_join.DefaultIfEmpty()
+                              where i.ID == id
+                              select new InstructionVsTrainingData
+                              {
+                                  WorkerLastName = w.LastName,
+                                  WorkerFirstMidName = w.FirstMidName,
+                                  InstructionName = i.Name,
+                                  GroupId = (int?)gi.GroupId,
+                                  InstructionVersion = i.Version,
+                                  InstructionNumber = i.Number,
+                                  DateOfTraining = (DateTime?)t.DateOfTraining
+                              }).ToList();
+
+            using (ExcelPackage pck = new ExcelPackage())
+            {
+                ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Trainings");
+                ws.Cells["A1"].LoadFromCollection(instructionVsTrainingList, true);
+                // Load your collection "accounts"
+
+                Byte[] fileBytes = pck.GetAsByteArray();
+                Response.Clear();
+                Response.Buffer = true;
+                Response.AddHeader("content-disposition", "attachment;filename=DataTable.xlsx");
+                // Replace filename with your custom Excel-sheet name.
+
+                Response.Charset = "";
+                Response.ContentType = "application/vnd.ms-excel";
+                StringWriter sw = new StringWriter();
+                Response.BinaryWrite(fileBytes);
+                Response.End();
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }

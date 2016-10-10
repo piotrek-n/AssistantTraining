@@ -65,20 +65,15 @@ namespace AssistantTraining.Controllers
         //    return View(viewModel);
         //}
 
-        public JsonResult GetNumberInstructions(string query)
-        {
-            var ins = (from i in db.Instructions where i.Number.Contains(query) select i.Number).ToList();
 
-            return Json(ins, JsonRequestBehavior.AllowGet);
+        public JsonResult GetInstructionsByQuery(string query)
+        {
+            return Json((from i in db.Instructions where i.Number.Contains(query) select i.Number).Distinct().ToList(), JsonRequestBehavior.AllowGet);
         }
-        public JsonResult GetNumberTrainings(string query)
-        {
-            List<string> tab = new List<string>();
-            tab.Add("aaa");
-            tab.Add("bbb");
-            tab.Add("ccc");
 
-            return Json(tab.Where(s => s.Contains(query)), JsonRequestBehavior.AllowGet);
+        public JsonResult GetTrainingNamesByQuery(string query)
+        {
+            return Json((from i in db.TrainingNames where i.Number.Contains(query) select i.Number).Distinct().ToList(), JsonRequestBehavior.AllowGet);
         }
 
 
@@ -102,8 +97,8 @@ namespace AssistantTraining.Controllers
             return View();
         }
 
-        [ChildActionOnly]
-        public ActionResult GetGrid()
+        [AjaxChildActionOnly]
+        public PartialViewResult GetGrid(string term)
         {
             var repos = new WorkerRepository();
             var items = repos.GetTrainings().OrderBy(p => 0); 

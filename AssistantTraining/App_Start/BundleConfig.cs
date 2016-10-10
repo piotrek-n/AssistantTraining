@@ -10,7 +10,7 @@ namespace AssistantTraining.App_Start
     {
         public static void RegisterBundles(BundleCollection bundles)
         {
-
+            bundles.IgnoreList.Clear();
             RegisterStyleBundles(bundles);
             RegisterScriptBundles(bundles);
         }

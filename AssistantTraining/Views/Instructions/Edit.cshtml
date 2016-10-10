@@ -12,7 +12,7 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Instruction</h4>
         <hr />
@@ -43,10 +43,10 @@
                 @Html.TextBoxFor(model => model.Version, new { @class = "form-control", @readonly = "readonly" })
                 @Html.ValidationMessageFor(model => model.Version, "", new { @class = "text-danger" })
                 <div>
-                   <br />
+                    <br />
                     <button type="button" class="btn" data-toggle="modal" data-target="#myModal">Change Version</button>
                 </div>
-                
+
                 <!-- Modal -->
                 <div class="modal fade" id="myModal" role="dialog">
                     <div class="modal-dialog">
@@ -60,7 +60,20 @@
                             <div class="modal-body">
                                 Are you sure you want to change the version? After saving will create a new version of the instruction.
 
-                                @Html.EditorFor(model => model.Version, new { htmlAttributes = new { @class = "form-control", @id="NewVersion" }})
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Version, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.Version, new { htmlAttributes = new { @class = "form-control", @id = "NewVersion" } })
+                                        @Html.ValidationMessageFor(model => model.Version, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.NumberOfTraining, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.NumberOfTraining, new { htmlAttributes = new { @class = "form-control", @id = "NumberOfTraining" } })
+                                        @Html.ValidationMessageFor(model => model.NumberOfTraining, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -97,7 +110,7 @@
     @Html.ActionLink("Back to List", "Index")
 </div>
 
-@Html.Hidden("RedirectTo", Url.Action("AddNewVersion", "Instructions", new { id = "ID", version = "VERSION" }));
+@Html.Hidden("RedirectTo", Url.Action("AddNewVersion", "Instructions", new { id = "ID", version = "VERSION",training="TRAINING" }));
 
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
@@ -107,11 +120,12 @@
 
     $(document).ready(function () {
         $('#save-event').on('click',
-                    function (evt) {                        
+                    function (evt) {
                         $('#myModal').modal('toggle');
-                        var id = $("#ID").val(); 
+                        var id = $("#ID").val();
                         var version = $("#NewVersion").val();
-                        var url = $("#RedirectTo").val().replace('ID', id).replace('VERSION', version);
+                        var training = $("#NumberOfTraining").val();
+                        var url = $("#RedirectTo").val().replace('ID', id).replace('VERSION', version).replace('TRAINING', training);
                         location.href = url;
                     }
         );

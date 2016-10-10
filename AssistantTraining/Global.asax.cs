@@ -2,6 +2,7 @@
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
+using System.Web.Optimization;
 using System.Web.Routing;
 
 namespace AssistantTraining
@@ -14,6 +15,7 @@ namespace AssistantTraining
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            App_Start.BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
     }
 }

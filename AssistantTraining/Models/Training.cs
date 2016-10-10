@@ -11,6 +11,9 @@ namespace AssistantTraining.Models
         public int InstructionId { get; set; }
         public virtual Instruction Instruction { get; set; }
 
+        public int TrainingId { get; set; }
+        public virtual TrainingName TrainingName { get; set; }
+
         public int WorkerId { get; set; }
         public virtual Worker Worker { get; set; }
 

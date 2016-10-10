@@ -9,12 +9,43 @@
     });
 }())
 
-$('input.typeahead').typeahead({
+$('#srch-term-instruction').typeahead(
+    {
     source: function (query, process) {
-        return $.get('/Training/GetNumberTrainings', { query: query }, function (data) {
+        return $.get('/Training/GetInstructionsByQuery', { query: query }, function (data) {
             console.log(data);
             return process(data);
         });
     }
+    });
+
+$('#srch-term-training').typeahead(
+    {
+        source: function (query, process) {
+            return $.get('/Training/GetTrainingNamesByQuery', { query: query }, function (data) {
+                console.log(data);
+                return process(data);
+            });
+        }
+    });
+
+$(document).ready(function () {
+
+    $("#idInstructionForm").submit(function (e) {
+       
+        //$("#refGrid").load('/Training/GetGrid');
+
+        var val = $('#srch-term-instruction').val();
+        $.ajax({
+            url: "Training/GetGrid",
+            type: "POST",
+            data: { term: val }
+        })
+        .done(function (partialViewResult) {
+            $("#refGrid").html(partialViewResult);
+        });
+        e.preventDefault(); //STOP default action
+
+    });
 });
 
