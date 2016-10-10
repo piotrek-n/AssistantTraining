@@ -123,6 +123,9 @@
   <data name="MinLenghtFiled" xml:space="preserve">
     <value>Długość łańcucha znaków musi być większa lub równa 4 znaków. Hasło musi  być alfanumeryczne.</value>
   </data>
+  <data name="NumberFormat" xml:space="preserve">
+    <value>Niepoprawny format numeru</value>
+  </data>
   <data name="Password" xml:space="preserve">
     <value>Hasło</value>
   </data>

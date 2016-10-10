@@ -79,6 +79,15 @@ namespace AssistantTraining.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Niepoprawny format numeru.
+        /// </summary>
+        public static string NumberFormat {
+            get {
+                return ResourceManager.GetString("NumberFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hasło.
         /// </summary>
         public static string Password {
