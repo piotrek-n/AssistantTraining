@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AssistantTraining.Models
 {
-    public class TrainingNames
+    public class Training
     {
         public int ID { get; set; }
 

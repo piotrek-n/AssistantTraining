@@ -262,61 +262,9 @@
     <Compile Include="Helpers\AjaxChildActionOnlyAttribute.cs" />
     <Compile Include="Helpers\GridMvcHelper.cs" />
     <Compile Include="Helpers\IGridMvcHelper.cs" />
-    <Compile Include="Migrations\201609182022308_InitialCreate.cs" />
-    <Compile Include="Migrations\201609182022308_InitialCreate.Designer.cs">
-      <DependentUpon>201609182022308_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201609191324349_AddGroupTable.cs" />
-    <Compile Include="Migrations\201609191324349_AddGroupTable.Designer.cs">
-      <DependentUpon>201609191324349_AddGroupTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201609191946521_ChangedKeys.cs" />
-    <Compile Include="Migrations\201609191946521_ChangedKeys.Designer.cs">
-      <DependentUpon>201609191946521_ChangedKeys.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201609231114387_AddingTraining.cs" />
-    <Compile Include="Migrations\201609231114387_AddingTraining.Designer.cs">
-      <DependentUpon>201609231114387_AddingTraining.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201609272107465_AddAuth.cs" />
-    <Compile Include="Migrations\201609272107465_AddAuth.Designer.cs">
-      <DependentUpon>201609272107465_AddAuth.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610031742085_Added-ColumnNumber-TableInstruction.cs" />
-    <Compile Include="Migrations\201610031742085_Added-ColumnNumber-TableInstruction.Designer.cs">
-      <DependentUpon>201610031742085_Added-ColumnNumber-TableInstruction.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610042110362_ChangeNameTableFromGroupInstructionToGroupWorker.cs" />
-    <Compile Include="Migrations\201610042110362_ChangeNameTableFromGroupInstructionToGroupWorker.Designer.cs">
-      <DependentUpon>201610042110362_ChangeNameTableFromGroupInstructionToGroupWorker.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610051640518_AddedTableInstructionGroup.cs" />
-    <Compile Include="Migrations\201610051640518_AddedTableInstructionGroup.Designer.cs">
-      <DependentUpon>201610051640518_AddedTableInstructionGroup.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610051750242_ChangeTypeFkGroupId.cs" />
-    <Compile Include="Migrations\201610051750242_ChangeTypeFkGroupId.Designer.cs">
-      <DependentUpon>201610051750242_ChangeTypeFkGroupId.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610051840232_RemoveGroupIdFromInstruction.cs" />
-    <Compile Include="Migrations\201610051840232_RemoveGroupIdFromInstruction.Designer.cs">
-      <DependentUpon>201610051840232_RemoveGroupIdFromInstruction.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610091700144_AddTableTrainingName.cs" />
-    <Compile Include="Migrations\201610091700144_AddTableTrainingName.Designer.cs">
-      <DependentUpon>201610091700144_AddTableTrainingName.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610101211458_AddingTableTrainingGroup.cs" />
-    <Compile Include="Migrations\201610101211458_AddingTableTrainingGroup.Designer.cs">
-      <DependentUpon>201610101211458_AddingTableTrainingGroup.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610101718359_ChangedTableTraining.cs" />
-    <Compile Include="Migrations\201610101718359_ChangedTableTraining.Designer.cs">
-      <DependentUpon>201610101718359_ChangedTableTraining.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610102111494_AddedIcollectionTrainingGruop.cs" />
-    <Compile Include="Migrations\201610102111494_AddedIcollectionTrainingGruop.Designer.cs">
-      <DependentUpon>201610102111494_AddedIcollectionTrainingGruop.cs</DependentUpon>
+    <Compile Include="Migrations\201610110836116_Initial.cs" />
+    <Compile Include="Migrations\201610110836116_Initial.Designer.cs">
+      <DependentUpon>201610110836116_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
@@ -338,6 +286,7 @@
     <Compile Include="ViewModel\InstructionVsTrainingData.cs" />
     <Compile Include="ViewModel\ManageViewModels.cs" />
     <Compile Include="ViewModel\TrainingIndexData.cs" />
+    <Compile Include="ViewModel\TrainingWorkersGridData.cs" />
     <Compile Include="ViewModel\UserCreateData.cs" />
     <Compile Include="ViewModel\WorkerGroupViewModel.cs" />
   </ItemGroup>
@@ -388,47 +337,8 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201609182022308_InitialCreate.resx">
-      <DependentUpon>201609182022308_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201609191324349_AddGroupTable.resx">
-      <DependentUpon>201609191324349_AddGroupTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201609191946521_ChangedKeys.resx">
-      <DependentUpon>201609191946521_ChangedKeys.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201609231114387_AddingTraining.resx">
-      <DependentUpon>201609231114387_AddingTraining.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201609272107465_AddAuth.resx">
-      <DependentUpon>201609272107465_AddAuth.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610031742085_Added-ColumnNumber-TableInstruction.resx">
-      <DependentUpon>201610031742085_Added-ColumnNumber-TableInstruction.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610042110362_ChangeNameTableFromGroupInstructionToGroupWorker.resx">
-      <DependentUpon>201610042110362_ChangeNameTableFromGroupInstructionToGroupWorker.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610051640518_AddedTableInstructionGroup.resx">
-      <DependentUpon>201610051640518_AddedTableInstructionGroup.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610051750242_ChangeTypeFkGroupId.resx">
-      <DependentUpon>201610051750242_ChangeTypeFkGroupId.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610051840232_RemoveGroupIdFromInstruction.resx">
-      <DependentUpon>201610051840232_RemoveGroupIdFromInstruction.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610091700144_AddTableTrainingName.resx">
-      <DependentUpon>201610091700144_AddTableTrainingName.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610101211458_AddingTableTrainingGroup.resx">
-      <DependentUpon>201610101211458_AddingTableTrainingGroup.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610101718359_ChangedTableTraining.resx">
-      <DependentUpon>201610101718359_ChangedTableTraining.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610102111494_AddedIcollectionTrainingGruop.resx">
-      <DependentUpon>201610102111494_AddedIcollectionTrainingGruop.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201610110836116_Initial.resx">
+      <DependentUpon>201610110836116_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

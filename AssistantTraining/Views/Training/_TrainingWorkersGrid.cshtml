@@ -1,14 +1,16 @@
 ﻿@using GridMvc.Html
 @using GridMvc.Sorting
-@model Grid.Mvc.Ajax.GridExtensions.AjaxGrid<AssistantTraining.Models.TrainingGroup>
+@model Grid.Mvc.Ajax.GridExtensions.AjaxGrid<AssistantTraining.ViewModel.TrainingWorkersGridData>
 
 
 @(
-    Html.Grid(Model).Named("TrainingGrid")
+    Html.Grid(Model).Named("TrainingWorkersGrid")
         .Columns(columns =>
         {
-            columns.Add(f => f.TrainingName.Number).Titled("Training Number").SetWidth(110);
-            columns.Add(f => f.Instruction.Number).Titled("Instruction Number").SetWidth(110);
+            columns.Add(f => f.WorkerLastName).Titled("Last Name").SetWidth(110);
+            columns.Add(f => f.WorkerFirstMidName).Titled("First Name").SetWidth(110);
+            //columns.Add(f => f.).Titled("Training Number").SetWidth(110);
+            //columns.Add(f => f.Instruction.Number).Titled("Instruction Number").SetWidth(110);
         })
         .Filterable()
         .Sortable()

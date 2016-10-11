@@ -9,11 +9,11 @@ namespace AssistantTraining.DAL
 {
     interface ITrainingRepository
     {
-        IEnumerable<TrainingNames> GetTrainings();
-        TrainingNames GetTrainingByID(int trainingID);
-        void InsertStudent(TrainingNames training);
+        IEnumerable<Training> GetTrainings();
+        Training GetTrainingByID(int trainingID);
+        void InsertStudent(Training training);
         void DeleteStudent(int trainingID);
-        void UpdateStudent(TrainingNames training);
+        void UpdateStudent(Training training);
         void Save();
     }
 }

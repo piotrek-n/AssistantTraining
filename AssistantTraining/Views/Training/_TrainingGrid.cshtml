@@ -21,9 +21,11 @@
         .WithPaging(10))
 
 @helper Edit(int Id)
-{           <a href="@Id" id="untrained">@Id</a>
-            @Html.ActionLink("Untrained", "Details", new { id = Id })
-            @:| @Html.ActionLink("Trained", "Details", new { id = Id })
+{           <a href="@Id" id="untrained">Untrained</a>
+            @:| <a href="@Id" id="trained">Trained</a>
+
+            @*@Html.ActionLink("Untrained", "Details", new { id = Id })
+            @:| @Html.ActionLink("Trained", "Details", new { id = Id })*@
 
 if (User.IsInRole("Administrator") || User.IsInRole("Engineer"))
 {

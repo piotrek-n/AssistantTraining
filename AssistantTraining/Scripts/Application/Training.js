@@ -7,6 +7,16 @@
         getData: pagingUrl,
         getPagedData: pagingUrl
     });
+
+    var gridName = 'TrainingWorkersGrid';
+    var pagingUrl = 'Training/GridWorkerPager';
+
+    //$('.grid-mvc').gridmvc();
+    pageGrids[gridName].ajaxify({
+        getData: pagingUrl,
+        getPagedData: pagingUrl
+    });
+
 }())
 
 $('#srch-term-instruction').typeahead(
@@ -50,8 +60,32 @@ $(document).ready(function () {
         event.preventDefault();
         var value = $(this).attr("href");
         var id = $(this).attr("id");
-        alert('UntrainedWorkers');
-        return false; //for good measure
+        if (id == 'untrained')
+        {
+            $.ajax({
+                url: "Training/GetWorkerGrid",
+                type: "POST",
+                data: { term: value }
+            })
+            .done(function (partialViewResult) {
+                $("#refWorkerGrid").html(partialViewResult);
+            });
+            //return false; //for good measure
+        }
+        else if (id == 'trained')
+        {
+            $.ajax({
+                url: "Training/GetWorkerGrid",
+                type: "POST",
+                data: { term: value }
+            })
+            .done(function (partialViewResult) {
+                $("#refWorkerGrid").html(partialViewResult);
+            });
+            //return false; //for good measure
+        }
+        
+        
     });
 });
 

@@ -209,12 +209,12 @@ namespace AssistantTraining.Controllers
         [AllowAnonymous]
         public ActionResult Check(string id)
         {
-            //var roleName = "Administrator";
-            //var userName = "admin";
+            var roleName = "Administrator";
+            var userName = "admin";
             //var roleName = "Engineer";
             //var userName = "eng";
-            var roleName = "Operator";
-            var userName = "ope";
+            //var roleName = "Operator";
+            //var userName = "ope";
 
             if (!db.Roles.Any(r => r.Name == roleName))
             {

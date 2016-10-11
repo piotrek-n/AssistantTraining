@@ -7,13 +7,13 @@ namespace AssistantTraining.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class ChangedKeys : IMigrationMetadata
+    public sealed partial class Initial : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(ChangedKeys));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial));
         
         string IMigrationMetadata.Id
         {
-            get { return "201609191946521_ChangedKeys"; }
+            get { return "201610110836116_Initial"; }
         }
         
         string IMigrationMetadata.Source

@@ -15,7 +15,7 @@ namespace AssistantTraining.ViewModel
     public class TrainingItemIndexData
     {
         public int WorkId { get; set; }
-        public TrainingNames Training { get; set; }
+        public Training Training { get; set; }
         public Instruction Instruction { get; set; }
         public Worker Worker { get; set; }
 

@@ -1,5 +1,6 @@
 ﻿using AssistantTraining.DAL;
 using AssistantTraining.Models;
+using AssistantTraining.ViewModel;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -27,10 +28,14 @@ namespace AssistantTraining.Repositories
 
         public IQueryable<TrainingGroup> GetTrainings()
         {
-
-
             var trainings = db.TrainingGroups.Include("Instruction").Include("TrainingNames").AsQueryable<TrainingGroup>();
             return trainings;
+        }
+
+        public IQueryable<TrainingWorkersGridData> GetWorkersByTraining()
+        {
+            List<TrainingWorkersGridData> lst = new List<TrainingWorkersGridData>();
+            return lst.AsQueryable();
         }
     }
 }
