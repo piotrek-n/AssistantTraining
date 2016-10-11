@@ -9,8 +9,19 @@
         {
             columns.Add(f => f.WorkerLastName).Titled("Last Name").Sortable(true).Filterable(true).SetWidth(110);
             columns.Add(f => f.WorkerFirstMidName).Titled("First Name").Sortable(true).Filterable(true).SetWidth(110);
+            columns.Add()
+                .Encoded(false)
+                .Sanitized(false)
+                .SetWidth(30)
+                .RenderValueAs(o => Html.CheckBox("checked", false));
             //columns.Add(f => f.).Titled("Training Number").SetWidth(110);
             //columns.Add(f => f.Instruction.Number).Titled("Instruction Number").SetWidth(110);
         })
         .Sortable()
         .WithPaging(10))
+
+<input type="button" class="btn btn-info" value="Save" />
+<div id="sandbox-container">
+    <input type="text" class="form-control">
+</div>
+

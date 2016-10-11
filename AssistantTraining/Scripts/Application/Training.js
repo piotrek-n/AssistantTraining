@@ -17,6 +17,12 @@
         getPagedData: pagingUrl2
     });
 
+    $('#sandbox-container input').datepicker({
+        todayBtn: "linked",
+        language: "pl",
+        autoclose: true
+    });
+
 }())
 
 $('#srch-term-instruction').typeahead(

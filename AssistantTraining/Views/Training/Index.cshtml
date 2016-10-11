@@ -26,6 +26,7 @@
 <div class="row" id="refGrid">
     @Html.Action("GetGrid")
 </div>
+<h3>Workers</h3>
 <div class="row" id="refWorkerGrid">
     @Html.Action("GetWorkerGrid")
 </div>
@@ -33,6 +34,10 @@
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/gridmvc")
     @Scripts.Render("~/bundles/typeahead")
+
+<link href="~/Content/bootstrap-datepicker3.min.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+<script src="~/Scripts/locales/bootstrap-datepicker.pl.min.js"></script>
     @Scripts.Render("~/bundles/application/Training")
 }
 
