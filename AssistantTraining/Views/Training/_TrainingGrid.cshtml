@@ -21,8 +21,10 @@
         .WithPaging(10))
 
 @helper Edit(int Id)
-{           <a href="@Id" id="untrained">Untrained</a>
-            @:| <a href="@Id" id="trained">Trained</a>
+{          
+     <span><a href="@Id" id="untrained">Untrained</a></span>
+@:|  <span><a href="@Id" id="trained">Trained</a></span>
+           
 
             @*@Html.ActionLink("Untrained", "Details", new { id = Id })
             @:| @Html.ActionLink("Trained", "Details", new { id = Id })*@

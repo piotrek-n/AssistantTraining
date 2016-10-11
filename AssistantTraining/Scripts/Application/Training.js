@@ -8,13 +8,13 @@
         getPagedData: pagingUrl
     });
 
-    var gridName = 'TrainingWorkersGrid';
-    var pagingUrl = 'Training/GridWorkerPager';
+    var gridName2 = 'TrainingWorkersGrid';
+    var pagingUrl2 = 'Training/GridWorkerPager';
 
     //$('.grid-mvc').gridmvc();
-    pageGrids[gridName].ajaxify({
-        getData: pagingUrl,
-        getPagedData: pagingUrl
+    pageGrids[gridName2].ajaxify({
+        getData: pagingUrl2,
+        getPagedData: pagingUrl2
     });
 
 }())
@@ -56,31 +56,67 @@ $(document).ready(function () {
 
     });
 
-    $('a').click(function (event) {
+    $('span > a').click(function (event) {
         event.preventDefault();
         var value = $(this).attr("href");
         var id = $(this).attr("id");
-        if (id == 'untrained')
+        if (id === 'untrained')
         {
             $.ajax({
                 url: "Training/GetWorkerGrid",
                 type: "POST",
-                data: { term: value }
+                data: { term: value, type: 'untrained'  }
             })
             .done(function (partialViewResult) {
                 $("#refWorkerGrid").html(partialViewResult);
+               
+                var gridName = 'TrainingGrid';
+                var pagingUrl = 'Training/GridPager';
+
+                $('.grid-mvc').gridmvc();
+                pageGrids[gridName].ajaxify({
+                    getData: pagingUrl,
+                    getPagedData: pagingUrl
+                });
+
+                var gridName2 = 'TrainingWorkersGrid';
+                var pagingUrl2 = 'Training/GridWorkerPager';
+
+                //$('.grid-mvc').gridmvc();
+                pageGrids[gridName2].ajaxify({
+                    getData: pagingUrl2,
+                    getPagedData: pagingUrl2
+                });
             });
             //return false; //for good measure
         }
-        else if (id == 'trained')
+        else if (id === 'trained')
         {
             $.ajax({
                 url: "Training/GetWorkerGrid",
                 type: "POST",
-                data: { term: value }
+                data: { term: value, type : 'trained'  }
             })
             .done(function (partialViewResult) {
                 $("#refWorkerGrid").html(partialViewResult);
+                
+                var gridName = 'TrainingGrid';
+                var pagingUrl = 'Training/GridPager';
+
+                $('.grid-mvc').gridmvc();
+                pageGrids[gridName].ajaxify({
+                    getData: pagingUrl,
+                    getPagedData: pagingUrl
+                });
+
+                var gridName2 = 'TrainingWorkersGrid';
+                var pagingUrl2 = 'Training/GridWorkerPager';
+
+                //$('.grid-mvc').gridmvc();
+                pageGrids[gridName2].ajaxify({
+                    getData: pagingUrl2,
+                    getPagedData: pagingUrl2
+                });
             });
             //return false; //for good measure
         }

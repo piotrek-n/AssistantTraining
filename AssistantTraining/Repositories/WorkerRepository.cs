@@ -32,10 +32,49 @@ namespace AssistantTraining.Repositories
             return trainings;
         }
 
+        public IQueryable<TrainingWorkersGridData> GetWorkersByTraining(string term, string type)
+        {
+            IQueryable<TrainingWorkersGridData> lst = new List<TrainingWorkersGridData>().AsQueryable(); 
+            int itemID;
+            bool res = int.TryParse(term, out itemID);
+
+            if (!string.IsNullOrEmpty(type) && type.Equals("trained") && res)
+            {
+                lst = (from t in db.Trainings
+                            //where
+                            //  t.TrainingName.ID == itemID
+                            select new TrainingWorkersGridData
+                            {
+                                WorkerLastName = t.Worker.LastName,
+                                WorkerFirstMidName = t.Worker.FirstMidName,
+                                DateOfTraining = t.DateOfTraining
+                            });
+
+                return lst;
+            }
+            else if (!string.IsNullOrEmpty(type) &&  type.Equals("untrained") && res)
+            {
+
+            }
+            return lst;
+        }
+
         public IQueryable<TrainingWorkersGridData> GetWorkersByTraining()
         {
-            List<TrainingWorkersGridData> lst = new List<TrainingWorkersGridData>();
-            return lst.AsQueryable();
+            IQueryable<TrainingWorkersGridData> lst = new List<TrainingWorkersGridData>().AsQueryable();
+
+            lst = (from t in db.Trainings
+                       //where
+                       //  t.TrainingName.ID == 1
+                       select new TrainingWorkersGridData
+                       {
+                           WorkerLastName = t.Worker.LastName,
+                           WorkerFirstMidName = t.Worker.FirstMidName,
+                           DateOfTraining = t.DateOfTraining
+                       });
+
+                return lst;
+   
         }
     }
 }

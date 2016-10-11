@@ -109,10 +109,13 @@ namespace AssistantTraining.Controllers
         }
 
         [AjaxChildActionOnly]
-        public PartialViewResult GetWorkerGrid(string term)
+        public PartialViewResult GetWorkerGrid(string term, string type)
         {
             var repos = new WorkerRepository();
-            var items = repos.GetWorkersByTraining().OrderBy(p => 0);
+            Session["term"] = term;
+            Session["type"] = type;
+
+            var items = repos.GetWorkersByTraining(term,type).OrderBy(p => 0);
             var grid = this.gridMvcHelper.GetAjaxGrid(items);
 
             return PartialView(GRID_WORKER_PARTIAL_PATH, grid);
@@ -130,12 +133,14 @@ namespace AssistantTraining.Controllers
         }
 
         [HttpGet]
-        public ActionResult GridWorkerPager(int? page)
+        public ActionResult GridWorkerPager(int? page,string a)
         {
             var repos = new WorkerRepository();
-            var items = repos.GetWorkersByTraining().OrderBy(p => 0);
+            var term = Session["term"] as string;
+            var type = Session["type"] as string;
+            var items = repos.GetWorkersByTraining(term, type).OrderBy(p => 0);
             var grid = this.gridMvcHelper.GetAjaxGrid(items, page);
-            object jsonData = this.gridMvcHelper.GetGridJsonData(grid, GRID_PARTIAL_PATH, this);
+            object jsonData = this.gridMvcHelper.GetGridJsonData(grid, GRID_WORKER_PARTIAL_PATH, this);
 
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
