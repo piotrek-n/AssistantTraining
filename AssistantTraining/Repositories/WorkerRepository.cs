@@ -1,6 +1,7 @@
 ﻿using AssistantTraining.DAL;
 using AssistantTraining.Models;
 using AssistantTraining.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -34,27 +35,44 @@ namespace AssistantTraining.Repositories
 
         public IQueryable<TrainingWorkersGridData> GetWorkersByTraining(string term, string type)
         {
-            IQueryable<TrainingWorkersGridData> lst = new List<TrainingWorkersGridData>().AsQueryable(); 
+            IQueryable<TrainingWorkersGridData> lst = new List<TrainingWorkersGridData>().AsQueryable();
             int itemID;
             bool res = int.TryParse(term, out itemID);
 
             if (!string.IsNullOrEmpty(type) && type.Equals("trained") && res)
             {
                 lst = (from t in db.Trainings
-                            //where
-                            //  t.TrainingName.ID == itemID
-                            select new TrainingWorkersGridData
-                            {
-                                WorkerLastName = t.Worker.LastName,
-                                WorkerFirstMidName = t.Worker.FirstMidName,
-                                DateOfTraining = t.DateOfTraining
-                            });
+                       where
+                         t.TrainingName.ID == itemID
+                       select new TrainingWorkersGridData
+                       {
+                           WorkerLastName = t.Worker.LastName,
+                           WorkerFirstMidName = t.Worker.FirstMidName,
+                           DateOfTraining = t.DateOfTraining
+                       });
 
                 return lst;
             }
-            else if (!string.IsNullOrEmpty(type) &&  type.Equals("untrained") && res)
+            else if (!string.IsNullOrEmpty(type) && type.Equals("untrained") && res)
             {
+                lst = (from tg in db.TrainingGroups
+                 from ig in db.InstructionGroups
+                 join gw in db.GroupWorkers on new { GroupId = ig.GroupId.HasValue ? ig.GroupId.Value : int.MinValue } equals new { GroupId = gw.GroupId }
+                 join t in db.Trainings
+                       on new { tg.TrainingNameId, WorkerId = gw.Worker.ID }
+                   equals new { t.TrainingNameId, t.WorkerId } into t_join
+                 from t in t_join.DefaultIfEmpty()
+                 where
+                   tg.TrainingNameId == itemID 
+                  select new TrainingWorkersGridData
+                 {
+                     WorkerLastName = gw.Worker.LastName,
+                     WorkerFirstMidName = gw.Worker.FirstMidName,
+                     WorkerID = gw.Worker.ID,
+                     DateOfTraining = t.DateOfTraining
+                  }).Where(x=>x.DateOfTraining.Equals(null));
 
+                return lst;
             }
             return lst;
         }

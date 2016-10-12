@@ -7,6 +7,7 @@ namespace AssistantTraining.ViewModel
 {
     public class TrainingWorkersGridData
     {
+        public int WorkerID { get; set; }
         public string WorkerLastName { get; set; }
         public string WorkerFirstMidName { get; set; }
         public string InstructionName { get; set; }
@@ -14,5 +15,6 @@ namespace AssistantTraining.ViewModel
         public string InstructionVersion { get; set; }
         public string InstructionNumber { get; set; }
         public DateTime? DateOfTraining { get; set; }
+        public int TrainingNameId { get; set; }
     }
 }
