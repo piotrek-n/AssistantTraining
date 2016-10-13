@@ -7,14 +7,16 @@
     Html.Grid(Model).Named("TrainingWorkersGrid")
         .Columns(columns =>
         {
-        columns.Add(f => f.WorkerLastName).Titled("Last Name").Sortable(true).Filterable(true).SetWidth(110);
-        columns.Add(f => f.WorkerFirstMidName).Titled("First Name").Sortable(true).Filterable(true).SetWidth(110);
-        columns.Add()
-            .Encoded(false)
-            .Titled("")
-            .Sanitized(false)
-            .SetWidth(30)
-            .RenderValueAs(o => Html.CheckBox("checked", (o.DateOfTraining == null ? false : true), new { @class = "check-item", ID = o.WorkerID }));
+            columns.Add(f => f.WorkerID, true);
+            columns.Add(f => f.TrainingNameId, true);
+            columns.Add(f => f.WorkerLastName).Titled("Nazwisko").Sortable(true).Filterable(true).SetWidth(110);
+            columns.Add(f => f.WorkerFirstMidName).Titled("Imię").Sortable(true).Filterable(true).SetWidth(110);
+            columns.Add()
+                .Encoded(false)
+                .Titled("")
+                .Sanitized(false)
+                .SetWidth(30)
+                .RenderValueAs(o => Html.CheckBox("checked", (o.DateOfTraining == null ? false : true), new { @class = "check-item", ID = "trained" }));
         })
         .Sortable()
         .WithPaging(10))
@@ -25,19 +27,21 @@
     <div class="col-md-2"></div>
     <div class="col-md-2"></div>
     <div class="col-md-2"></div>
-    <div class="col-md-2">
-        <span>
-            <input type="text" placeholder="Training number" class="form-control">
-        </span>
-    </div>
-    <div class="col-md-2">
-        <span id="sandbox-container">
-            <input type="text" placeholder="Date" class="form-control">
-        </span>
-    </div>
-    <div class="col-md-2">
-        <input type="button" class="btn btn-info col-md-10" value="Save" id="SaveTrainingWorkersGrid" />
-    </div>
+    <form id="myform">
+        <div class="col-md-2">
+            <span>
+                <input type="text" placeholder="Training number" id="TrainingNumber" name="field1" class="form-control" required>
+            </span>
+        </div>
+        <div class="col-md-2">
+            <span id="sandbox-container">
+                <input type="text" placeholder="Date" id="TrainingDate" name="field2" class="form-control" required>
+            </span>
+        </div>
+    </form>
+        <div class="col-md-2">
+            <input type="button" class="btn btn-info col-md-10" value="Save" id="SaveTrainingWorkersGrid" />
+        </div>
 
 </div>
 

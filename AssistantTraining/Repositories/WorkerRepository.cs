@@ -69,6 +69,7 @@ namespace AssistantTraining.Repositories
                      WorkerLastName = gw.Worker.LastName,
                      WorkerFirstMidName = gw.Worker.FirstMidName,
                      WorkerID = gw.Worker.ID,
+                     TrainingNameId = tg.TrainingNameId,
                      DateOfTraining = t.DateOfTraining
                   }).Where(x=>x.DateOfTraining.Equals(null));
 

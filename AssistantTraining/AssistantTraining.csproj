@@ -370,6 +370,7 @@
     <Compile Include="ViewModel\InstructionVsTrainingData.cs" />
     <Compile Include="ViewModel\ManageViewModels.cs" />
     <Compile Include="ViewModel\TrainingIndexData.cs" />
+    <Compile Include="ViewModel\TrainingUpdateData.cs" />
     <Compile Include="ViewModel\TrainingWorkersGridData.cs" />
     <Compile Include="ViewModel\UserCreateData.cs" />
     <Compile Include="ViewModel\WorkerGroupViewModel.cs" />

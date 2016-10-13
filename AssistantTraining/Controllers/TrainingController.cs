@@ -8,6 +8,8 @@ using System.Web.Mvc;
 using System.Data.Entity;
 using AssistantTraining.Helpers;
 using AssistantTraining.Repositories;
+using AssistantTraining.Models;
+using System.Globalization;
 
 namespace AssistantTraining.Controllers
 {
@@ -143,6 +145,51 @@ namespace AssistantTraining.Controllers
             object jsonData = this.gridMvcHelper.GetGridJsonData(grid, GRID_WORKER_PARTIAL_PATH, this);
 
             return Json(jsonData, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult UpdateTrainings(TrainingUpdateData model)
+        {
+            if (model != null)
+            {
+                if (model.Workers != null)
+                {
+                    foreach (var w in model.Workers)
+                    {
+                        var tr = db.Trainings.Where(x => x.TrainingNameId.Equals(w.TrainingNameId) && x.WorkerId.Equals(w.WorkerID)).FirstOrDefault();
+
+                        if (tr == null && w.Checked.Equals(true))
+                        {
+
+                            DateTime dt = DateTime.ParseExact(model.TrainingDate, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+                            var instruction = db.TrainingGroups.Where(x => x.TrainingNameId.Equals(w.TrainingNameId)).FirstOrDefault();
+                            if (instruction != null)
+                            {
+                                Training tn = new Training();
+                                tn.WorkerId = w.WorkerID;
+                                tn.TrainingNameId = w.TrainingNameId;
+                                tn.TimeOfCreation = DateTime.Now;
+                                tn.TimeOfModification = DateTime.Now;
+                                tn.DateOfTraining = dt;
+                                tn.InstructionId = instruction.InstructionId;
+                                db.Trainings.Add(tn);
+                                //db.SaveChanges();
+                            }
+                        }
+                        else
+                        {
+                            var b = 0;
+                        }
+
+                    }
+                }
+                return Json("Success");
+            }
+            else
+            {
+                return Json("An Error Has occoured");
+            }
+
         }
 
     }

@@ -26,16 +26,107 @@ function LoadGrid() {
         autoclose: true
     });
 
+    $('[data-gridname="TrainingWorkersGrid"]').click(function () {
+
+        //var trainingWorkersGrid = {};
+        //var workers = [];
+        //trainingWorkersGrid.workers = workers;
+        //trainingWorkersGrid.trainingDate = "";
+        //trainingWorkersGrid.trainingNumber = "";
+
+        //var $row = $(this).find("table>tbody>tr").each(function (i, row) {
+
+        //     var checked = $(row).find('[type=checkbox]').prop('checked');
+        //     var workerID = $(row).find('[data-name="WorkerID"]').html();
+        //     var trainingNameId = $(row).find('[data-name="TrainingNameId"]').html();
+             
+        //     var worker = {
+        //         "workerID": workerID,
+        //         "trainingNameId": trainingNameId,
+        //         "checked": checked
+        //     };
+        //     trainingWorkersGrid.workers.push(worker);
+        //});
+        //var trainingDate = $('#TrainingDate').val();
+        //var trainingNumber = $('#TrainingNumber').val();
+        
+        //trainingWorkersGrid.trainingDate = trainingDate;
+        //trainingWorkersGrid.trainingNumber = trainingNumber;
+
+        //console.log(JSON.stringify(trainingWorkersGrid));
+    });
+
+    $('#myform').validate({ // initialize the plugin
+        rules: {
+            field1: {
+                required: true
+            },
+            field2: {
+                required: true
+            }
+        },
+        submitHandler: function (form) { // for demo
+            alert('valid form submitted'); // for demo
+            return false; // for demo
+        }
+    });
+
     $('#SaveTrainingWorkersGrid').click(
         function () {
-            var $row = $('#grid-mvc').find("table>tbody>tr");    // Finds the closest row <tr>
-                $tds = $row.find("td");                               // Finds all children <td> elements
 
-            $.each($tds, function () {                                  // Visits every single <td> element
-                console.log($(this).text());                           // Prints out the text within the <td>
-            });
+            if ($('#myform').valid()) {
+                
+                var trainingWorkersGrid = {};
+                var workers = [];
+                trainingWorkersGrid.Workers = workers;
+                trainingWorkersGrid.WrainingDate = "";
+                trainingWorkersGrid.TrainingNumber = "";
+
+                var $row = $('[data-gridname="TrainingWorkersGrid"]').find("table>tbody>tr").each(function (i, row) {
+
+                    var checked = $(row).find('[type=checkbox]').prop('checked');
+                    var workerID = $(row).find('[data-name="WorkerID"]').html();
+                    var trainingNameId = $(row).find('[data-name="TrainingNameId"]').html();
+
+                    var worker = {
+                        "WorkerID": workerID,
+                        "TrainingNameId": trainingNameId,
+                        "Checked": checked
+                    };
+                    trainingWorkersGrid.Workers.push(worker);
+                });
+                var trainingDate = $('#TrainingDate').val();
+                var trainingNumber = $('#TrainingNumber').val();
+
+                trainingWorkersGrid.TrainingDate = trainingDate;
+                trainingWorkersGrid.TrainingNumber = trainingNumber;
+
+                console.log(JSON.stringify(trainingWorkersGrid));
+
+                $.ajax({
+                    url: "Training/UpdateTrainings",
+                    type: "POST",
+                    data: JSON.stringify(trainingWorkersGrid),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    success: function (response) {
+                        alert(response);
+                    }
+                });
+
+            } else {
+                alert('form is not valid');
+            }
+
+
+
         }
     );
+
+
 }
 $('#srch-term-instruction').typeahead(
     {
