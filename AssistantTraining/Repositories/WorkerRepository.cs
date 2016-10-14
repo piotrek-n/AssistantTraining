@@ -70,7 +70,8 @@ namespace AssistantTraining.Repositories
                      WorkerFirstMidName = gw.Worker.FirstMidName,
                      WorkerID = gw.Worker.ID,
                      TrainingNameId = tg.TrainingNameId,
-                     DateOfTraining = t.DateOfTraining
+                     DateOfTraining = t.DateOfTraining,
+                      TrainingNumber = tg.TrainingName.Number
                   }).Where(x=>x.DateOfTraining.Equals(null));
 
                 return lst;

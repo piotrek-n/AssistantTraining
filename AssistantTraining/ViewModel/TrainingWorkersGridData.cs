@@ -16,5 +16,6 @@ namespace AssistantTraining.ViewModel
         public string InstructionNumber { get; set; }
         public DateTime? DateOfTraining { get; set; }
         public int TrainingNameId { get; set; }
+        public string TrainingNumber { get; set; }
     }
 }

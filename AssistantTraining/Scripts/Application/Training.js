@@ -28,52 +28,24 @@ function LoadGrid() {
 
     $('[data-gridname="TrainingWorkersGrid"]').click(function () {
 
-        //var trainingWorkersGrid = {};
-        //var workers = [];
-        //trainingWorkersGrid.workers = workers;
-        //trainingWorkersGrid.trainingDate = "";
-        //trainingWorkersGrid.trainingNumber = "";
-
-        //var $row = $(this).find("table>tbody>tr").each(function (i, row) {
-
-        //     var checked = $(row).find('[type=checkbox]').prop('checked');
-        //     var workerID = $(row).find('[data-name="WorkerID"]').html();
-        //     var trainingNameId = $(row).find('[data-name="TrainingNameId"]').html();
-             
-        //     var worker = {
-        //         "workerID": workerID,
-        //         "trainingNameId": trainingNameId,
-        //         "checked": checked
-        //     };
-        //     trainingWorkersGrid.workers.push(worker);
-        //});
-        //var trainingDate = $('#TrainingDate').val();
-        //var trainingNumber = $('#TrainingNumber').val();
-        
-        //trainingWorkersGrid.trainingDate = trainingDate;
-        //trainingWorkersGrid.trainingNumber = trainingNumber;
-
-        //console.log(JSON.stringify(trainingWorkersGrid));
     });
 
     $('#myform').validate({ // initialize the plugin
         rules: {
             field1: {
                 required: true
-            },
-            field2: {
-                required: true
             }
         },
         submitHandler: function (form) { // for demo
-            alert('valid form submitted'); // for demo
+            //alert('valid form submitted'); // for demo
             return false; // for demo
         }
     });
 
     $('#SaveTrainingWorkersGrid').click(
         function () {
-
+            if ($('[data-gridname="TrainingWorkersGrid"]').find("table>tbody>tr").find('[type=checkbox]').size() == 0)
+                return;
             if ($('#myform').valid()) {
                 
                 var trainingWorkersGrid = {};
@@ -109,16 +81,18 @@ function LoadGrid() {
                     data: JSON.stringify(trainingWorkersGrid),
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    error: function (response) {
-                        alert(response.responseText);
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        $("#refWorkerGrid").html(jqXHR.responseText);
+                        LoadGrid();
                     },
                     success: function (response) {
-                        alert(response);
+                        $("#refWorkerGrid").html(partialViewResult);
+                        LoadGrid();
                     }
                 });
 
             } else {
-                alert('form is not valid');
+               // alert('form is not valid');
             }
 
 
@@ -126,8 +100,41 @@ function LoadGrid() {
         }
     );
 
+    $('span > a').click(function (event) {
+        event.preventDefault();
+        var value = $(this).attr("href");
 
+        var id = $(this).attr("id");
+
+        if (id === 'untrained') {
+            $.ajax({
+                url: "Training/GetWorkerGrid",
+                type: "POST",
+                data: { term: value, type: 'untrained' }
+            })
+            .done(function (partialViewResult) {
+                $("#refWorkerGrid").html(partialViewResult);
+                LoadGrid();
+            });
+            //return false; //for good measure
+        }
+        else if (id === 'trained') {
+            $.ajax({
+                url: "Training/GetWorkerGrid",
+                type: "POST",
+                data: { term: value, type: 'trained' }
+            })
+            .done(function (partialViewResult) {
+                $("#refWorkerGrid").html(partialViewResult);
+                LoadGrid();
+            });
+            //return false; //for good measure
+        }
+    });
+
+    //$('#TrainingNumber').val('nr');
 }
+//
 $('#srch-term-instruction').typeahead(
     {
         source: function (query, process) {
@@ -150,14 +157,28 @@ $('#srch-term-training').typeahead(
 
 $(document).ready(function () {
     $("#idInstructionForm").submit(function (e) {
-        var val = $('#srch-term-instruction').val();
+        var val = $('#srchterminstruction').val();
         $.ajax({
-            url: "Training/GetGrid",
+            url: "Training/GetGridByInstruction",
             type: "POST",
             data: { term: val }
         })
         .done(function (partialViewResult) {
             $("#refGrid").html(partialViewResult);
+            LoadGrid();
+        });
+        e.preventDefault(); //STOP default action
+    });
+    $("#idTrainingForm").submit(function (e) {
+        var val = $('#srchtermtraining').val();
+        $.ajax({
+            url: "Training/GetGridByTraining",
+            type: "POST",
+            data: { term: val }
+        })
+        .done(function (partialViewResult) {
+            $("#refGrid").html(partialViewResult);
+            LoadGrid();
         });
         e.preventDefault(); //STOP default action
     });
@@ -165,7 +186,9 @@ $(document).ready(function () {
     $('span > a').click(function (event) {
         event.preventDefault();
         var value = $(this).attr("href");
+
         var id = $(this).attr("id");
+      
         if (id === 'untrained') {
             $.ajax({
                 url: "Training/GetWorkerGrid",
@@ -174,7 +197,6 @@ $(document).ready(function () {
             })
             .done(function (partialViewResult) {
                 $("#refWorkerGrid").html(partialViewResult);
-
                 LoadGrid();
             });
             //return false; //for good measure

@@ -2,7 +2,19 @@
 @using GridMvc.Sorting
 @model Grid.Mvc.Ajax.GridExtensions.AjaxGrid<AssistantTraining.ViewModel.TrainingWorkersGridData>
 
+@{ 
 
+    string TrainingNumber = String.Empty;
+    if (Model.DisplayingItemsCount > 0)
+    {
+        TrainingNumber = Model.GridItems.First().TrainingNumber;
+    }
+}
+<div class="row top10"></div>
+<a href="@Url.Action("Excel", "Training")" class="btn btn-default">
+    Export to Excel
+    <span class="glyphicon" aria-hidden="true"></span>
+</a>
 @(
     Html.Grid(Model).Named("TrainingWorkersGrid")
         .Columns(columns =>
@@ -30,7 +42,7 @@
     <form id="myform">
         <div class="col-md-2">
             <span>
-                <input type="text" placeholder="Training number" id="TrainingNumber" name="field1" class="form-control" required>
+                <input type="text" placeholder="Training number" id="TrainingNumber" name="field1" class="form-control" value="@TrainingNumber" required>
             </span>
         </div>
         <div class="col-md-2">

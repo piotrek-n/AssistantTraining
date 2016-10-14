@@ -10,6 +10,9 @@ using AssistantTraining.Helpers;
 using AssistantTraining.Repositories;
 using AssistantTraining.Models;
 using System.Globalization;
+using OfficeOpenXml;
+using System.IO;
+using System.Net;
 
 namespace AssistantTraining.Controllers
 {
@@ -109,6 +112,24 @@ namespace AssistantTraining.Controllers
 
             return PartialView(GRID_PARTIAL_PATH, grid);
         }
+        [AjaxChildActionOnly]
+        public PartialViewResult GetGridByInstruction(string term)
+        {
+            var repos = new WorkerRepository();
+            var items = repos.GetTrainings().Where(x=>x.Instruction.Number.Contains(term)).OrderBy(p => 0);
+            var grid = this.gridMvcHelper.GetAjaxGrid(items);
+
+            return PartialView(GRID_PARTIAL_PATH, grid);
+        }
+        [AjaxChildActionOnly]
+        public PartialViewResult GetGridByTraining(string term)
+        {
+            var repos = new WorkerRepository();
+            var items = repos.GetTrainings().Where(x=>x.TrainingName.Number.Contains(term)).OrderBy(p => 0);
+            var grid = this.gridMvcHelper.GetAjaxGrid(items);
+
+            return PartialView(GRID_PARTIAL_PATH, grid);
+        }
 
         [AjaxChildActionOnly]
         public PartialViewResult GetWorkerGrid(string term, string type)
@@ -147,7 +168,7 @@ namespace AssistantTraining.Controllers
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
+        [AjaxChildActionOnly]
         public ActionResult UpdateTrainings(TrainingUpdateData model)
         {
             if (model != null)
@@ -173,7 +194,7 @@ namespace AssistantTraining.Controllers
                                 tn.DateOfTraining = dt;
                                 tn.InstructionId = instruction.InstructionId;
                                 db.Trainings.Add(tn);
-                                //db.SaveChanges();
+                                db.SaveChanges();
                             }
                         }
                         else
@@ -183,14 +204,48 @@ namespace AssistantTraining.Controllers
 
                     }
                 }
-                return Json("Success");
+               
             }
-            else
-            {
-                return Json("An Error Has occoured");
-            }
+
+            var repos = new WorkerRepository();
+            var term = Session["term"] as string;
+            var type = Session["type"] as string;
+            var items = repos.GetWorkersByTraining(term, type).OrderBy(p => 0);
+            var grid = this.gridMvcHelper.GetAjaxGrid(items);
+            return PartialView(GRID_WORKER_PARTIAL_PATH, grid);
 
         }
 
+        public ActionResult Excel()
+        {
+           
+            if (Session["term"] == null || Session["type"] == null || String.IsNullOrEmpty(Session["term"].ToString())||String.IsNullOrEmpty(Session["type"].ToString()))
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var repos = new WorkerRepository();
+
+            var workers = repos.GetWorkersByTraining(Session["term"].ToString(), Session["type"].ToString()).Select(x=>new { Name = x.WorkerLastName, FirstName = x.WorkerFirstMidName });
+
+            using (ExcelPackage pck = new ExcelPackage())
+            {
+                ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Workers");
+                ws.Cells["A1"].LoadFromCollection(workers, true);
+                // Load your collection "accounts"
+
+                Byte[] fileBytes = pck.GetAsByteArray();
+                Response.Clear();
+                Response.Buffer = true;
+                Response.AddHeader("content-disposition", "attachment;filename=Workers.xlsx");
+                // Replace filename with your custom Excel-sheet name.
+
+                Response.Charset = "";
+                Response.ContentType = "application/vnd.ms-excel";
+                StringWriter sw = new StringWriter();
+                Response.BinaryWrite(fileBytes);
+                Response.End();
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 }
