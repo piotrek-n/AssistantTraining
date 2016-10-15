@@ -35,6 +35,7 @@ namespace AssistantTraining.Controllers
                 workerGroup.ID = item.ID;
                 workerGroup.FirstMidName = item.FirstMidName;
                 workerGroup.LastName = item.LastName;
+                workerGroup.FullName = item.LastName + " " + item.FirstMidName;
                 workerGroup.Tag = item.Tag;
                 workerGroup.SelectedIds = db.GroupWorkers.Where(x => x.WorkerId.Equals(item.ID)).Select(x => x.GroupId.ToString()).ToArray();
                 workerGroup.WorkerGroups = groups;

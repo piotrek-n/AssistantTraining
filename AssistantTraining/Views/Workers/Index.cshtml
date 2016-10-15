@@ -25,9 +25,8 @@
 
 @Html.Grid(Model).Columns(columns =>
 {
-    columns.Add(foo => foo.LastName).Titled("Nazwisko").Sortable(true).Filterable(true).SetWidth(110);
-    columns.Add(foo => foo.FirstMidName).Titled("Imię").Sortable(true).Filterable(true).SetWidth(110);
-    columns.Add(foo => foo.Tag).Titled("Tag").Sortable(true).SetWidth(110);
+    columns.Add(foo => foo.FullName).Titled("Nazwisko").Sortable(true).Filterable(true).SetWidth(110);
+    //columns.Add(foo => foo.FirstMidName).Titled("Imię").Sortable(true).Filterable(true).SetWidth(110);
     /* Adding not mapped column, that renders body, using inline Razor html helper */
     columns.Add()
     .Encoded(false)

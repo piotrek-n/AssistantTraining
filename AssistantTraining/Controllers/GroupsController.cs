@@ -1,6 +1,8 @@
 ﻿using AssistantTraining.DAL;
 using AssistantTraining.Models;
+using AssistantTraining.ViewModel;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -30,7 +32,23 @@ namespace AssistantTraining.Controllers
             {
                 return HttpNotFound();
             }
-            return View(group);
+            GroupDetails gd = new GroupDetails();
+            gd.ID = group.ID;
+            gd.GroupName = group.GroupName;
+
+            var lst = (from ig in db.InstructionGroups where ig.GroupId == id
+                       join i in db.Instructions on ig.InstructionId equals i.ID
+                       select i).ToList();
+            if (lst != null && lst.Count > 0)
+            {
+                gd.Instructions = new List<InstructionInGroup>();
+                foreach (var item in lst)
+                {
+                    gd.Instructions.Add(new InstructionInGroup() { Name = item.Name, Number = item.Number });
+                }
+            }
+
+            return View(gd);
         }
 
         // GET: Groups/Create

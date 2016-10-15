@@ -25,7 +25,7 @@ namespace AssistantTraining.ViewModel
 
         [DisplayName("Numer szkolenia")]
         [RegularExpression(@"^\S{1,2}\d{1,3}/\d{4}$", ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "NumberFormat")]       
-        [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "RequiredFiled")]
+        //[Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "RequiredFiled")]
         public string NumberOfTraining { get; set; }
 
         [DisplayName("Wersja")]

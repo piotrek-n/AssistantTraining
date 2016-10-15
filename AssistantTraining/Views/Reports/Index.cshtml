@@ -1,7 +1,18 @@
-﻿
-@{
-    ViewBag.Title = "Index";
+﻿@{
+    ViewBag.Title = "Home Page";
 }
+@section styles {
+    @Styles.Render("~/Content/gridmvc")
+}
+<div class="row" id="refGrid">
+    @Html.Action("GetGrid")
+</div>
 
-<h2>Index</h2>
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/gridmvc")
+    @Scripts.Render("~/bundles/typeahead")
 
+    <link href="~/Content/bootstrap-datepicker3.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+}

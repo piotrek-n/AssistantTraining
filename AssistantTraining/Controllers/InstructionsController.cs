@@ -161,20 +161,23 @@ namespace AssistantTraining.Controllers
                 db.Instructions.Add(instruction);
                 db.SaveChanges();
 
-                TrainingName tn = new TrainingName();
-                tn.Name = String.Empty;
-                tn.Number = instructionGroupViewModel.NumberOfTraining;
-                db.TrainingNames.Add(tn);
-                db.SaveChanges();
+                if (!String.IsNullOrEmpty(instructionGroupViewModel.NumberOfTraining))
+                {
+                    TrainingName tn = new TrainingName();
+                    tn.Name = String.Empty;
+                    tn.Number = instructionGroupViewModel.NumberOfTraining;
+                    db.TrainingNames.Add(tn);
+                    db.SaveChanges();
 
-                TrainingGroup tg = new TrainingGroup();
-                tg.TrainingNameId = tn.ID;
-                tg.InstructionId = instruction.ID;
-                tg.TimeOfCreation = DateTime.Now;
-                tg.TimeOfModification = DateTime.Now;
+                    TrainingGroup tg = new TrainingGroup();
+                    tg.TrainingNameId = tn.ID;
+                    tg.InstructionId = instruction.ID;
+                    tg.TimeOfCreation = DateTime.Now;
+                    tg.TimeOfModification = DateTime.Now;
 
-                db.TrainingGroups.Add(tg);
-                db.SaveChanges();
+                    db.TrainingGroups.Add(tg);
+                    db.SaveChanges();
+                }
 
                 if (instructionGroupViewModel.SelectedIds != null && instructionGroupViewModel.SelectedIds.Count() > 0)
                 {

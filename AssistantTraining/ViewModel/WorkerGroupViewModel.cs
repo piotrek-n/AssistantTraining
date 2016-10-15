@@ -31,5 +31,7 @@ namespace AssistantTraining.ViewModel
 
         [DisplayName("Grupy")]
         public IEnumerable<SelectListItem> Items { get; set; }
+
+        public string FullName { get; set; }
     }
 }

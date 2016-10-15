@@ -1,7 +1,10 @@
-﻿@model AssistantTraining.Models.Group
+﻿@model AssistantTraining.ViewModel.GroupDetails
+@using GridMvc.Html
 
 @{
     ViewBag.Title = "Details";
+    var instr = Model.Instructions.AsEnumerable();
+
 }
 
 <h2>Details</h2>
@@ -9,40 +12,16 @@
 <div>
     <h4>Group</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.GroupName)
-        </dt>
+    <h4>@Model.GroupName</h4>
 
-        <dd>
-            @Html.DisplayFor(model => model.GroupName)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.TimeOfCreation)
-        </dt>
+        @Html.Grid(instr).Columns(columns =>
+        {
+            columns.Add(foo => foo.Name).Titled("Nazwa").SetWidth(110);
+            columns.Add(foo => foo.Number).Titled("Numer").SetWidth(110);
+        }).WithPaging(10)
 
-        <dd>
-            @Html.DisplayFor(model => model.TimeOfCreation)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TimeOfModification)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TimeOfModification)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Tag)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Tag)
-        </dd>
-
-    </dl>
+    
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |

@@ -364,6 +364,7 @@
     <Compile Include="Repositories\WorkerRepository.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModel\AccountViewModels.cs" />
+    <Compile Include="ViewModel\GroupDetails.cs" />
     <Compile Include="ViewModel\InstructionDetailsData.cs" />
     <Compile Include="ViewModel\InstructionEditData.cs" />
     <Compile Include="ViewModel\InstructionIndexData.cs" />
@@ -405,6 +406,7 @@
     <Content Include="Views\Shared\_AjaxGridPager.cshtml" />
     <Content Include="Views\Training\_TrainingGrid.cshtml" />
     <Content Include="Views\Training\_TrainingWorkersGrid.cshtml" />
+    <Content Include="Views\Reports\_ReportMainGrid.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
