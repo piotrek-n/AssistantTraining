@@ -19,6 +19,7 @@ namespace AssistantTraining.Models
         public DateTime TimeOfCreation { get; set; }
         public DateTime TimeOfModification { get; set; }
         public string Tag { get; set; }
+        public string CreatedByUserId { get; set; }
 
         //public int GroupId { get; set; }
         //public Group Group { get; set; }

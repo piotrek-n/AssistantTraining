@@ -16,24 +16,32 @@
 <div>
     <h4>Instruction</h4>
     <hr />
-    @*<dl class="dl-horizontal">
+    <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            Nazwa
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => Model.instructionVsTrainingList.First().InstructionName)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Version)
+           Numer
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Version)
+            @Html.DisplayFor(model => Model.instructionVsTrainingList.First().InstructionNumber)
         </dd>
 
-    </dl>*@
+        <dt>
+            Wersja
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => Model.instructionVsTrainingList.First().InstructionVersion)
+        </dd>
+
+    </dl>
 
 @Html.Grid(Model.Groups.ToList()).Columns(columns =>
 {
@@ -45,10 +53,10 @@
 {
     columns.Add(foo => foo.WorkerLastName).Titled("Nazwisko").Sortable(true).Filterable(true).SetWidth(110);
     columns.Add(foo => foo.WorkerFirstMidName).Titled("Imię").Sortable(true).Filterable(true).SetWidth(110);
-    columns.Add(foo => foo.InstructionName).Titled("Numer instrukcji").Sortable(true).Filterable(true).SetWidth(110);
-    columns.Add(foo => foo.InstructionVersion).Titled("Wersja instrukcji").Sortable(true).Filterable(true).SetWidth(110);
-    columns.Add(foo => foo.InstructionNumber).Titled("Numer instrukcji").Sortable(true).Filterable(true).SetWidth(110);
-    columns.Add(foo => foo.DateOfTraining).Titled("Data szkolenia").Sortable(true).Filterable(true).SetWidth(110);
+    //columns.Add(foo => foo.InstructionName).Titled("Numer instrukcji").Sortable(true).Filterable(true).SetWidth(110);
+    //columns.Add(foo => foo.InstructionVersion).Titled("Wersja instrukcji").Sortable(true).Filterable(true).SetWidth(110);
+    //columns.Add(foo => foo.InstructionNumber).Titled("Numer instrukcji").Sortable(true).Filterable(true).SetWidth(110);
+    columns.Add(foo => foo.DateOfTran).Titled("Data szkolenia").Sortable(true).Filterable(true).SetWidth(110);
 
 }).WithPaging(10)
 

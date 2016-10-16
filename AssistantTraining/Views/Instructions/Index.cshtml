@@ -19,8 +19,16 @@
 @Html.Grid(Model).Columns(columns =>
 {
     columns.Add(foo => foo.Name).Titled("Nazwa").Sortable(true).Filterable(true).SetWidth(110);
-    columns.Add(foo => foo.Number).Titled("Numer").Sortable(true).Filterable(true).SetWidth(110);
-    columns.Add(foo => foo.Version).Titled("Wersja").Sortable(true).Filterable(true).SetWidth(110);
+    columns.Add(foo => foo.Number).Titled("Numer").Sortable(true).Filterable(true).SetWidth(50);
+    columns.Add(foo => foo.Version).Titled("Wersja").Sortable(true).Filterable(true).SetWidth(30);
+    columns.Add(foo => foo.UserName).Titled("Użytkownik").Sortable(true).Filterable(true).SetWidth(50);
+    columns.Add(foo => foo.TimeOfCreation).Titled("Data").Sortable(true).Filterable(true).SetWidth(50);
+    columns.Add()
+            .Titled("Grupy")
+            .Encoded(false)
+            .Sanitized(false)
+            .SetWidth(110)
+            .RenderValueAs(foo => Groups(foo));
     /* Adding not mapped column, that renders body, using inline Razor html helper */
     columns.Add()
         .Encoded(false)
@@ -42,4 +50,9 @@
             {
                  @:| @Html.ActionLink("Delete", "Delete", new { id = Id })
             }
+}
+
+@helper Groups(AssistantTraining.ViewModel.InstructionIndexData item)
+{
+    @String.Join(" ", item.Items.Where(x => item.SelectedIds.Contains(x.Value)).Select(x => x.Text).ToArray())
 }

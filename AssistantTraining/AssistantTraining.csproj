@@ -350,6 +350,10 @@
     <Compile Include="Migrations\201610110836116_Initial.Designer.cs">
       <DependentUpon>201610110836116_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610161049443_NewColumnCreatedByUserIdInInstruction.cs" />
+    <Compile Include="Migrations\201610161049443_NewColumnCreatedByUserIdInInstruction.Designer.cs">
+      <DependentUpon>201610161049443_NewColumnCreatedByUserIdInInstruction.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\Group.cs" />
@@ -368,6 +372,7 @@
     <Compile Include="ViewModel\InstructionDetailsData.cs" />
     <Compile Include="ViewModel\InstructionEditData.cs" />
     <Compile Include="ViewModel\InstructionIndexData.cs" />
+    <Compile Include="ViewModel\InstructionNewestVersion.cs" />
     <Compile Include="ViewModel\InstructionVsTrainingData.cs" />
     <Compile Include="ViewModel\ManageViewModels.cs" />
     <Compile Include="ViewModel\TrainingIndexData.cs" />
@@ -426,6 +431,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610110836116_Initial.resx">
       <DependentUpon>201610110836116_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610161049443_NewColumnCreatedByUserIdInInstruction.resx">
+      <DependentUpon>201610161049443_NewColumnCreatedByUserIdInInstruction.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

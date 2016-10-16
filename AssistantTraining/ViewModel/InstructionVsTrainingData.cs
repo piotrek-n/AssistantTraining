@@ -14,5 +14,8 @@ namespace AssistantTraining.ViewModel
         public string InstructionVersion { get; set; }
         public string InstructionNumber { get; set; }
         public DateTime? DateOfTraining { get; set; }
+
+        public string  DateOfTran { get { return DateOfTraining != null ? DateOfTraining.Value.ToShortDateString() : String.Empty; } }
+
     }
 }

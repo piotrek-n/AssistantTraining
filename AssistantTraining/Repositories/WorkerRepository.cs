@@ -29,7 +29,20 @@ namespace AssistantTraining.Repositories
 
         public IQueryable<TrainingGroup> GetTrainings()
         {
-            var trainings = db.TrainingGroups.Include("Instruction").Include("TrainingNames").AsQueryable<TrainingGroup>();
+            var newInstructions =
+            (from i in db.Instructions
+             group i by i.Number into groupedI
+             let maxVersion = groupedI.Max(gt => gt.Version)
+             select new InstructionLatestVersion
+             {
+                 Key = groupedI.Key,
+                 maxVersion = maxVersion,
+                 ID = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).ID
+             }).ToList();
+
+            var trainings = db.TrainingGroups.Include("Instruction").Include("TrainingNames")
+                              .ToList().Where(x => newInstructions.Any(ni => ni.ID == x.InstructionId)).AsQueryable<TrainingGroup>();
+
             return trainings;
         }
 

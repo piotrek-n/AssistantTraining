@@ -2,6 +2,7 @@
 using AssistantTraining.Models;
 using AssistantTraining.Repositories;
 using AssistantTraining.ViewModel;
+using Microsoft.AspNet.Identity;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,18 @@ namespace AssistantTraining.Controllers
         // GET: Instructions
         public ActionResult Index()
         {
-            var allInstructions = db.Instructions.ToList();
+            var newInstructions =
+                                (from i in db.Instructions
+                                 group i by i.Number into groupedI
+                                 let maxVersion = groupedI.Max(gt => gt.Version)
+                                 select new InstructionLatestVersion
+                                 {
+                                     Key = groupedI.Key,
+                                     maxVersion = maxVersion,
+                                     ID = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).ID
+                                 }).ToList();
+
+            var allInstructions = db.Instructions.ToList().Where(x => newInstructions.Any(ni => ni.ID == x.ID)).ToList();
             var workerRepository = new WorkerRepository();
             var groups = workerRepository.GetAllGroups();
 
@@ -35,6 +47,10 @@ namespace AssistantTraining.Controllers
                 instructioGroup.Name = item.Name;
                 instructioGroup.Number = item.Number;
                 instructioGroup.Version = item.Version;
+                instructioGroup.UserName = item.CreatedByUserId;
+                if (item.CreatedByUserId != null)
+                    instructioGroup.UserName = db.Users.Find(item.CreatedByUserId).UserName;
+                instructioGroup.TimeOfCreation = item.TimeOfCreation.ToShortDateString();
 
                 var lstGroupIds = (from InstructionGroups in db.InstructionGroups
                                    where
@@ -157,6 +173,8 @@ namespace AssistantTraining.Controllers
                 instruction.Version = instructionGroupViewModel.Version;
                 instruction.TimeOfCreation = DateTime.Now;
                 instruction.TimeOfModification = DateTime.Now;
+                string currentUserId = User.Identity.GetUserId();
+                instruction.CreatedByUserId = currentUserId;
                 //instruction.GroupId = Int32.Parse(instructionGroupViewModel.SelectedId);
                 db.Instructions.Add(instruction);
                 db.SaveChanges();
