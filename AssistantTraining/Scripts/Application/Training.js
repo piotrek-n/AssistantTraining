@@ -214,28 +214,78 @@ $(document).ready(function () {
             //return false; //for good measure
         }
     });
+
+
+    $('#save-new-training').click(function (e) {
+        var number = $("#newTrainingNumber").val();
+        var values = $("#sel").val().toString();
+        $.ajax({
+            url: "Training/AddNewTrainings",
+            data: { selectedValues: values, trainingNumber: number },
+            type: 'POST',
+            success: function (data) {
+                $('#myModal').modal('hide');
+                $.ajax({
+                    url: "Training/GetGridByTraining",
+                    type: "POST",
+                    data: { term: number }
+                })
+                .done(function (partialViewResult) {
+                    $("#refGrid").html(partialViewResult);
+                    LoadGrid();
+                });
+            }
+        });
+    });
 });
 
-//function tableToJson(table) {
-//    var data = [];
+$("#sel").select2({
+    ajax: {
+        url: "/Training/InstructionsJsonAction",
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
 
-//    // first row needs to be headers
-//    var headers = [];
-//    for (var i = 0; i < table.rows[0].cells.length; i++) {
-//        headers[i] = table.rows[0].cells[i].innerHTML.toLowerCase().replace(/ /gi, '');
-//    }
+            return {
+                q: params.term, // search term
+                t: $("#searchTermCheckbox").is(":checked")
+                //,page: params.page
+            };
+        },
+        processResults: function (data, params) {
 
-//    // go through cells
-//    for (var i = 1; i < table.rows.length; i++) {
-//        var tableRow = table.rows[i];
-//        var rowData = {};
+            params.page = params.page || 1;
 
-//        for (var j = 0; j < tableRow.cells.length; j++) {
-//            rowData[headers[j]] = tableRow.cells[j].innerHTML;
-//        }
+            return {
+                results: data.items,
+                pagination: {
+                    more: (params.page * 30) < data.total_count
+                }
+            };
+        },
+        cache: true
+    },
+    escapeMarkup: function (markup) {
+        return markup;
+    }, // let our custom formatter work
+    minimumInputLength: 1,
+    templateResult: formatRepo, // omitted for brevity, see the source of this page
+    templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
+});
 
-//        data.push(rowData);
-//    }
+function formatRepo(repo) {
+    if (repo.loading) return repo.text;
 
-//    return data;
-//}
+    var markup = "<div class='select2-result-repository clearfix'>" +
+        "<div class='select2-result-repository__meta'>" +
+        "<div class='select2-result-repository__title'>" + repo.text + "</div>";
+
+    if (repo.name) {
+        markup += "<div class='select2-result-repository__description'>" + repo.name + "</div>";
+    }
+    return markup;
+}
+
+function formatRepoSelection(repo) {
+    return repo.text || repo.id;
+}
