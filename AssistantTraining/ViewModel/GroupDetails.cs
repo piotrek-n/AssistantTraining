@@ -23,5 +23,8 @@ namespace AssistantTraining.ViewModel
 
         [DisplayName("Numer")]
         public string Number { get; set; }
+
+        [DisplayName("Wersja")]
+        public string Version { get; set; }
     }
 }

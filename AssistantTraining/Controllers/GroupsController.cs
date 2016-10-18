@@ -36,15 +36,33 @@ namespace AssistantTraining.Controllers
             gd.ID = group.ID;
             gd.GroupName = group.GroupName;
 
-            var lst = (from ig in db.InstructionGroups where ig.GroupId == id
-                       join i in db.Instructions on ig.InstructionId equals i.ID
-                       select i).ToList();
+            //
+            var items = (
+                from i in db.Instructions
+                group i by i.Number into groupedI
+                let maxVersion = groupedI.Max(gt => gt.Version)
+                select new
+                {
+                    Key = groupedI.Key,
+                    ID = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).ID
+                }
+            ).Select(x=>x.ID).ToList();
+            
+            var lst = (from ig in db.InstructionGroups
+                        join i in db.Instructions on ig.InstructionId equals i.ID
+                        where ig.GroupId == id && items.Contains(i.ID)
+                        select i).ToList();
+            
+
+            //var lst = (from ig in db.InstructionGroups where ig.GroupId == id
+            //           join i in db.Instructions on ig.InstructionId equals i.ID
+            //           select i).ToList();
             if (lst != null && lst.Count > 0)
             {
                 gd.Instructions = new List<InstructionInGroup>();
                 foreach (var item in lst)
                 {
-                    gd.Instructions.Add(new InstructionInGroup() { Name = item.Name, Number = item.Number });
+                    gd.Instructions.Add(new InstructionInGroup() { Name = item.Name, Number = item.Number , Version = item.Version});
                 }
             }
 

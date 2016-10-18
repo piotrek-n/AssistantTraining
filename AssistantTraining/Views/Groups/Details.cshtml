@@ -19,6 +19,7 @@
         {
             columns.Add(foo => foo.Name).Titled("Nazwa").SetWidth(110);
             columns.Add(foo => foo.Number).Titled("Numer").SetWidth(110);
+            columns.Add(foo => foo.Version).Titled("Wersja").SetWidth(110);
         }).WithPaging(10)
 
     

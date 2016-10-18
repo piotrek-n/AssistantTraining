@@ -400,13 +400,21 @@ namespace AssistantTraining.Controllers
             {
                 return HttpNotFound();
             }
+            int presetVersion = Int32.Parse(instruction.Version);
+            int newVersion = Int32.Parse(version);
 
+            if (instruction.Version == version || (newVersion != presetVersion + 1))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             Instruction newInstruction = new Instruction();
             newInstruction.Name = instruction.Name;
             newInstruction.Version = version;
             newInstruction.TimeOfCreation = DateTime.Now;
             newInstruction.TimeOfModification = DateTime.Now;
             newInstruction.Number = instruction.Number;
+            string currentUserId = User.Identity.GetUserId();
+            newInstruction.CreatedByUserId = currentUserId;
             db.Instructions.Add(newInstruction);
             db.SaveChanges();
 
