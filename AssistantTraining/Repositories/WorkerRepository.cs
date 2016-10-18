@@ -86,7 +86,7 @@ namespace AssistantTraining.Repositories
                      TrainingNameId = tg.TrainingNameId,
                      DateOfTraining = t.DateOfTraining,
                      TrainingNumber = tg.TrainingName.Number,
-                     WorkerFullName = t.Worker.LastName + "  " + t.Worker.FirstMidName
+                     WorkerFullName = gw.Worker.LastName + "  " + gw.Worker.FirstMidName
                   }).Distinct().Where(x=>x.DateOfTraining.Equals(null));
 
                 return lst;

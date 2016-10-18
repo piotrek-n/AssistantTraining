@@ -9,6 +9,8 @@ namespace AssistantTraining.ViewModel
     {
         public string WorkerLastName { get; set; }
         public string WorkerFirstMidName { get; set; }
+        public string WorkerFullName{ get; set; }
+
         public string InstructionName { get; set; }
         public int? GroupId { get; set; }
         public string InstructionVersion { get; set; }

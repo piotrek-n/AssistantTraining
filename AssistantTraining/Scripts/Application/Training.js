@@ -182,7 +182,6 @@ $(document).ready(function () {
         });
         e.preventDefault(); //STOP default action
     });
-
     $('span > a').click(function (event) {
         event.preventDefault();
         var value = $(this).attr("href");
@@ -214,8 +213,6 @@ $(document).ready(function () {
             //return false; //for good measure
         }
     });
-
-
     $('#save-new-training').click(function (e) {
         var number = $("#newTrainingNumber").val();
         var values = $("#sel").val().toString();
@@ -236,7 +233,7 @@ $(document).ready(function () {
                 });
             }
         });
-    });
+    });  
 });
 
 $("#sel").select2({

@@ -21,8 +21,9 @@
         {
             columns.Add(f => f.WorkerID, true);
             columns.Add(f => f.TrainingNameId, true);
-            columns.Add(f => f.WorkerLastName).Titled("Nazwisko").Sortable(true).Filterable(true).SetWidth(110);
-            columns.Add(f => f.WorkerFirstMidName).Titled("Imię").Sortable(true).Filterable(true).SetWidth(110);
+            columns.Add(f => f.WorkerFullName).Titled("Nazwisko").Sortable(true).Filterable(true).SetWidth(110);
+            //columns.Add(f => f.WorkerLastName).Titled("Nazwisko").Sortable(true).Filterable(true).SetWidth(110);
+            //columns.Add(f => f.WorkerFirstMidName).Titled("Imię").Sortable(true).Filterable(true).SetWidth(110);
             columns.Add()
                 .Encoded(false)
                 .Titled("")

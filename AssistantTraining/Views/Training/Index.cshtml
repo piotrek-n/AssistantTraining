@@ -91,6 +91,7 @@
 <div class="row" id="refWorkerGrid">
     @Html.Action("GetWorkerGrid")
 </div>
+
 @section scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/gridmvc")
@@ -104,8 +105,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2-rc.1/js/select2.min.js"></script>
     <link href="https://select2.github.io/css/s2-docs.css" rel="stylesheet">
 
-    @Scripts.Render("~/bundles/application/Training")
+@Scripts.Render("~/bundles/application/Training")
 }
+
 
 
 

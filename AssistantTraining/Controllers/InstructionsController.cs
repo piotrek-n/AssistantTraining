@@ -127,6 +127,7 @@ namespace AssistantTraining.Controllers
                               {
                                   WorkerLastName = w.LastName,
                                   WorkerFirstMidName = w.FirstMidName,
+                                  WorkerFullName = w.LastName + " " + w.FirstMidName,
                                   InstructionName = i.Name,
                                   GroupId = (int?)gi.GroupId,
                                   InstructionVersion = i.Version,
@@ -486,6 +487,7 @@ namespace AssistantTraining.Controllers
                               {
                                   WorkerLastName = w.LastName,
                                   WorkerFirstMidName = w.FirstMidName,
+                                  WorkerFullName = w.LastName +  " " + w.FirstMidName,
                                   InstructionName = i.Name,
                                   GroupId = (int?)gi.GroupId,
                                   InstructionVersion = i.Version,
