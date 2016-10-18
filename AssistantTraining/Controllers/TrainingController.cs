@@ -243,21 +243,50 @@ namespace AssistantTraining.Controllers
 
         public ActionResult InstructionsJsonAction(string q, string t)
         {
+            Session["term"] = t;
             List<InstructionsJson> lstInstructions = new List<InstructionsJson>();
             if (t.Equals("true"))
             {
-                lstInstructions = db.Instructions.Where(x => x.Number.Contains(q)).Select(x => new InstructionsJson { id = x.ID.ToString(), text = x.Number,  name = x.Name }).ToList();
+
+
+                 lstInstructions = (
+                  from i in db.Instructions 
+                  group i by i.Number into groupedI
+                  let maxVersion = groupedI.Max(gt => gt.Version)              
+                  select new
+                  {
+                      Key = groupedI.Key,
+                      ID = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).ID,
+                      Number = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).Number,
+                      Name = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).Name,
+                      Version = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).Version
+                  }
+                ).Select(x => new InstructionsJson { id = x.ID.ToString(), text = x.Number, name = x.Name, version = x.Version })
+                .Where(x => x.text.Contains(q))
+                .ToList();
+
             }
             else
             {
-              
+                var items = (
+                          from i in db.Instructions
+                          group i by i.Number into groupedI
+                          let maxVersion = groupedI.Max(gt => gt.Version)
+                          select new
+                          {
+                              Key = groupedI.Key,
+                              ID = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).ID
+                          }
+                      ).Select(x => x.ID).ToList();
+
                 lstInstructions = (from i in db.Instructions
                                    join tg in db.TrainingGroups on new { ID = i.ID } equals new { ID = tg.InstructionId } into tg_join
                                    from tg in tg_join.DefaultIfEmpty()
                                    where
-                                     i.Number.Contains(q) &&
-                                     tg.InstructionId == null
-                                   select new InstructionsJson { id = i.ID.ToString(), text = i.Number,name = i.Name }).ToList();
+                                     i.Number.Contains(q)
+                                     && items.Contains(i.ID)
+                                     && tg.InstructionId == null
+                                   select new InstructionsJson { id = i.ID.ToString(), text = i.Number,name = i.Name,version = i.Version }).ToList();
             }
                 var countInstructions = lstInstructions.Count();
 
@@ -319,5 +348,6 @@ namespace AssistantTraining.Controllers
         public string id;
         public string text;
         public string name;
+        public string version;
     }
 }

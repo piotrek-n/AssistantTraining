@@ -278,7 +278,7 @@ function formatRepo(repo) {
 
     var markup = "<div class='select2-result-repository clearfix'>" +
         "<div class='select2-result-repository__meta'>" +
-        "<div class='select2-result-repository__title'>" + repo.text + "</div>";
+        "<div class='select2-result-repository__title'>" + repo.text + ' v.' + repo.version + "</div>";
 
     if (repo.name) {
         markup += "<div class='select2-result-repository__description'>" + repo.name + "</div>";

@@ -61,8 +61,9 @@ namespace AssistantTraining.Repositories
                        {
                            WorkerLastName = t.Worker.LastName,
                            WorkerFirstMidName = t.Worker.FirstMidName,
-                           DateOfTraining = t.DateOfTraining
-                       });
+                           DateOfTraining = t.DateOfTraining,
+                           WorkerFullName = t.Worker.LastName + "  " + t.Worker.FirstMidName
+                       }).Distinct();
 
                 return lst;
             }
@@ -84,8 +85,9 @@ namespace AssistantTraining.Repositories
                      WorkerID = gw.Worker.ID,
                      TrainingNameId = tg.TrainingNameId,
                      DateOfTraining = t.DateOfTraining,
-                      TrainingNumber = tg.TrainingName.Number
-                  }).Where(x=>x.DateOfTraining.Equals(null));
+                     TrainingNumber = tg.TrainingName.Number,
+                     WorkerFullName = t.Worker.LastName + "  " + t.Worker.FirstMidName
+                  }).Distinct().Where(x=>x.DateOfTraining.Equals(null));
 
                 return lst;
             }
