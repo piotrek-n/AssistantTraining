@@ -136,8 +136,10 @@ namespace AssistantTraining.Controllers
                     ]
                 }
             ";
+                    json = ReportsRepository.InstructionsWithoutTraining();
                     break;
                 case "3":
+                    json = ReportsRepository.WorkersWithoutTraining();
                     json = @"{
                         columns: [{
                             title: ""Worker""
