@@ -26,6 +26,11 @@ namespace AssistantTraining.Controllers
             List<SelectListItem> lstItems = new List<SelectListItem>();
             lstItems.Add(new SelectListItem()
             {
+                Value = "0",
+                Text = "Wyczyść"
+            });
+            lstItems.Add(new SelectListItem()
+            {
                 Value = "1",
                 Text = "Lista szkoleń niekompletnych"
             });
@@ -48,20 +53,109 @@ namespace AssistantTraining.Controllers
         public ActionResult JsonAction(string q)
         {
             //string json = JsonConvert.SerializeObject(result);
+            //https://editor.datatables.net/examples/simple/inTableControls.html
+            string json = string.Empty;
+            switch (q)
+            {
+                case "0":
+                    json = @"{
+                    columns: [{
+                        title: ""INFO""
+                    }, {
+                        title: ""COUNTY""
+                    }],
+                    data: [
+                      [""No data"", ""No data""]
 
-            string json = @"{
-        columns: [{
-            title: ""NAME""
-        }, {
-            title: ""COUNTY""
-        }],
-        data: [
-          [""John Doe"", ""Fresno""],
-          [""Billy"", ""Fresno""],
-          [""Tom"", ""Kern""],
-          [""King Smith"", ""Kings""]
-        ]
-    }";
+                    ]
+                }";
+                    break;
+                case "1":
+                    //TRAINING
+                    json = @"{
+                    columns: [
+{
+                        title: ""TRAINING"", data: ""TRAINING""
+                    }, 
+{
+                        title: ""COUNTY"", data:  ""COUNTY""
+},            
+{
+
+                data: null,
+                className: ""center"",
+                defaultContent: '<a href="""" class=""editor_edit"">Edit</a> / <a href="""" class=""editor_remove"">Delete</a>'
+}],
+                    data: [
+
+                            {
+                                  ""DT_RowId"": ""row_1"",
+                                  ""TRAINING"": ""Tiger"",
+                                  ""COUNTY"": ""Nixon""
+                            },
+                            {
+                                  ""DT_RowId"": ""row_2"",
+                                  ""TRAINING"": ""Tiger2"",
+                                  ""COUNTY"": ""Nixon2""
+                            }
+
+                    ]
+                }
+            ";
+                    break;
+                case "2":
+
+                    //INSTRUCTION
+                    json = @"{
+                    columns: [
+{
+                        title: ""TRAINING"", data: ""TRAINING""
+                    }, 
+{
+                        title: ""COUNTY"", data:  ""COUNTY""
+},            
+{
+
+                data: null,
+                className: ""center"",
+                defaultContent: '<a href="""" class=""editor_edit"">Edit</a> / <a href="""" class=""editor_remove"">Delete</a>'
+}],
+                    data: [
+
+                            {
+                                  ""DT_RowId"": ""row_1"",
+                                  ""TRAINING"": ""Tiger2"",
+                                  ""COUNTY"": ""Nixon2""
+                            },
+                            {
+                                  ""DT_RowId"": ""row_2"",
+                                  ""TRAINING"": ""Tiger3"",
+                                  ""COUNTY"": ""Nixon3""
+                            }
+
+                    ]
+                }
+            ";
+                    break;
+                case "3":
+                    json = @"{
+                        columns: [{
+                            title: ""Worker""
+                        }, {
+                            title: ""COUNTY""
+                        }],
+                        data: [
+                          [""Worker1"", ""Fresno""],
+                          [""Worker2"", ""Fresno""],
+                          [""Worker3"", ""Kern""],
+                          [""Worker4"", ""Kings""]
+                        ]
+                    }";
+                    break;
+                default:
+                    break;
+            }
+
 
             JavaScriptSerializer j = new JavaScriptSerializer();
             object a = j.Deserialize(json, typeof(object));

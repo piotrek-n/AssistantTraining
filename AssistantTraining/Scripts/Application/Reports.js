@@ -28,11 +28,18 @@
             alert(response.responseText);
         },
          success: function (response) {
+
              $('#example').dataTable({
                  destroy: true,
                 "data": response.data,
                 "columns": response.columns
-            });
+                
+
+             });
+
+             //$('#example tbody').on('click', 'tr', function () {
+             //    $(this).addClass('active').siblings().removeClass('active');
+             //});
         }
         });
 
