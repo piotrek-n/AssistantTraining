@@ -371,9 +371,11 @@
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\common.scss" />
     <None Include="Properties\PublishProfiles\test.inventum24.pl - Web Deploy.pubxml" />
-    <Content Include="Models\Scripts\3_Workers.sql" />
-    <Content Include="Models\Scripts\2_Instruction.sql" />
-    <Content Include="Models\Scripts\1.sql" />
+    <Content Include="Models\Scripts\Query_2_Training.sql" />
+    <Content Include="Models\Scripts\Query_1_Workers.sql" />
+    <Content Include="Models\Scripts\Rep_3_Workers.sql" />
+    <Content Include="Models\Scripts\Rep_2_Instruction.sql" />
+    <Content Include="Models\Scripts\Rep_1_Training.sql" />
     <Content Include="Scripts\Application\Reports.js" />
     <Content Include="Scripts\Application\Training.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />

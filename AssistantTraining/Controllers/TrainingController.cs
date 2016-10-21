@@ -310,40 +310,65 @@ namespace AssistantTraining.Controllers
         {
             if (selectedValues.Length > 0)
             {
-                string[] values = selectedValues.Split(',');
-                var intInstructionIDs = values.Select(int.Parse).ToList();
-                foreach (var val in values)
-                {
-                    var countTrainingNames = db.TrainingNames.Where(x => x.Number.ToLower().Equals(trainingNumber.Trim().ToLower())).Count();
-                    if (countTrainingNames == 0)
-                    {
-                        TrainingName tn = new TrainingName();
-                        tn.Name = String.Empty;
-                        tn.Number = trainingNumber;
-                        db.TrainingNames.Add(tn);
-                        db.SaveChanges();
+                string[] selectedValuesInstruction = selectedValues.Split(',');
+                var intInstructionIDs = selectedValuesInstruction.Select(int.Parse).ToList();
 
+                #region Add new training
+
+                TrainingName tn = new TrainingName();
+                tn.Name = String.Empty;
+                tn.Number = trainingNumber;
+                db.TrainingNames.Add(tn);
+                db.SaveChanges();
+
+                #endregion Add new training
+
+                #region  Add TrainingGroup
+                foreach (var val in selectedValuesInstruction)
+                {
                         TrainingGroup tg = new TrainingGroup();
                         tg.TrainingNameId = tn.ID;
                         tg.InstructionId = Int32.Parse(val);
                         tg.TimeOfCreation = DateTime.Now;
                         tg.TimeOfModification = DateTime.Now;
                         db.TrainingGroups.Add(tg);
-                        db.SaveChanges();
+                        db.SaveChanges();        
+                }
+                #endregion  Add TrainingGroup
 
-                        var instructionWorkerList = 
-                           (from w in db.Workers
-                            from ig in db.InstructionGroups
-                            where
-                            w.IsSuspend == false && intInstructionIDs.Contains(ig.Instruction.ID)
-                                 select new
-                                 {
-                                     WorkerID = w.ID,
-                                     InstructionID = ig.Instruction.ID
-                                 }
-                          ).ToList();
+                #region Add all workers and assigned instruction per TrainingGroup
+
+                var instructionWorkerList =
+                   (from w in db.Workers
+                    from ig in db.InstructionGroups
+                    where
+                    w.IsSuspend == false && intInstructionIDs.Contains(ig.Instruction.ID)
+                    select new
+                    {
+                        WorkerID = w.ID,
+                        InstructionID = ig.Instruction.ID
+                    }
+                  ).ToList();
+
+                if (instructionWorkerList != null)
+                {
+                    foreach (var instruction in instructionWorkerList)
+                    {
+                        if (instruction != null)
+                        {
+                            Training newTraining = new Training();
+                            newTraining.WorkerId = instruction.WorkerID;
+                            newTraining.TrainingNameId = tn.ID;
+                            newTraining.TimeOfCreation = DateTime.Now;
+                            newTraining.TimeOfModification = DateTime.Now;
+                            newTraining.DateOfTraining = new DateTime(1900, 1, 1);
+                            newTraining.InstructionId = instruction.InstructionID;
+                            db.Trainings.Add(newTraining);
+                            db.SaveChanges();
+                        }
                     }
                 }
+                #endregion  Add all workers and assigned instruction per TrainingGroup
             }
 
             return Json("success");

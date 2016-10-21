@@ -6,6 +6,8 @@ namespace AssistantTraining.DAL
 {
     //https://www.simple-talk.com/dotnet/net-framework/deploying-an-entity-framework-database-into-production/
     //http://www.thereformedprogrammer.net/handling-entity-framework-database-migrations-in-production-part-4-release-of-efschemacompare/
+    //http://www.radicalgeek.co.uk/Post/11/using-an-entity-framework-code-first-database-from-development-to-production
+    //https://www.stevefenton.co.uk/category/automation/
     public class AssistantTrainingContext : IdentityDbContext<ApplicationUser>
     {
         public AssistantTrainingContext() : base("name=AssistantTrainingModel")

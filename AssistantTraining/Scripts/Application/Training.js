@@ -26,6 +26,7 @@ function LoadGrid() {
         autoclose: true
     });
 
+    $('[data-gridname="TrainingWorkersGrid"]').unbind('click');
     $('[data-gridname="TrainingWorkersGrid"]').click(function () {
 
     });
@@ -42,6 +43,7 @@ function LoadGrid() {
         }
     });
 
+    $("#SaveTrainingWorkersGrid").unbind('click');
     $('#SaveTrainingWorkersGrid').click(
         function () {
             if ($('[data-gridname="TrainingWorkersGrid"]').find("table>tbody>tr").find('[type=checkbox]').size() == 0)
@@ -100,7 +102,8 @@ function LoadGrid() {
         }
     );
 
-    $('span > a').click(function (event) {
+    $("span > a").unbind('click');
+    $("span > a").click(function (event) {
         event.preventDefault();
         var value = $(this).attr("href");
 

@@ -51,12 +51,13 @@ namespace AssistantTraining.Repositories
             IQueryable<TrainingWorkersGridData> lst = new List<TrainingWorkersGridData>().AsQueryable();
             int itemID;
             bool res = int.TryParse(term, out itemID);
+            DateTime dateForNull  = new DateTime(1900, 1, 1);
 
             if (!string.IsNullOrEmpty(type) && type.Equals("trained") && res)
             {
                 lst = (from t in db.Trainings
                        where
-                         t.TrainingName.ID == itemID
+                         t.TrainingName.ID == itemID && t.DateOfTraining > dateForNull
                        select new TrainingWorkersGridData
                        {
                            WorkerLastName = t.Worker.LastName,
@@ -69,25 +70,20 @@ namespace AssistantTraining.Repositories
             }
             else if (!string.IsNullOrEmpty(type) && type.Equals("untrained") && res)
             {
-                lst = (from tg in db.TrainingGroups
-                 from ig in db.InstructionGroups
-                 join gw in db.GroupWorkers on new { GroupId = ig.GroupId.HasValue ? ig.GroupId.Value : int.MinValue } equals new { GroupId = gw.GroupId }
-                 join t in db.Trainings
-                       on new { tg.TrainingNameId, WorkerId = gw.Worker.ID }
-                   equals new { t.TrainingNameId, t.WorkerId } into t_join
-                 from t in t_join.DefaultIfEmpty()
-                 where
-                   tg.TrainingNameId == itemID 
-                  select new TrainingWorkersGridData
-                 {
-                     WorkerLastName = gw.Worker.LastName,
-                     WorkerFirstMidName = gw.Worker.FirstMidName,
-                     WorkerID = gw.Worker.ID,
-                     TrainingNameId = tg.TrainingNameId,
-                     DateOfTraining = t.DateOfTraining,
-                     TrainingNumber = tg.TrainingName.Number,
-                     WorkerFullName = gw.Worker.LastName + "  " + gw.Worker.FirstMidName
-                  }).Distinct().Where(x=>x.DateOfTraining.Equals(null));
+                lst = (from t in db.Trainings
+                       where
+                         t.DateOfTraining == new DateTime(1900, 1, 1)
+                       select new TrainingWorkersGridData
+                       {
+                           //WorkerLastName = t.Worker.LastName,
+                           //WorkerFirstMidName = t.Worker.FirstMidName,
+                           WorkerID = t.Worker.ID,
+                           TrainingNameId = t.TrainingNameId,
+                           //DateOfTraining = t.DateOfTraining,
+                           //TrainingNumber = t.TrainingName.Number,
+                           //InstructionNumber = t.Instruction.Number,
+                           WorkerFullName = t.Worker.LastName + "  " + t.Worker.FirstMidName
+                       }).Distinct();
 
                 return lst;
             }

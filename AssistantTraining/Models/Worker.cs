@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AssistantTraining.Models
 {
+    //http://webdesignwith.net/object-mappers/
     public class Worker
     {
         public int ID { get; set; }
