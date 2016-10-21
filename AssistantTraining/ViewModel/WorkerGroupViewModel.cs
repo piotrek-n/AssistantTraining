@@ -33,5 +33,8 @@ namespace AssistantTraining.ViewModel
         public IEnumerable<SelectListItem> Items { get; set; }
 
         public string FullName { get; set; }
+
+        [DisplayName("Zawieszony")]
+        public bool IsSuspend { get; set; }
     }
 }

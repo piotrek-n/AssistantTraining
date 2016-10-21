@@ -631,6 +631,10 @@
     <Compile Include="Migrations\201610161049443_NewColumnCreatedByUserIdInInstruction.Designer.cs">
       <DependentUpon>201610161049443_NewColumnCreatedByUserIdInInstruction.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610201918365_AddingColumnIsSuspendTableWorkers.cs" />
+    <Compile Include="Migrations\201610201918365_AddingColumnIsSuspendTableWorkers.Designer.cs">
+      <DependentUpon>201610201918365_AddingColumnIsSuspendTableWorkers.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\Group.cs" />
@@ -713,6 +717,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610161049443_NewColumnCreatedByUserIdInInstruction.resx">
       <DependentUpon>201610161049443_NewColumnCreatedByUserIdInInstruction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610201918365_AddingColumnIsSuspendTableWorkers.resx">
+      <DependentUpon>201610201918365_AddingColumnIsSuspendTableWorkers.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

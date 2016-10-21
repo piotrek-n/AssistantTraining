@@ -73,7 +73,6 @@ namespace AssistantTraining.Repositories
 
         public static string WorkersWithoutTraining()
         {
-            string json="";
             var result = (from instr in db.Instructions
                           join in_worker in (
                               (from worker_inst in (
@@ -133,7 +132,86 @@ namespace AssistantTraining.Repositories
                               in_worker.WorkerIDD,
                               in_worker.LastName,
                               in_worker.FirstMidName
-                          });
+                          }).Distinct()
+                            .ToList()
+                            .Select((currRow, index) => new { FirstName = currRow.FirstMidName, LastName = currRow.LastName,  Number = currRow.Number, Version = currRow.Version, DT_RowId = index + 1 });
+
+            var json2 = JsonConvert.SerializeObject(new
+            {
+                data = result
+            });
+
+            return json2.Insert(1, @"columns: [
+                                    {
+                                                    title: ""LastName"", data: ""LastName""
+                                    },
+                                    {
+                                                    title: ""FirstName"", data: ""FirstName""
+                                    },
+                                    {
+                                                    title: ""Number"", data: ""Number""
+                                    },
+                                    {
+                                                    title: ""Version"", data: ""Version""
+                                    },
+                                    {
+                                                    data: null,
+                                                    className: ""center"",
+                                                    defaultContent: '<a href="""" class=""editor_edit"">Edit</a>'
+                                    }],"
+                    );
+
+        }
+
+        public static string IncompleteTraining()
+        {
+            string json = @"{
+                                                    columns: [
+                                {
+                                                        title: ""TRAINING"", data: ""TRAINING""
+                                                    }, 
+                                {
+                                                        title: ""COUNTY"", data:  ""COUNTY""
+                                },            
+                                {
+
+                                                data: null,
+                                                className: ""center"",
+                                                defaultContent: '<a href="""" class=""editor_edit"">Edit</a> / <a href="""" class=""editor_remove"">Delete</a>'
+                                }],
+                                                    data: [
+
+                                                            {
+                                                                  ""DT_RowId"": ""row_1"",
+                                                                  ""TRAINING"": ""Tiger"",
+                                                                  ""COUNTY"": ""Nixon""
+                                                            },
+                                                            {
+                                                                  ""DT_RowId"": ""row_2"",
+                                                                  ""TRAINING"": ""Tiger2"",
+                                                                  ""COUNTY"": ""Nixon2""
+                                                            }
+
+                                                    ]
+                                                }
+                                            ";
+            return json;
+        }
+
+        public static string EmptyReport()
+        {
+            string json = @"{
+                    columns: [{
+                        title: ""INFO""
+                    }, {
+                        title: ""COUNTY""
+                    }],
+                    data: [
+                      [""No data"", ""No data""]
+
+                    ]
+                }";
+
             return json;
         }
     }

@@ -148,6 +148,7 @@ namespace AssistantTraining.Controllers
             workerGroup.LastName = worker.LastName;
             workerGroup.ID = worker.ID;
             workerGroup.Tag = worker.Tag;
+            workerGroup.IsSuspend = worker.IsSuspend;
             workerGroup.SelectedIds = db.GroupWorkers.Where(x => x.WorkerId.Equals(worker.ID)).Select(x => x.GroupId.ToString()).ToArray();
 
             if (worker == null)
@@ -172,12 +173,14 @@ namespace AssistantTraining.Controllers
                 worker.FirstMidName = workerGroup.FirstMidName;
                 worker.Tag = workerGroup.Tag;
                 worker.TimeOfModification = DateTime.Now;
+                worker.IsSuspend = workerGroup.IsSuspend;
 
                 db.Workers.Attach(worker);
                 db.Entry(worker).Property(X => X.FirstMidName).IsModified = true;
                 db.Entry(worker).Property(X => X.LastName).IsModified = true;
                 db.Entry(worker).Property(X => X.Tag).IsModified = true;
                 db.Entry(worker).Property(X => X.TimeOfModification).IsModified = true;
+                db.Entry(worker).Property(X => X.IsSuspend).IsModified = true;
 
                 if (workerGroup.SelectedIds != null && workerGroup.SelectedIds.Count() > 0)
                 {

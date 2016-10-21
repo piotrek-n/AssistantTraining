@@ -15,6 +15,30 @@
     var columns = [];
 
 
+    $.ajax({
+        cache: false,
+        url: "/Reports/JsonAction",
+        type: "GET",
+        data: { 'q': 0 },
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        error: function (response) {
+            alert(response.responseText);
+        },
+        success: function (response) {
+            table = $('#example').dataTable({
+                destroy: true,
+                "data": response.data,
+                "columns": response.columns
+            });
+        }
+    });
+
+    var table = null;
+
+    //var table = $('#example').dataTable({
+    //    aoData: [{}]
+    //});
     $("#SelectedId").change(function () {
         var selectedElement = $(this).val();
         $.ajax({
@@ -28,18 +52,15 @@
             alert(response.responseText);
         },
          success: function (response) {
-
-             $('#example').dataTable({
+             if (table.length) {
+                 $('#example_wrapper').remove();
+                 $("#example-container").prepend("<table cellpadding='0' cellspacing='0' border='0' class='table table-striped table-bordered center-table' id='example'></table>");
+             }
+             table = $('#example').dataTable({
                  destroy: true,
                 "data": response.data,
-                "columns": response.columns
-                
-
+                "columns": response.columns               
              });
-
-             //$('#example tbody').on('click', 'tr', function () {
-             //    $(this).addClass('active').siblings().removeClass('active');
-             //});
         }
         });
 

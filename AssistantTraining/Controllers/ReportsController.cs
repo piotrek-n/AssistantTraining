@@ -52,112 +52,28 @@ namespace AssistantTraining.Controllers
 
         public ActionResult JsonAction(string q)
         {
-            //string json = JsonConvert.SerializeObject(result);
+            //https://www.sitepoint.com/working-jquery-datatables/
             //https://editor.datatables.net/examples/simple/inTableControls.html
+            //https://datatables.net/examples/server_side/
+
             string json = string.Empty;
             switch (q)
             {
                 case "0":
-                    json = @"{
-                    columns: [{
-                        title: ""INFO""
-                    }, {
-                        title: ""COUNTY""
-                    }],
-                    data: [
-                      [""No data"", ""No data""]
-
-                    ]
-                }";
+                    json = ReportsRepository.EmptyReport();
                     break;
                 case "1":
-                    //TRAINING
-                    json = @"{
-                    columns: [
-{
-                        title: ""TRAINING"", data: ""TRAINING""
-                    }, 
-{
-                        title: ""COUNTY"", data:  ""COUNTY""
-},            
-{
-
-                data: null,
-                className: ""center"",
-                defaultContent: '<a href="""" class=""editor_edit"">Edit</a> / <a href="""" class=""editor_remove"">Delete</a>'
-}],
-                    data: [
-
-                            {
-                                  ""DT_RowId"": ""row_1"",
-                                  ""TRAINING"": ""Tiger"",
-                                  ""COUNTY"": ""Nixon""
-                            },
-                            {
-                                  ""DT_RowId"": ""row_2"",
-                                  ""TRAINING"": ""Tiger2"",
-                                  ""COUNTY"": ""Nixon2""
-                            }
-
-                    ]
-                }
-            ";
+                    json = ReportsRepository.IncompleteTraining();
                     break;
                 case "2":
-
-                    //INSTRUCTION
-                    json = @"{
-                    columns: [
-{
-                        title: ""TRAINING"", data: ""TRAINING""
-                    }, 
-{
-                        title: ""COUNTY"", data:  ""COUNTY""
-},            
-{
-
-                data: null,
-                className: ""center"",
-                defaultContent: '<a href="""" class=""editor_edit"">Edit</a> / <a href="""" class=""editor_remove"">Delete</a>'
-}],
-                    data: [
-
-                            {
-                                  ""DT_RowId"": ""row_1"",
-                                  ""TRAINING"": ""Tiger2"",
-                                  ""COUNTY"": ""Nixon2""
-                            },
-                            {
-                                  ""DT_RowId"": ""row_2"",
-                                  ""TRAINING"": ""Tiger3"",
-                                  ""COUNTY"": ""Nixon3""
-                            }
-
-                    ]
-                }
-            ";
                     json = ReportsRepository.InstructionsWithoutTraining();
                     break;
-                case "3":
+                case "3":                    
                     json = ReportsRepository.WorkersWithoutTraining();
-                    json = @"{
-                        columns: [{
-                            title: ""Worker""
-                        }, {
-                            title: ""COUNTY""
-                        }],
-                        data: [
-                          [""Worker1"", ""Fresno""],
-                          [""Worker2"", ""Fresno""],
-                          [""Worker3"", ""Kern""],
-                          [""Worker4"", ""Kings""]
-                        ]
-                    }";
                     break;
                 default:
                     break;
             }
-
 
             JavaScriptSerializer j = new JavaScriptSerializer();
             object a = j.Deserialize(json, typeof(object));

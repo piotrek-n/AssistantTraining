@@ -311,6 +311,7 @@ namespace AssistantTraining.Controllers
             if (selectedValues.Length > 0)
             {
                 string[] values = selectedValues.Split(',');
+                var intInstructionIDs = values.Select(int.Parse).ToList();
                 foreach (var val in values)
                 {
                     var countTrainingNames = db.TrainingNames.Where(x => x.Number.ToLower().Equals(trainingNumber.Trim().ToLower())).Count();
@@ -329,6 +330,18 @@ namespace AssistantTraining.Controllers
                         tg.TimeOfModification = DateTime.Now;
                         db.TrainingGroups.Add(tg);
                         db.SaveChanges();
+
+                        var instructionWorkerList = 
+                           (from w in db.Workers
+                            from ig in db.InstructionGroups
+                            where
+                            w.IsSuspend == false && intInstructionIDs.Contains(ig.Instruction.ID)
+                                 select new
+                                 {
+                                     WorkerID = w.ID,
+                                     InstructionID = ig.Instruction.ID
+                                 }
+                          ).ToList();
                     }
                 }
             }
