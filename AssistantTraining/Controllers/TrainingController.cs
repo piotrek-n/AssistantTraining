@@ -175,22 +175,18 @@ namespace AssistantTraining.Controllers
                 {
                     foreach (var w in model.Workers)
                     {
-                        var tr = db.Trainings.Where(x => x.TrainingNameId.Equals(w.TrainingNameId) && x.WorkerId.Equals(w.WorkerID)).FirstOrDefault();
 
-                        if (tr == null && w.Checked.Equals(true))
+                        //Czy zaznaczeniej do pojedynczej instrukcji traktujemu jako zaznaczenie szkolenia do tej instrukcji, czy do wszystkich instrukcji
+                        //z tego szkolenia.
+                        var tr = db.Trainings.Where(x => x.TrainingNameId.Equals(w.TrainingNameId) && x.WorkerId.Equals(w.WorkerID)).ToList();
+
+                        if (tr != null && w.Checked.Equals(true) && tr.Count > 0)
                         {
                             DateTime dt = DateTime.ParseExact(model.TrainingDate, "dd.MM.yyyy", CultureInfo.InvariantCulture);
-                            var instruction = db.TrainingGroups.Where(x => x.TrainingNameId.Equals(w.TrainingNameId)).FirstOrDefault();
-                            if (instruction != null)
+                            foreach (var item in tr)
                             {
-                                Training tn = new Training();
-                                tn.WorkerId = w.WorkerID;
-                                tn.TrainingNameId = w.TrainingNameId;
-                                tn.TimeOfCreation = DateTime.Now;
-                                tn.TimeOfModification = DateTime.Now;
-                                tn.DateOfTraining = dt;
-                                tn.InstructionId = instruction.InstructionId;
-                                db.Trainings.Add(tn);
+                                item.DateOfTraining = dt;
+                                db.Entry(item).Property(X => X.DateOfTraining).IsModified = true;
                                 db.SaveChanges();
                             }
                         }
