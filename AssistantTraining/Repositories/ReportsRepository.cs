@@ -162,7 +162,10 @@ namespace AssistantTraining.Repositories
                     );
 
         }
-
+        /// <summary>
+        /// Wsród szkolen powiazanych z instrukcjami sa jacyś pracownic, których jeszcze należy przeszkolić.
+        /// </summary>
+        /// <returns></returns>
         public static string IncompleteTraining()
         {
             var result =

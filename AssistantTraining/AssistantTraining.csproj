@@ -371,6 +371,7 @@
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\common.scss" />
     <None Include="Properties\PublishProfiles\test.inventum24.pl - Web Deploy.pubxml" />
+    <Content Include="Models\Scripts\Query_2_Training - Copy.sql" />
     <Content Include="Models\Scripts\Query_2_Training.sql" />
     <Content Include="Models\Scripts\Query_1_Workers.sql" />
     <Content Include="Models\Scripts\Rep_3_Workers.sql" />
