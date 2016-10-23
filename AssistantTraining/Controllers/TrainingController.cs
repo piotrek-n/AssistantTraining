@@ -337,8 +337,12 @@ namespace AssistantTraining.Controllers
                 var instructionWorkerList =
                    (from w in db.Workers
                     from ig in db.InstructionGroups
+                    join t in db.Trainings
+                          on new { WorkerId = w.ID, ID = ig.Instruction.ID }
+                      equals new { t.WorkerId, ID = t.InstructionId } into t_join
+                                        from t in t_join.DefaultIfEmpty()
                     where
-                    w.IsSuspend == false && intInstructionIDs.Contains(ig.Instruction.ID)
+                    w.IsSuspend == false && intInstructionIDs.Contains(ig.Instruction.ID)  && t.ID == null
                     select new
                     {
                         WorkerID = w.ID,

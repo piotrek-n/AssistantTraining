@@ -45,4 +45,7 @@ where   w.IsSuspend = 0
 --  TimeOfCreation = (DateTime?)t.TimeOfCreation,
 --  TimeOfModification = (DateTime?)t.TimeOfModification,
 --  DateOfTraining = (DateTime?)t.DateOfTraining
-}
+--}
+
+
+
