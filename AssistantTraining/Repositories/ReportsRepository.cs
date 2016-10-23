@@ -165,37 +165,59 @@ namespace AssistantTraining.Repositories
 
         public static string IncompleteTraining()
         {
-            string json = @"{
-                                                    columns: [
-                                {
-                                                        title: ""TRAINING"", data: ""TRAINING""
-                                                    }, 
-                                {
-                                                        title: ""COUNTY"", data:  ""COUNTY""
-                                },            
-                                {
+            var result =
+            (from w in db.Workers
+             join gw in db.GroupWorkers on w.ID equals gw.WorkerId
+             join g in db.Groups on gw.GroupId equals g.ID
+             join ig in db.InstructionGroups on g.ID equals ig.GroupId
+             join i in db.Instructions on ig.InstructionId equals i.ID
+             join t in db.Trainings
+                   on new { WorkerId = w.ID, i.ID }
+               equals new { t.WorkerId, ID = t.InstructionId } into t_join
+             from t in t_join.DefaultIfEmpty()
+             where
+               w.IsSuspend == false &&
+                 (from Trainings in db.Trainings
+                  select new
+                  {
+                      Trainings.InstructionId
+                  }).Contains(new { InstructionId = i.ID }) &&
+               t.ID == null
+             select new
+             {
+                 InstructionNumber = i.Number,
+                 TrainingName =
+                 ((from TrainingGroups in db.TrainingGroups
+                   where
+        TrainingGroups.InstructionId == i.ID
+                   orderby
+        TrainingGroups.TimeOfCreation descending
+                   select new
+                   {
+                       TrainingGroups.TrainingName.Number
+                   }).Select(x=>x.Number).FirstOrDefault() )
+             }).Distinct()
+              .ToList()
+              .Select((currRow, index) => new { TrainingNumber = currRow.TrainingName, InstructionNumber = currRow.InstructionNumber, DT_RowId = index + 1 });
 
-                                                data: null,
-                                                className: ""center"",
-                                                defaultContent: '<a href="""" class=""editor_edit"">Edit</a> / <a href="""" class=""editor_remove"">Delete</a>'
-                                }],
-                                                    data: [
+            var json2 = JsonConvert.SerializeObject(new
+            {
+                data = result
+            });
 
-                                                            {
-                                                                  ""DT_RowId"": ""row_1"",
-                                                                  ""TRAINING"": ""Tiger"",
-                                                                  ""COUNTY"": ""Nixon""
-                                                            },
-                                                            {
-                                                                  ""DT_RowId"": ""row_2"",
-                                                                  ""TRAINING"": ""Tiger2"",
-                                                                  ""COUNTY"": ""Nixon2""
-                                                            }
-
-                                                    ]
-                                                }
-                                            ";
-            return json;
+            return json2.Insert(1, @"columns: [
+                                    {
+                                                    title: ""TrainingNumber"", data: ""TrainingNumber""
+                                    },
+                                    {
+                                                    title: ""InstructionNumber"", data: ""InstructionNumber""
+                                    },
+                                    {
+                                                    data: null,
+                                                    className: ""center"",
+                                                    defaultContent: '<a href="""" class=""editor_edit"">Edit</a>'
+                                    }],"
+                    );
         }
 
         public static string EmptyReport()
