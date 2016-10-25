@@ -17,8 +17,6 @@ namespace AssistantTraining.Repositories
         /// </summary>
         public static string InstructionsWithoutTraining()
         {
-
-
             var result = (from max_ins in (
                 (from i in db.Instructions
                  join ig in (
@@ -82,15 +80,15 @@ namespace AssistantTraining.Repositories
                                   (from ii in db.Instructions
                                    join ig in (
                                      (from Instructions in db.Instructions
-                                       group Instructions by new
-                                       {
-                                           Instructions.Number
-                                       } into g
-                                       select new
-                                       {
-                                           Ver = g.Max(p => p.Version),
-                                           g.Key.Number
-                                       }))
+                                      group Instructions by new
+                                      {
+                                          Instructions.Number
+                                      } into g
+                                      select new
+                                      {
+                                          Ver = g.Max(p => p.Version),
+                                          g.Key.Number
+                                      }))
                                            on new { ii.Version, ii.Number }
                                        equals new { Version = ig.Ver, ig.Number }
                                    select new
@@ -108,13 +106,13 @@ namespace AssistantTraining.Repositories
                           )
                           on ig.InstructionId equals ei.InstructionId
                           join t in db.Trainings
-                                on new { WorkerId = w.ID, ID =ei.InstructionId }
+                                on new { WorkerId = w.ID, ID = ei.InstructionId }
                             equals new { t.WorkerId, ID = t.InstructionId } into t_join
                           from t in t_join.DefaultIfEmpty()
                           where
                             w.IsSuspend == false &&
                             (t.ID == null ||
-                            t.DateOfTraining == new System.DateTime(1900,1,1))
+                            t.DateOfTraining == new System.DateTime(1900, 1, 1))
                           orderby
                             ei.InstructionId
                           select new
@@ -127,7 +125,7 @@ namespace AssistantTraining.Repositories
                           }
                             ).Distinct()
                             .ToList()
-                            .Select((currRow, index) => new { FirstName = currRow.FirstMidName, LastName = currRow.LastName,  Number = currRow.Number, Version = currRow.Version, DT_RowId = index + 1 });
+                            .Select((currRow, index) => new { FirstName = currRow.FirstMidName, LastName = currRow.LastName, Number = currRow.Number, Version = currRow.Version, DT_RowId = index + 1 });
 
             var json2 = JsonConvert.SerializeObject(new
             {
@@ -153,8 +151,8 @@ namespace AssistantTraining.Repositories
                                                     defaultContent: '<a href="""" class=""editor_edit"">Edit</a>'
                                     }],"
                     );
-
         }
+
         /// <summary>
         /// Wsród szkolen powiazanych z instrukcjami sa jacyś pracownic, których jeszcze należy przeszkolić.
         /// </summary>
@@ -191,7 +189,7 @@ namespace AssistantTraining.Repositories
                    select new
                    {
                        TrainingGroups.TrainingName.Number
-                   }).Select(x=>x.Number).FirstOrDefault() )
+                   }).Select(x => x.Number).FirstOrDefault())
              }).Distinct()
               .ToList()
               .Select((currRow, index) => new { TrainingNumber = currRow.TrainingName, InstructionNumber = currRow.InstructionNumber, DT_RowId = index + 1 });
@@ -226,7 +224,6 @@ namespace AssistantTraining.Repositories
                     }],
                     data: [
                       [""No data"", ""No data""]
-
                     ]
                 }";
 

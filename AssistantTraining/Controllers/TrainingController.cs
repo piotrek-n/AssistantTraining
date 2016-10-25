@@ -165,6 +165,41 @@ namespace AssistantTraining.Controllers
 
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
+        [AjaxChildActionOnly]
+        public ActionResult RemoveTrainings(TrainingUpdateData model)
+        {
+            if (model.Workers != null)
+            {
+                foreach (var w in model.Workers)
+                {
+
+                    //Czy zaznaczeniej do pojedynczej instrukcji traktujemu jako zaznaczenie szkolenia do tej instrukcji, czy do wszystkich instrukcji
+                    //z tego szkolenia.
+                    var tr = db.Trainings.Where(x => x.TrainingNameId.Equals(w.TrainingNameId) && x.WorkerId.Equals(w.WorkerID)).ToList();
+
+                    if (tr != null && w.Checked.Equals(true) && tr.Count > 0)
+                    {
+                        foreach (var item in tr)
+                        {
+                            db.Trainings.Attach(item);
+                            db.Trainings.Remove(item);
+                            db.SaveChanges();
+                        }
+                    }
+                    else
+                    {
+                        var b = 0;
+                    }
+                }
+            }
+        
+            var repos = new WorkerRepository();
+            var term = Session["term"] as string;
+            var type = Session["type"] as string;
+            var items = repos.GetWorkersByTraining(term, type).OrderBy(p => 0);
+            var grid = this.gridMvcHelper.GetAjaxGrid(items);
+            return PartialView(GRID_WORKER_PARTIAL_PATH, grid);
+        }
 
         [AjaxChildActionOnly]
         public ActionResult UpdateTrainings(TrainingUpdateData model)

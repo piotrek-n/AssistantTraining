@@ -42,7 +42,7 @@
     <form id="myform">
         <div class="col-md-2">
             <span>
-                <input type="text" placeholder="Training number" disabled id="TrainingNumber" name="field1" class="form-control" value="@TrainingNumber" required>
+                <input type="text" placeholder="Training number" disabled id="TrainingNumber" name="field1" class="form-control hidden" value="@TrainingNumber" required>
             </span>
         </div>
         <div class="col-md-2">
@@ -52,7 +52,10 @@
         </div>
     </form>
         <div class="col-md-2">
-            @*<input type="button" class="btn btn-info col-md-10" value="Assign Training" id="AddTrainingToWorkerWorkersGrid" />*@
+@if (User.IsInRole("Administrator"))
+{
+            <input type="button" class="btn btn-info col-md-10" value="Remove Training" id="RemoveTrainingToWorkerWorkersGrid" />
+}
         </div>
         <div class="col-md-2">
             <input type="button" class="btn btn-info col-md-10" value="Complet Training" id="SaveTrainingWorkersGrid" />

@@ -336,6 +336,7 @@
     <Content Include="Content\Gridmvc.css" />
     <Content Include="Content\gridmvc.datepicker.css" />
     <Content Include="Content\gridmvc.datepicker.min.css" />
+    <Content Include="Content\images\cmyk_r.jpg" />
     <Content Include="Content\ladda-bootstrap\ladda-themeless.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -370,6 +371,7 @@
     <Content Include="Content\DataTables\css\semanticui.scss" />
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\common.scss" />
+    <None Include="Properties\PublishProfiles\Home.pubxml" />
     <None Include="Properties\PublishProfiles\test.inventum24.pl - Web Deploy.pubxml" />
     <Content Include="Models\Scripts\Query_2_Training - Copy.sql" />
     <Content Include="Models\Scripts\Query_2_Training.sql" />

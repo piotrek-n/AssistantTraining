@@ -43,6 +43,57 @@ function LoadGrid() {
         }
     });
 
+    $("#RemoveTrainingToWorkerWorkersGrid").unbind('click');
+    $('#RemoveTrainingToWorkerWorkersGrid').click(
+            function ()
+            {
+                if ($('[data-gridname="TrainingWorkersGrid"]').find("table>tbody>tr").find('[type=checkbox]').size() == 0)
+                    return;
+
+                var trainingWorkersGrid = {};
+                var workers = [];
+                trainingWorkersGrid.Workers = workers;
+                trainingWorkersGrid.TrainingDate = "";
+                trainingWorkersGrid.TrainingNumber = "";
+
+                var $row = $('[data-gridname="TrainingWorkersGrid"]').find("table>tbody>tr").each(function (i, row) {
+
+                    var checked = $(row).find('[type=checkbox]').prop('checked');
+                    var workerID = $(row).find('[data-name="WorkerID"]').html();
+                    var trainingNameId = $(row).find('[data-name="TrainingNameId"]').html();
+
+                    var worker = {
+                        "WorkerID": workerID,
+                        "TrainingNameId": trainingNameId,
+                        "Checked": checked
+                    };
+                    trainingWorkersGrid.Workers.push(worker);
+                });
+                var trainingDate = $('#TrainingDate').val();
+                var trainingNumber = $('#TrainingNumber').val();
+
+                trainingWorkersGrid.TrainingDate = trainingDate;
+                trainingWorkersGrid.TrainingNumber = trainingNumber;
+
+                console.log(JSON.stringify(trainingWorkersGrid));
+
+                $.ajax({
+                    url: "Training/RemoveTrainings",
+                    type: "POST",
+                    data: JSON.stringify(trainingWorkersGrid),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        $("#refWorkerGrid").html(jqXHR.responseText);
+                        LoadGrid();
+                    },
+                    success: function (response) {
+                        $("#refWorkerGrid").html(partialViewResult);
+                        LoadGrid();
+                    }
+                });
+            }
+        );
     $("#SaveTrainingWorkersGrid").unbind('click');
     $('#SaveTrainingWorkersGrid').click(
         function () {
