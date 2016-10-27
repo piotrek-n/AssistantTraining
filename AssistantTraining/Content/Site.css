@@ -34,7 +34,7 @@ Responsive navbar-brand image CSS
 }
 .navbar-brand>img {
   height: 100%;
-  padding: 15px;
+//  padding: 15px;
   width: auto;
 }
 

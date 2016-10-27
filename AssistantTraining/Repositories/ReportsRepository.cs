@@ -64,7 +64,7 @@ namespace AssistantTraining.Repositories
                                     {
                                                     data: null,
                                                     className: ""center"",
-                                                    defaultContent: '<a href="""" class=""editor_edit"">Edit</a>'
+                                                    defaultContent: '<a href=""javascript:instructionsWithoutTraining();"" class=""editor_edit"">Details</a>'
                                     }],"
                                 );
         }
@@ -148,7 +148,7 @@ namespace AssistantTraining.Repositories
                                     {
                                                     data: null,
                                                     className: ""center"",
-                                                    defaultContent: '<a href="""" class=""editor_edit"">Edit</a>'
+                                                    defaultContent: '<a href=""javascript:workersWithoutTraining();"" class=""editor_edit"">Details</a>'
                                     }],"
                     );
         }
@@ -209,7 +209,7 @@ namespace AssistantTraining.Repositories
                                     {
                                                     data: null,
                                                     className: ""center"",
-                                                    defaultContent: '<a href="""" class=""editor_edit"">Edit</a>'
+                                                    defaultContent: '<a href=""javascript:incompleteTraining();"" class=""editor_edit"">Details</a>'
                                     }],"
                     );
         }

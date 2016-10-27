@@ -340,3 +340,8 @@ function formatRepo(repo) {
 function formatRepoSelection(repo) {
     return repo.text || repo.id;
 }
+
+function ShowModal()
+{
+    $('#myModal').modal('show');
+}

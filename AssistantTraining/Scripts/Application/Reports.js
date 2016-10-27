@@ -64,20 +64,7 @@
         }
         });
 
-        //$.ajax({
-        //    cache: false,
-        //    type: "GET",
-        //    contentType: "application/json; charset=utf-8",
-        //    dataType: 'json',
-        //    url: "/Reports/GetFooString",
-        //    data: {},
-        //    success: function (data) {
-        //        alert(data);
-        //    },
-        //    error: function (xhr, ajaxOptions, thrownError) {
-        //        alert("Ajax Failed!!!");
-        //    }
-        //});
+
     });
 
 });
@@ -119,3 +106,18 @@ MVCDataTableJqueryBootStrap = {
 $(function () {
     MVCDataTableJqueryBootStrap.init();
 });
+var childWindow = null;
+
+function incompleteTraining() {
+    childWindow = window.open("/Training", "childWindow");
+    childWindow.focus();
+}
+function workersWithoutTraining() {
+    childWindow = window.open("/Training", "childWindow");
+    childWindow.focus();
+}
+function instructionsWithoutTraining() {
+    childWindow = window.open("/Training", "childWindow");
+    childWindow.focus();
+    window.setTimeout(function () { if ((childWindow != null) && (childWindow.closed == false)) childWindow.ShowModal(); }, 3000);
+}
