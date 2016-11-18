@@ -125,7 +125,8 @@ namespace AssistantTraining.Repositories
                           }
                             ).Distinct()
                             .ToList()
-                            .Select((currRow, index) => new { FirstName = currRow.FirstMidName, LastName = currRow.LastName, Number = currRow.Number, Version = currRow.Version, DT_RowId = index + 1 });
+                            .Select((currRow, index) => new { Name = currRow.LastName + " " + currRow.FirstMidName , Number = currRow.Number, Version = currRow.Version, DT_RowId = index + 1 });
+                            //.Select((currRow, index) => new { FirstName = currRow.FirstMidName, LastName = currRow.LastName, Number = currRow.Number, Version = currRow.Version, DT_RowId = index + 1 });
 
             var json2 = JsonConvert.SerializeObject(new
             {
@@ -134,10 +135,7 @@ namespace AssistantTraining.Repositories
 
             return json2.Insert(1, @"columns: [
                                     {
-                                                    title: ""LastName"", data: ""LastName""
-                                    },
-                                    {
-                                                    title: ""FirstName"", data: ""FirstName""
+                                                    title: ""Name"", data: ""Name""
                                     },
                                     {
                                                     title: ""Number"", data: ""Number""
@@ -220,7 +218,7 @@ namespace AssistantTraining.Repositories
                     columns: [{
                         title: ""INFO""
                     }, {
-                        title: ""COUNTY""
+                        title: ""VALUE""
                     }],
                     data: [
                       [""No data"", ""No data""]

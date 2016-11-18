@@ -1,0 +1,6 @@
+﻿1.0.0.1
+-Po exporcie do Excela Imię i nazwisko pracowników pojawia się w jednej kolumnie.
+-Nazwy Raportów
+-Tworzenie użytkowników
+1.X.X.X
+*Wchodząc w grupy -> details -> nie mogę przejść do szczegółów instrukcji dobrze by było gdyby się to pojawiło

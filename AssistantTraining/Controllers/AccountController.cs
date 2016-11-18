@@ -209,12 +209,48 @@ namespace AssistantTraining.Controllers
         [AllowAnonymous]
         public ActionResult Check(string id)
         {
-            //var roleName = "Administrator";
-            //var userName = "admin";
-            //var roleName = "Engineer";
-            //var userName = "eng";
-            var roleName = "Operator";
-            var userName = "ope";
+            var roleName = "Administrator";
+            var userName = "admin";
+            if (!db.Roles.Any(r => r.Name == roleName))
+            {
+                var store = new RoleStore<IdentityRole>(db);
+                var manager = new RoleManager<IdentityRole>(store);
+                var role = new IdentityRole { Name = roleName };
+
+                manager.Create(role);
+            }
+
+            if (!db.Users.Any(u => u.UserName == userName))
+            {
+                var store = new UserStore<ApplicationUser>(db);
+                var manager = new UserManager<ApplicationUser>(store);
+                var user = new ApplicationUser { UserName = userName };
+
+                manager.Create(user, "ChangeItAsap!");
+                manager.AddToRole(user.Id, roleName);
+            }
+            roleName = "Engineer";
+            userName = "eng";
+            if (!db.Roles.Any(r => r.Name == roleName))
+            {
+                var store = new RoleStore<IdentityRole>(db);
+                var manager = new RoleManager<IdentityRole>(store);
+                var role = new IdentityRole { Name = roleName };
+
+                manager.Create(role);
+            }
+
+            if (!db.Users.Any(u => u.UserName == userName))
+            {
+                var store = new UserStore<ApplicationUser>(db);
+                var manager = new UserManager<ApplicationUser>(store);
+                var user = new ApplicationUser { UserName = userName };
+
+                manager.Create(user, "ChangeItAsap!");
+                manager.AddToRole(user.Id, roleName);
+            }
+            roleName = "Operator";
+            userName = "ope";
 
             if (!db.Roles.Any(r => r.Name == roleName))
             {

@@ -165,6 +165,7 @@ namespace AssistantTraining.Controllers
 
             return Json(jsonData, JsonRequestBehavior.AllowGet);
         }
+
         [AjaxChildActionOnly]
         public ActionResult RemoveTrainings(TrainingUpdateData model)
         {
@@ -172,7 +173,6 @@ namespace AssistantTraining.Controllers
             {
                 foreach (var w in model.Workers)
                 {
-
                     //Czy zaznaczeniej do pojedynczej instrukcji traktujemu jako zaznaczenie szkolenia do tej instrukcji, czy do wszystkich instrukcji
                     //z tego szkolenia.
                     var tr = db.Trainings.Where(x => x.TrainingNameId.Equals(w.TrainingNameId) && x.WorkerId.Equals(w.WorkerID)).ToList();
@@ -192,7 +192,7 @@ namespace AssistantTraining.Controllers
                     }
                 }
             }
-        
+
             var repos = new WorkerRepository();
             var term = Session["term"] as string;
             var type = Session["type"] as string;
@@ -210,7 +210,6 @@ namespace AssistantTraining.Controllers
                 {
                     foreach (var w in model.Workers)
                     {
-
                         //Czy zaznaczeniej do pojedynczej instrukcji traktujemu jako zaznaczenie szkolenia do tej instrukcji, czy do wszystkich instrukcji
                         //z tego szkolenia.
                         var tr = db.Trainings.Where(x => x.TrainingNameId.Equals(w.TrainingNameId) && x.WorkerId.Equals(w.WorkerID)).ToList();
@@ -278,24 +277,21 @@ namespace AssistantTraining.Controllers
             List<InstructionsJson> lstInstructions = new List<InstructionsJson>();
             if (t.Equals("true"))
             {
-
-
-                 lstInstructions = (
-                  from i in db.Instructions 
-                  group i by i.Number into groupedI
-                  let maxVersion = groupedI.Max(gt => gt.Version)              
-                  select new
-                  {
-                      Key = groupedI.Key,
-                      ID = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).ID,
-                      Number = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).Number,
-                      Name = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).Name,
-                      Version = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).Version
-                  }
-                ).Select(x => new InstructionsJson { id = x.ID.ToString(), text = x.Number, name = x.Name, version = x.Version })
-                .Where(x => x.text.Contains(q))
-                .ToList();
-
+                lstInstructions = (
+                 from i in db.Instructions
+                 group i by i.Number into groupedI
+                 let maxVersion = groupedI.Max(gt => gt.Version)
+                 select new
+                 {
+                     Key = groupedI.Key,
+                     ID = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).ID,
+                     Number = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).Number,
+                     Name = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).Name,
+                     Version = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).Version
+                 }
+               ).Select(x => new InstructionsJson { id = x.ID.ToString(), text = x.Number, name = x.Name, version = x.Version })
+               .Where(x => x.text.Contains(q))
+               .ToList();
             }
             else
             {
@@ -317,9 +313,28 @@ namespace AssistantTraining.Controllers
                                      i.Number.Contains(q)
                                      && items.Contains(i.ID)
                                      && tg.InstructionId == null
-                                   select new InstructionsJson { id = i.ID.ToString(), text = i.Number,name = i.Name,version = i.Version }).ToList();
+                                   select new InstructionsJson { id = i.ID.ToString(), text = i.Number, name = i.Name, version = i.Version }).ToList();
+                //**FIX
+                //If a new worker was added.
+                if (lstInstructions.Count() == 0)
+                {
+                    lstInstructions =
+                   (from w in db.Workers
+                    join wg in db.GroupWorkers on w.ID equals wg.WorkerId
+                    join gi in db.InstructionGroups on wg.GroupId equals gi.GroupId
+                    join i in db.Instructions on gi.InstructionId equals i.ID
+                    join tt in db.Trainings
+                          on new { InstructionId = i.ID, WorkerId = wg.WorkerId }
+                      equals new { tt.InstructionId, tt.WorkerId } into t_join
+                    from tt in t_join.DefaultIfEmpty()
+                    where
+                      w.IsSuspend == false
+                      && items.Contains(i.ID)
+                    select new InstructionsJson { id = i.ID.ToString(), text = i.Number, name = i.Name, version = i.Version }).Distinct().ToList();
+
+                }
             }
-                var countInstructions = lstInstructions.Count();
+            var countInstructions = lstInstructions.Count();
 
             InstructionsJsonDTO result = new InstructionsJsonDTO();
             if (countInstructions > 0)
@@ -337,7 +352,7 @@ namespace AssistantTraining.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddNewTrainings(string selectedValues,string trainingNumber)
+        public ActionResult AddNewTrainings(string selectedValues, string trainingNumber)
         {
             if (selectedValues.Length > 0)
             {
@@ -354,18 +369,20 @@ namespace AssistantTraining.Controllers
 
                 #endregion Add new training
 
-                #region  Add TrainingGroup
+                #region Add TrainingGroup
+
                 foreach (var val in selectedValuesInstruction)
                 {
-                        TrainingGroup tg = new TrainingGroup();
-                        tg.TrainingNameId = tn.ID;
-                        tg.InstructionId = Int32.Parse(val);
-                        tg.TimeOfCreation = DateTime.Now;
-                        tg.TimeOfModification = DateTime.Now;
-                        db.TrainingGroups.Add(tg);
-                        db.SaveChanges();        
+                    TrainingGroup tg = new TrainingGroup();
+                    tg.TrainingNameId = tn.ID;
+                    tg.InstructionId = Int32.Parse(val);
+                    tg.TimeOfCreation = DateTime.Now;
+                    tg.TimeOfModification = DateTime.Now;
+                    db.TrainingGroups.Add(tg);
+                    db.SaveChanges();
                 }
-                #endregion  Add TrainingGroup
+
+                #endregion Add TrainingGroup
 
                 #region Add all workers and assigned instruction per TrainingGroup
 
@@ -375,9 +392,9 @@ namespace AssistantTraining.Controllers
                     join t in db.Trainings
                           on new { WorkerId = w.ID, ID = ig.Instruction.ID }
                       equals new { t.WorkerId, ID = t.InstructionId } into t_join
-                                        from t in t_join.DefaultIfEmpty()
+                    from t in t_join.DefaultIfEmpty()
                     where
-                    w.IsSuspend == false && intInstructionIDs.Contains(ig.Instruction.ID)  && t.ID == null
+                    w.IsSuspend == false && intInstructionIDs.Contains(ig.Instruction.ID) && t.ID == null
                     select new
                     {
                         WorkerID = w.ID,
@@ -403,7 +420,8 @@ namespace AssistantTraining.Controllers
                         }
                     }
                 }
-                #endregion  Add all workers and assigned instruction per TrainingGroup
+
+                #endregion Add all workers and assigned instruction per TrainingGroup
             }
 
             return Json("success");

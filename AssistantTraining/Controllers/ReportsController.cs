@@ -32,17 +32,17 @@ namespace AssistantTraining.Controllers
             lstItems.Add(new SelectListItem()
             {
                 Value = "1",
-                Text = "Lista szkoleń niekompletnych"
+                Text = "SZKOLENIA"
             });
             lstItems.Add(new SelectListItem()
             {
                 Value = "2",
-                Text = "Lista instrukcji, do których nie zostały utworzone szkolenia"
+                Text = "INSTRUKCJE"
             });
             lstItems.Add(new SelectListItem()
             {
                 Value = "3",
-                Text = "Lista pracowników, którzy powinni odbyć jakiekolwiek szkolenie"
+                Text = "RAPORTY"
             });
 
             appReports.Items = lstItems;
