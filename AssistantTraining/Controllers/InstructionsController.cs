@@ -516,5 +516,60 @@ namespace AssistantTraining.Controllers
 
             return RedirectToAction("Index");
         }
+
+        
+        public ActionResult Search(string srchterminstructions)
+        {
+            var newInstructions =
+                    (from i in db.Instructions
+                     group i by i.Number into groupedI
+                     let maxVersion = groupedI.Max(gt => gt.Version)
+                     select new InstructionLatestVersion
+                     {
+                         Key = groupedI.Key,
+                         maxVersion = maxVersion,
+                         ID = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).ID
+                     }).Where(ni => ni.Key.Contains(srchterminstructions) || String.IsNullOrEmpty(srchterminstructions)).ToList();
+
+            var allInstructions = db.Instructions.ToList().Where(x => newInstructions.Any(ni => ni.ID == x.ID) ).ToList();
+            var workerRepository = new WorkerRepository();
+            var groups = workerRepository.GetAllGroups();
+
+            List<InstructionIndexData> lstInstructionGroups = new List<InstructionIndexData>();
+
+            foreach (var item in allInstructions)
+            {
+                var instructioGroup = new InstructionIndexData();
+
+                instructioGroup.ID = item.ID;
+                instructioGroup.Name = item.Name;
+                instructioGroup.Number = item.Number;
+                instructioGroup.Version = item.Version;
+                instructioGroup.UserName = item.CreatedByUserId;
+                if (item.CreatedByUserId != null)
+                    instructioGroup.UserName = db.Users.Find(item.CreatedByUserId).UserName;
+                instructioGroup.TimeOfCreation = item.TimeOfCreation.ToShortDateString();
+
+                var lstGroupIds = (from InstructionGroups in db.InstructionGroups
+                                   where
+                                     InstructionGroups.GroupId != null &&
+                                     InstructionGroups.InstructionId == item.ID
+                                   select new
+                                   {
+                                       val = (InstructionGroups.GroupId ?? 0)
+                                   }).Select(x => x.val.ToString()).ToList();
+                instructioGroup.SelectedIds = lstGroupIds.ToArray();
+
+                instructioGroup.Items = groups.Select(x => new SelectListItem
+                {
+                    Value = x.ID.ToString(),
+                    Text = x.GroupName
+                });
+
+                lstInstructionGroups.Add(instructioGroup);
+            }
+
+            return View("Index",lstInstructionGroups);
+        }
     }
 }

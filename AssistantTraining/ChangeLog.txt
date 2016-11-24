@@ -9,7 +9,7 @@
 In progress
 1.0.0.3
 - Poprawka na eksport pracowników z zakładki szkoleń
-*możliwość wyszukiwania instrukcji w widoku INSTRUKCJE po numerze WG. Lub fragmencie nazwy jak Panu łatwiej.
+- Możliwość wyszukiwania instrukcji w widoku INSTRUKCJE po numerze WG. Lub fragmencie nazwy jak Panu łatwiej.
 
 Future
 *możliwość wyszukiwania instrukcji w widoku INSTRUKCJE po numerze WG. Lub fragmencie nazwy jak Panu łatwiej.
