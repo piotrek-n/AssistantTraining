@@ -252,7 +252,7 @@ namespace AssistantTraining.Controllers
             using (ExcelPackage pck = new ExcelPackage())
             {
                 ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Workers");
-                ws.Cells["A1"].LoadFromCollection(workers, true);
+                ws.Cells["A1"].LoadFromCollection(workers.Select(x => new { FullName = x.FirstName + " " + x.Name }).ToList(), true);
                 // Load your collection "accounts"
 
                 Byte[] fileBytes = pck.GetAsByteArray();
