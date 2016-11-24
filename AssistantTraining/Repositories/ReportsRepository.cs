@@ -17,7 +17,27 @@ namespace AssistantTraining.Repositories
         /// </summary>
         public static string InstructionsWithoutTraining()
         {
-            var result = (from max_ins in (
+            string json2 = InstructionsWithoutTrainingJSON();
+
+            return json2.Insert(1, @"columns: [
+                                    {
+                                                    title: ""Number"", data: ""Number""
+                                                        },
+                                    {
+                                                    title: ""Version"", data: ""Version""
+                                    },
+                                    {
+                                                    data: null,
+                                                    className: ""center"",
+                                                    defaultContent: '<a href=""javascript:instructionsWithoutTraining();"" class=""editor_edit"">Details</a>'
+                                    }],"
+                                );
+        }
+
+        public static string InstructionsWithoutTrainingJSON()
+        {
+            var result =
+                (from max_ins in (
                 (from i in db.Instructions
                  join ig in (
                      (from Instructions in db.Instructions
@@ -38,38 +58,47 @@ namespace AssistantTraining.Repositories
                      i.Version,
                      i.Number
                  }))
-                          join tg in db.TrainingGroups on new { InstructionId = max_ins.ID } equals new { InstructionId = tg.InstructionId } into tg_join
-                          from tg in tg_join.DefaultIfEmpty()
-                          where
-                            tg.InstructionId == null
-                          select new
-                          {
-                              max_ins.Number,
-                              max_ins.Version
-                          }
+                 join tg in db.TrainingGroups on new { InstructionId = max_ins.ID } equals new { InstructionId = tg.InstructionId } into tg_join
+                 from tg in tg_join.DefaultIfEmpty()
+                 where
+                   tg.InstructionId == null
+                 select new
+                 {
+                     max_ins.Number,
+                     max_ins.Version
+                 }
              ).ToList().Select((currRow, index) => new { Number = currRow.Number, Version = currRow.Version, DT_RowId = index + 1 });
 
             var json2 = JsonConvert.SerializeObject(new
             {
                 data = result
             });
+            return json2;
+        }
+
+        public static string WorkersWithoutTraining()
+        {
+            string json2 = WorkersWithoutTrainingJSON();
 
             return json2.Insert(1, @"columns: [
                                     {
+                                                    title: ""Name"", data: ""Name""
+                                    },
+                                    {
                                                     title: ""Number"", data: ""Number""
-                                                        },
+                                    },
                                     {
                                                     title: ""Version"", data: ""Version""
                                     },
                                     {
                                                     data: null,
                                                     className: ""center"",
-                                                    defaultContent: '<a href=""javascript:instructionsWithoutTraining();"" class=""editor_edit"">Details</a>'
+                                                    defaultContent: '<a href=""javascript:workersWithoutTraining();"" class=""editor_edit"">Details</a>'
                                     }],"
-                                );
+                    );
         }
 
-        public static string WorkersWithoutTraining()
+        public static string WorkersWithoutTrainingJSON()
         {
             var result = (from w in db.Workers
                           join gw in db.GroupWorkers on w.ID equals gw.WorkerId
@@ -125,30 +154,14 @@ namespace AssistantTraining.Repositories
                           }
                             ).Distinct()
                             .ToList()
-                            .Select((currRow, index) => new { Name = currRow.LastName + " " + currRow.FirstMidName , Number = currRow.Number, Version = currRow.Version, DT_RowId = index + 1 });
-                            //.Select((currRow, index) => new { FirstName = currRow.FirstMidName, LastName = currRow.LastName, Number = currRow.Number, Version = currRow.Version, DT_RowId = index + 1 });
+                            .Select((currRow, index) => new { Name = currRow.LastName + " " + currRow.FirstMidName, Number = currRow.Number, Version = currRow.Version, DT_RowId = index + 1 });
+            //.Select((currRow, index) => new { FirstName = currRow.FirstMidName, LastName = currRow.LastName, Number = currRow.Number, Version = currRow.Version, DT_RowId = index + 1 });
 
             var json2 = JsonConvert.SerializeObject(new
             {
                 data = result
             });
-
-            return json2.Insert(1, @"columns: [
-                                    {
-                                                    title: ""Name"", data: ""Name""
-                                    },
-                                    {
-                                                    title: ""Number"", data: ""Number""
-                                    },
-                                    {
-                                                    title: ""Version"", data: ""Version""
-                                    },
-                                    {
-                                                    data: null,
-                                                    className: ""center"",
-                                                    defaultContent: '<a href=""javascript:workersWithoutTraining();"" class=""editor_edit"">Details</a>'
-                                    }],"
-                    );
+            return json2;
         }
 
         /// <summary>
@@ -156,6 +169,25 @@ namespace AssistantTraining.Repositories
         /// </summary>
         /// <returns></returns>
         public static string IncompleteTraining()
+        {
+            string json2 = IncompleteTrainingJSON();
+
+            return json2.Insert(1, @"columns: [
+                                    {
+                                                    title: ""TrainingNumber"", data: ""TrainingNumber""
+                                    },
+                                    {
+                                                    title: ""InstructionNumber"", data: ""InstructionNumber""
+                                    },
+                                    {
+                                                    data: null,
+                                                    className: ""center"",
+                                                    defaultContent: '<a href=""javascript:incompleteTraining();"" class=""editor_edit"">Details</a>'
+                                    }],"
+                    );
+        }
+
+        public static string IncompleteTrainingJSON()
         {
             var result =
             (from w in db.Workers
@@ -196,20 +228,7 @@ namespace AssistantTraining.Repositories
             {
                 data = result
             });
-
-            return json2.Insert(1, @"columns: [
-                                    {
-                                                    title: ""TrainingNumber"", data: ""TrainingNumber""
-                                    },
-                                    {
-                                                    title: ""InstructionNumber"", data: ""InstructionNumber""
-                                    },
-                                    {
-                                                    data: null,
-                                                    className: ""center"",
-                                                    defaultContent: '<a href=""javascript:incompleteTraining();"" class=""editor_edit"">Details</a>'
-                                    }],"
-                    );
+            return json2;
         }
 
         public static string EmptyReport()
@@ -227,5 +246,6 @@ namespace AssistantTraining.Repositories
 
             return json;
         }
+
     }
 }
