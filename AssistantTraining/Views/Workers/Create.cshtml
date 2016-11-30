@@ -1,4 +1,5 @@
-﻿@model AssistantTraining.ViewModel.WorkerGroupViewModel
+﻿@*@model AssistantTraining.ViewModel.WorkerGroupViewModel*@
+@model AssistantTraining.ViewModel.WorkerViewModel
 
 @{
     ViewBag.Title = "Create";
@@ -40,12 +41,15 @@
                 @Html.ValidationMessageFor(model => model.Tag, "", new { @class = "text-danger" })
             </div>
         </div>
-
         <div class="form-group">
-           @Html.LabelFor(model => model.Items, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.AvailableGroups, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @*@Html.DropDownList("GroupID", (MultiSelectList)ViewBag.Groups, new { multiple = "multiple", @class = "form-control" })*@
-                @Html.ListBoxFor(x => x.SelectedIds, Model.Items,new { multiple = "multiple", @class = "form-control" })
+
+                @Html.CheckBoxListFor(model => model.PostingGroups.GroupIDs,
+                      model => model.AvailableGroups,
+                      entity => entity.ID,
+                      entity => entity.GroupName,
+                      model => model.SelectedGroups, MvcCheckBoxList.Model.Position.Vertical)
             </div>
         </div>
 

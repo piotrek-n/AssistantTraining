@@ -113,6 +113,28 @@ namespace AssistantTraining.Controllers
                 Text = x.GroupName
             });
 
+            var lst = (from w in db.Workers
+                       join wg in db.GroupWorkers on w.ID equals wg.WorkerId
+                       join gi in db.InstructionGroups on wg.GroupId equals gi.GroupId
+                       join i in db.Instructions on gi.InstructionId equals i.ID
+                       join t in db.Trainings
+                             on new { InstructionId = i.ID, WorkerId = wg.WorkerId }
+                         equals new { t.InstructionId, t.WorkerId } into t_join
+                       from t in t_join.DefaultIfEmpty()
+                       where i.ID == id
+                       select new InstructionVsTrainingData
+                       {
+                           WorkerLastName = w.LastName,
+                           WorkerFirstMidName = w.FirstMidName,
+                           WorkerFullName = w.LastName + " " + w.FirstMidName,
+                           InstructionName = i.Name,
+                           GroupId = (int?)gi.GroupId,
+                           InstructionVersion = i.Version,
+                           InstructionNumber = i.Number,
+                           DateOfTraining = (DateTime?)t.DateOfTraining
+                       });
+
+
             instructionGroupViewModel.instructionVsTrainingList =
                              (from w in db.Workers
                               join wg in db.GroupWorkers on w.ID equals wg.WorkerId

@@ -47,7 +47,7 @@ namespace AssistantTraining.Controllers
             lstItems.Add(new SelectListItem()
             {
                 Value = "3",
-                Text = "RAPORTY"
+                Text = "PRACOWNICY"
             });
 
             appReports.Items = lstItems;

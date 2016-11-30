@@ -11,7 +11,7 @@
     <div class="form-group">
         @Html.Label("Raporty", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DropDownListFor(x => x.SelectedId, Model.Items, new { @class = "form-control" })
+            @Html.DropDownListFor(x => x.SelectedId, Model.Items, new { @class = "form-control", @style = "display:inline-block;" })
             <a href="" onclick="return getReport();" id="ReportLink" class="btn btn-default">
                 Export to Excel
                 <span class="glyphicon" aria-hidden="true"></span>

@@ -1,8 +1,11 @@
 ﻿using AssistantTraining.DAL;
 using AssistantTraining.Models;
+using AssistantTraining.Repositories;
 using AssistantTraining.ViewModel;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -53,16 +56,12 @@ namespace AssistantTraining.Controllers
                         where ig.GroupId == id && items.Contains(i.ID)
                         select i).ToList();
             
-
-            //var lst = (from ig in db.InstructionGroups where ig.GroupId == id
-            //           join i in db.Instructions on ig.InstructionId equals i.ID
-            //           select i).ToList();
             if (lst != null && lst.Count > 0)
             {
                 gd.Instructions = new List<InstructionInGroup>();
                 foreach (var item in lst)
                 {
-                    gd.Instructions.Add(new InstructionInGroup() { Name = item.Name, Number = item.Number , Version = item.Version});
+                    gd.Instructions.Add(new InstructionInGroup() { Name = item.Name, Number = item.Number , Version = item.Version, ID = item.ID});
                 }
             }
 
@@ -156,6 +155,47 @@ namespace AssistantTraining.Controllers
             db.Groups.Remove(group);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult SearchByGroup(string srchtermWorkerByGroup)
+        {
+            return View("Index",db.Groups.Where(x=>x.GroupName.Contains(srchtermWorkerByGroup)).ToList());
+        }
+
+        public ActionResult Excel()
+        {
+            var groups = db.Groups.Select(x => new { Name = x.GroupName }).ToList();
+
+            using (ExcelPackage pck = new ExcelPackage())
+            {
+                ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Groups");
+                ws.Cells["A1"].LoadFromCollection(groups, true);
+
+
+                Byte[] fileBytes = pck.GetAsByteArray();
+                Response.Clear();
+                Response.Buffer = true;
+                Response.AddHeader("content-disposition", "attachment;filename=Groups.xlsx");
+
+                Response.Charset = "";
+                Response.ContentType = "application/vnd.ms-excel";
+                StringWriter sw = new StringWriter();
+                Response.BinaryWrite(fileBytes);
+                Response.End();
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult TrainedUsers(int id)
+        {
+            var workers = (from t in db.Trainings
+                           join w in db.Workers on t.WorkerId equals w.ID
+                           where t.InstructionId.Equals(id) && t.DateOfTraining > new DateTime(2000 , 1, 1)
+                           select w);
+
+
+            return View(workers);
         }
 
         protected override void Dispose(bool disposing)

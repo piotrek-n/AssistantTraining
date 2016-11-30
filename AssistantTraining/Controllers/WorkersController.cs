@@ -2,7 +2,6 @@
 using AssistantTraining.Models;
 using AssistantTraining.Repositories;
 using AssistantTraining.ViewModel;
-using Microsoft.AspNet.Identity;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
@@ -57,27 +56,39 @@ namespace AssistantTraining.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Worker worker = db.Workers.Find(id);
+
+            var workerGroup = new WorkerViewModel();
+            var workerRepository = new WorkerRepository();
+            var groups = workerRepository.GetAllGroups();
+
+            workerGroup.AvailableGroups = groups;
+
+            workerGroup.FirstMidName = worker.FirstMidName;
+            workerGroup.LastName = worker.LastName;
+            workerGroup.ID = worker.ID;
+            workerGroup.Tag = worker.Tag;
+            workerGroup.IsSuspend = worker.IsSuspend;
+            workerGroup.PostingGroups = new PostingGroup() { GroupIDs = db.GroupWorkers.Where(x => x.WorkerId.Equals(worker.ID)).Select(x => x.GroupId.ToString()).ToArray() };
+            workerGroup.SelectedGroups = db.GroupWorkers.Where(x => x.WorkerId.Equals(worker.ID)).Select(x => x.Group).ToList();
+
             if (worker == null)
             {
                 return HttpNotFound();
             }
-            return View(worker);
+            return View(workerGroup);
         }
 
         // GET: Workers/Create
         public ActionResult Create()
         {
-            var workerGroup = new WorkerGroupViewModel();
+            var workerGroup = new WorkerViewModel();
             var workerRepository = new WorkerRepository();
             var groups = workerRepository.GetAllGroups();
 
-            workerGroup.WorkerGroups = groups;
-            workerGroup.Items = groups.Select(x => new SelectListItem
-            {
-                Value = x.ID.ToString(),
-                Text = x.GroupName
-            });
+            workerGroup.AvailableGroups = groups;
+
 
             return View(workerGroup);
         }
@@ -87,7 +98,7 @@ namespace AssistantTraining.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(WorkerGroupViewModel workerGroup)
+        public ActionResult Create(WorkerViewModel workerGroup)
         {
             if (ModelState.IsValid)
             {
@@ -101,9 +112,9 @@ namespace AssistantTraining.Controllers
                 db.Workers.Add(worker);
                 db.SaveChanges();
 
-                if (workerGroup.SelectedIds != null && workerGroup.SelectedIds.Count() > 0)
+                if (workerGroup.PostingGroups.GroupIDs != null && workerGroup.PostingGroups.GroupIDs.Count() > 0)
                 {
-                    foreach (var item in workerGroup.SelectedIds)
+                    foreach (var item in workerGroup.PostingGroups.GroupIDs)
                     {
                         var groupInstructions = new GroupWorker()
                         {
@@ -133,23 +144,19 @@ namespace AssistantTraining.Controllers
 
             Worker worker = db.Workers.Find(id);
 
-            var workerGroup = new WorkerGroupViewModel();
+            var workerGroup = new WorkerViewModel();
             var workerRepository = new WorkerRepository();
             var groups = workerRepository.GetAllGroups();
 
-            workerGroup.WorkerGroups = groups;
-            workerGroup.Items = groups.Select(x => new SelectListItem
-            {
-                Value = x.ID.ToString(),
-                Text = x.GroupName
-            });
+            workerGroup.AvailableGroups = groups;
 
             workerGroup.FirstMidName = worker.FirstMidName;
             workerGroup.LastName = worker.LastName;
             workerGroup.ID = worker.ID;
             workerGroup.Tag = worker.Tag;
             workerGroup.IsSuspend = worker.IsSuspend;
-            workerGroup.SelectedIds = db.GroupWorkers.Where(x => x.WorkerId.Equals(worker.ID)).Select(x => x.GroupId.ToString()).ToArray();
+            workerGroup.PostingGroups = new PostingGroup() { GroupIDs = db.GroupWorkers.Where(x => x.WorkerId.Equals(worker.ID)).Select(x => x.GroupId.ToString()).ToArray() };
+            workerGroup.SelectedGroups = db.GroupWorkers.Where(x => x.WorkerId.Equals(worker.ID)).Select( x => x.Group).ToList();
 
             if (worker == null)
             {
@@ -163,7 +170,7 @@ namespace AssistantTraining.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(WorkerGroupViewModel workerGroup)
+        public ActionResult Edit(WorkerViewModel workerGroup)
         {
             if (ModelState.IsValid)
             {
@@ -182,11 +189,11 @@ namespace AssistantTraining.Controllers
                 db.Entry(worker).Property(X => X.TimeOfModification).IsModified = true;
                 db.Entry(worker).Property(X => X.IsSuspend).IsModified = true;
 
-                if (workerGroup.SelectedIds != null && workerGroup.SelectedIds.Count() > 0)
+                if (workerGroup.PostingGroups.GroupIDs != null && workerGroup.PostingGroups.GroupIDs.Count() > 0)
                 {
                     var wGroups = db.GroupWorkers.Where(w => w.WorkerId == workerGroup.ID).ToList();
 
-                    foreach (var item in workerGroup.SelectedIds)
+                    foreach (var item in workerGroup.PostingGroups.GroupIDs)
                     {
                         if ((wGroups.Where(x => x.WorkerId.Equals(workerGroup.ID) && x.GroupId.Equals(Int32.Parse(item))).FirstOrDefault() == null) || wGroups.Count() == 0)
                         {
@@ -203,7 +210,7 @@ namespace AssistantTraining.Controllers
                     }
                     foreach (var item in wGroups)
                     {
-                        if (!workerGroup.SelectedIds.Contains(item.GroupId.ToString()))
+                        if (!workerGroup.PostingGroups.GroupIDs.Contains(item.GroupId.ToString()))
                         {
                             db.GroupWorkers.Remove(item);
                             db.SaveChanges();
@@ -257,7 +264,14 @@ namespace AssistantTraining.Controllers
 
         public ActionResult Excel()
         {
-            var workers = db.Workers.Select(w=>new { Name = w.FirstMidName, LastName = w.LastName }).ToList();
+            //var workers = db.Workers.Select(w=>new { FullName = w.FirstMidName + " " + w.LastName, IsSuspend = w.IsSuspend}).ToList();
+
+            var workers =
+             (from w in db.Workers
+              join gw in db.GroupWorkers on w.ID equals gw.WorkerId
+              join g in db.Groups on gw.GroupId equals g.ID
+              select new { FullName = w.FirstMidName + " " + w.LastName, IsSuspend = w.IsSuspend, GroupName = g.GroupName }
+              ).ToList();
 
             using (ExcelPackage pck = new ExcelPackage())
             {
@@ -268,8 +282,7 @@ namespace AssistantTraining.Controllers
                 Byte[] fileBytes = pck.GetAsByteArray();
                 Response.Clear();
                 Response.Buffer = true;
-                Response.AddHeader("content-disposition", "attachment;filename=DataTable.xlsx");
-                // Replace filename with your custom Excel-sheet name.
+                Response.AddHeader("content-disposition", "attachment;filename=Workers.xlsx");
 
                 Response.Charset = "";
                 Response.ContentType = "application/vnd.ms-excel";
@@ -279,6 +292,70 @@ namespace AssistantTraining.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        public ActionResult SearchByWorker(string srchtermWorkerByWorker)
+        {
+            var allWorker = db.Workers.ToList();
+            var workerRepository = new WorkerRepository();
+            var groups = workerRepository.GetAllGroups();
+
+            List<WorkerGroupViewModel> lstWorkerGroups = new List<WorkerGroupViewModel>();
+
+            foreach (var item in allWorker)
+            {
+                var workerGroup = new WorkerGroupViewModel();
+
+                workerGroup.ID = item.ID;
+                workerGroup.FirstMidName = item.FirstMidName;
+                workerGroup.LastName = item.LastName;
+                workerGroup.FullName = item.LastName + " " + item.FirstMidName;
+                workerGroup.Tag = item.Tag;
+                workerGroup.SelectedIds = db.GroupWorkers.Where(x => x.WorkerId.Equals(item.ID)).Select(x => x.GroupId.ToString()).ToArray();
+                workerGroup.WorkerGroups = groups;
+                workerGroup.Items = groups.Select(x => new SelectListItem
+                {
+                    Value = x.ID.ToString(),
+                    Text = x.GroupName
+                });
+
+                lstWorkerGroups.Add(workerGroup);
+            }
+            return View("Index", lstWorkerGroups.Where(x => x.FullName.Contains(srchtermWorkerByWorker)));
+        }
+
+        public ActionResult SearchByGroup(string srchtermWorkerByGroup)
+        {
+            var allWorker = db.Workers.ToList();
+            var workerRepository = new WorkerRepository();
+            var groups = workerRepository.GetAllGroups();
+
+            List<WorkerGroupViewModel> lstWorkerGroups = new List<WorkerGroupViewModel>();
+
+            foreach (var item in allWorker)
+            {
+                var workerGroup = new WorkerGroupViewModel();
+
+                var lstGroups = db.GroupWorkers.Where(x => x.WorkerId.Equals(item.ID)).Select(x => x.Group.GroupName).ToList();
+                if (lstGroups.FirstOrDefault(stringToCheck => stringToCheck.Contains(srchtermWorkerByGroup)) != null)
+                {
+                    workerGroup.ID = item.ID;
+                    workerGroup.FirstMidName = item.FirstMidName;
+                    workerGroup.LastName = item.LastName;
+                    workerGroup.FullName = item.LastName + " " + item.FirstMidName;
+                    workerGroup.Tag = item.Tag;
+                    workerGroup.SelectedIds = db.GroupWorkers.Where(x => x.WorkerId.Equals(item.ID)).Select(x => x.GroupId.ToString()).ToArray();
+                    workerGroup.WorkerGroups = groups;
+                    workerGroup.Items = groups.Select(x => new SelectListItem
+                    {
+                        Value = x.ID.ToString(),
+                        Text = x.GroupName
+                    });
+
+                    lstWorkerGroups.Add(workerGroup);
+                }
+            }
+            return View("Index", lstWorkerGroups);
         }
 
         protected override void Dispose(bool disposing)

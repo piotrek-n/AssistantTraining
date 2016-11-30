@@ -7,19 +7,20 @@
 <h2>Index</h2>
 
 <p>
-@if (User.IsInRole("Administrator") || User.IsInRole("Engineer"))
-{
-    <div class="row">
-        <div class="col-md-4">
-            <a href="@Url.Action("Create", "Instructions")" class="btn btn-default">
-                Create New
-                <span class="glyphicon" aria-hidden="true"></span>
-            </a>
-        </div>
-        <div class="col-md-4">
-        </div>
+    @if (User.IsInRole("Administrator") || User.IsInRole("Engineer"))
+    {
+        <div class="row">
             <div class="col-md-4">
-                <form class="navbar-form" role="search" id="idInstructions" method="POST" action="/Instructions/Search" >
+                <a href="@Url.Action("Create", "Instructions")" class="btn btn-default">
+                    Create New
+                    <span class="glyphicon" aria-hidden="true"></span>
+                </a>
+            </div>
+            <div class="col-md-4">
+            </div>
+            <div class="col-md-4">
+
+                <form class="navbar-form" role="search" id="idInstructions" method="POST" action="/Instructions/Search">
                     <div class="input-group">
                         <input type="text" class="typeahead form-control" autocomplete="off" placeholder="Instructions" spellcheck="false" name="srchterminstructions" id="srchterminstructions">
                         <div class="input-group-btn">
@@ -27,10 +28,9 @@
                         </div>
                     </div>
                 </form>
-
             </div>
         </div>
-}
+    }
 </p>
 
 @Html.Grid(Model).Columns(columns =>
@@ -57,15 +57,15 @@
 
 @helper Edit(int Id)
 {
-            @Html.ActionLink("Details", "Details", new { id = Id })
+    @Html.ActionLink("Details", "Details", new { id = Id })
 
-            if(User.IsInRole("Administrator") || User.IsInRole("Engineer"))
-            {
-                @:| @Html.ActionLink("Edit", "Edit", new { id = Id })  
+if (User.IsInRole("Administrator") || User.IsInRole("Engineer"))
+{
+        @:| @Html.ActionLink("Edit", "Edit", new { id = Id })
             }
-            if (User.IsInRole("Administrator"))
-            {
-                 @:| @Html.ActionLink("Delete", "Delete", new { id = Id })
+if (User.IsInRole("Administrator"))
+{
+        @:| @Html.ActionLink("Delete", "Delete", new { id = Id })
             }
 }
 
@@ -75,6 +75,3 @@
 }
 
 <script type="text/javascript">
-
-
-</script>

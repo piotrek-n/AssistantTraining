@@ -16,11 +16,17 @@
 
 
         @Html.Grid(instr).Columns(columns =>
-        {
-            columns.Add(foo => foo.Name).Titled("Nazwa").SetWidth(110);
-            columns.Add(foo => foo.Number).Titled("Numer").SetWidth(110);
-            columns.Add(foo => foo.Version).Titled("Wersja").SetWidth(110);
-        }).WithPaging(10)
+   {
+       columns.Add(foo => foo.Name).Titled("Nazwa").SetWidth(110);
+       columns.Add(foo => foo.Number).Titled("Numer").SetWidth(110);
+       columns.Add(foo => foo.Version).Titled("Wersja").SetWidth(110);
+       columns.Add()
+            .Encoded(false)
+            .Sanitized(false)
+            .SetWidth(30)
+            .RenderValueAs(foo => Edit(foo.ID));
+
+   }).WithPaging(10)
 
     
 </div>
@@ -28,3 +34,7 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+@helper Edit(int Id)
+{
+    @Html.ActionLink("Details", "TrainedUsers", new { id = Id })
+}

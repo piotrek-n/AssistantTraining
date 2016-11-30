@@ -1,11 +1,11 @@
-﻿@model AssistantTraining.ViewModel.WorkerGroupViewModel
+﻿@*@model AssistantTraining.ViewModel.WorkerGroupViewModel*@
+@model AssistantTraining.ViewModel.WorkerViewModel
 
 @{
     ViewBag.Title = "Edit";
 }
 
 <h2>Edit</h2>
-
 
 @using (Html.BeginForm())
 {
@@ -42,18 +42,26 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Items, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.AvailableGroups, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @*@Html.DropDownList("GroupID", (MultiSelectList)ViewBag.Groups, new { multiple = "multiple", @class = "form-control" })*@
-                @Html.ListBoxFor(x => x.SelectedIds, Model.Items, new { multiple = "multiple", @class = "form-control" })
+                @*@Html.ListBoxFor(x => x.SelectedIds, Model.Items, new { multiple = "multiple", @class = "form-control" })*@
+                @*@Html.CheckBoxListFor(model => model.SelectedSources, Model.SubscriptionSources)*@
+
+                @Html.CheckBoxListFor(model => model.PostingGroups.GroupIDs,
+                      model => model.AvailableGroups,
+                      entity => entity.ID,
+                      entity => entity.GroupName,
+                      model => model.SelectedGroups, MvcCheckBoxList.Model.Position.Vertical)
+
                 <div>
-                    @Html.Label("W celu wybrania wielu pól należy użyć klawisza Shift", htmlAttributes: new { @class = "control-label" })
+                    @*@Html.Label("W celu wybrania wielu pól należy użyć klawisza Shift", htmlAttributes: new { @class = "control-label" })*@
                 </div>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-md-3" for="checkboxField">Zawieszony</label>
-            <div class="col-md-9">
+            <label class="control-label col-md-2" for="checkboxField">Zawieszony</label>
+            <div class="col-md-10">
                 <!-- bootstrap button group -->
                 <div class="btn-group btn-toggle-radio" data-toggle="buttons-radio">
                     <button type="button" data-model-field="checkboxField" class="btn btn-default" id="buttonFilterYes">Yes</button>
@@ -83,24 +91,24 @@
         @if (Model.IsSuspend == true)
         {
              @:$("#buttonFilterNo").removeClass("active btn-success");
-             @:$("#buttonFilterNo").addClass("btn-default");
-             @:$("#buttonFilterYes").removeClass("btn-default");
-             @: $("#buttonFilterYes").addClass("active btn-success");
+                     @:$("#buttonFilterNo").addClass("btn-default");
+                     @:$("#buttonFilterYes").removeClass("btn-default");
+                     @: $("#buttonFilterYes").addClass("active btn-success");
 
              @:$("#buttonFilterYes").prop("checked", true);
-             @:document.getElementById('IsSuspend').value = "true";
-             //@:alert($("#IsSuspend").val());
+                     @:document.getElementById('IsSuspend').value = "true";
+                     //@:alert($("#IsSuspend").val());
          }
          else
          {
              @:$("#buttonFilterYes").removeClass("active btn-success");
-             @:$("#buttonFilterYes").addClass("btn-default");
-             @:$("#buttonFilterNo").removeClass("btn-default");
-             @: $("#buttonFilterNo").addClass("active btn-success");
+                     @:$("#buttonFilterYes").addClass("btn-default");
+                     @:$("#buttonFilterNo").removeClass("btn-default");
+                     @: $("#buttonFilterNo").addClass("active btn-success");
 
              @:$("#buttonFilterNo").prop("checked", false);
-             @:document.getElementById('IsSuspend').value = "false";
-             //@:alert($("#IsSuspend").val());
+                     @:document.getElementById('IsSuspend').value = "false";
+                     //@:alert($("#IsSuspend").val());
          }
 
     });

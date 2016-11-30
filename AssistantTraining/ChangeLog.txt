@@ -12,6 +12,56 @@
 
 In progress
 1.0.0.4
--
+-Zmiana nazwy raportu RAPORTY na PRACOWNICY
+-Zmiana stylów na RAPORTY
+-W Widoku WORKERS eksportując do excela imię i nazwisko pracownika powinno być w jednej komórce i dobrze by było gdyby eksportowały się też grupy, do których pracownik jest przypisany, a także informacja o tym czy jest zawieszony.
+-W widoku WORKERS wyszukiwanie pracownika.
+-W widoku WORKERS wyszukiwanie pracownicy przypisani do grupy Vision Shark
+-W widoku WORKERS edycja grup do pracownika powinno odbywać się trochę inaczej.
+-W widoku WORKERS „tag” zamieniamy na „opis” i niech będzie on widoczny już w tym głównym widoku listy pracowników
+-W widoku WORKERS dodawanie grup do pracownika powinno odbywać się trochę inaczej.
+-W widoku WORKERS po wejściu w detale lista grup do których podłączony jest pracownik, informacja o zawieszeniu
+-W widoku WORKERS „tag” zamieniamy na „opis” i niech będzie on widoczny już w tym głównym widoku listy pracowników
+-W widoku GROUPS możliwość eksportu do excela
+-W widoku GROUPS możliwość wyszukiwania po fragmencie tekstu
+-W widoku GROUPS jak już wcześniej rozmawialiśmy po przejściu do listy instrukcji 
+  dobrze byłoby umieścić przycisk detale żeby zobaczyć listę pracowników przeszkolonych
+
+1.0.0.5
+* W widoku INSTRUKCJE możliwość wyszukiwania po fragmencie tekstu
+
 Future
+*I tą możliwość przejścia z widoku grup do listy osób przeszkolonych z danej instrukcji. Grupy -> details (lista instrukcji) -> tu poproszę przycisk „details”.
 *Wchodząc w grupy -> details -> nie mogę przejść do szczegółów instrukcji dobrze by było gdyby się to pojawiło
+*Przechodzenie na widoki z raportów
+
+1.       Brak logo ( to kosmetyczna poprawka)
+
+-|- 2.       W Widoku WORKERS eksportując do excela imię i nazwisko pracownika powinno być w jednej komórce i dobrze by było gdyby eksportowały się też grupy, do których pracownik jest przypisany, a także informacja o tym czy jest zawieszony.
+
+-|- 3.       W widoku WORKERS przyda się narzędzie do wyszukiwania pracownika.
+
+-|- 4.       W widoku WORKERS możliwość sortowania np. tylko pracownicy przypisani do grupy Vision Shark
+
+-|- 5.a      W widoku WORKERS  grup do pracownika powinno odbywać się trochę inaczej. Proponuję powiększyć okienko z listą grup i dodawanie grup do pracownika mogłaby wyglądać tak, że nie trzeba za każdym razem pilnować czy wszystkie grupy są zaznaczone. Po prostu kliknąć „ptaszka” i w przypadku dodania kolejnej grupy „doklikamy” tylko jedną a nie wszystkie jeszcze raz. (mam nadzieję że to dość zrozumiale napisałam)
+
+-|- 5.b      W widoku WORKERS  grup do pracownika powinno odbywać się trochę inaczej. Proponuję powiększyć okienko z listą grup i dodawanie grup do pracownika mogłaby wyglądać tak, że nie trzeba za każdym razem pilnować czy wszystkie grupy są zaznaczone. Po prostu kliknąć „ptaszka” i w przypadku dodania kolejnej grupy „doklikamy” tylko jedną a nie wszystkie jeszcze raz. (mam nadzieję że to dość zrozumiale napisałam)
+
+-|- 6.	     W widoku WORKERS po wejściu w detale lista grup do których podłączony jest pracownik, informacja o zawieszeniu
+
+-|-  7.      W widoku WORKERS „tag” zamieniamy na „opis” i niech będzie on widoczny już w tym głównym widoku listy pracowników
+
+*|-  8.       W widoku GROUPS jak już wcześniej rozmawialiśmy po przejściu do listy instrukcji 
+				dobrze byłoby umieścić przycisk detale żeby zobaczyć listę pracowników przeszkolonych
+
+-|- 9.       W widoku GROUPS możliwość eksportu do excela
+
+-|-10.a      W widoku GROUPS możliwość wyszukiwania po fragmencie tekstu
+
+10.b  W widoku INSTRUKCJE możliwość wyszukiwania po fragmencie tekstu
+
+11.   W widoku „TRAININGS” możliwość usunięcia szkolenia przez admina
+
+12.   W widoku „TRAININGS” pod szkoleniem powinna się wyświetlać lista sugerowanych pracowników ( podpiętych do tej grupy, do której należy instrukcja ze szkolenia), a nie lista wszystkich pracowników.
+
+Błąd szczegółów grup EL. Instrukcje == null

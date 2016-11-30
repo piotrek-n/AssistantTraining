@@ -1,4 +1,4 @@
-﻿@model AssistantTraining.Models.Worker
+﻿@model AssistantTraining.ViewModel.WorkerViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -27,30 +27,28 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.TimeOfCreation)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TimeOfCreation)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TimeOfModification)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TimeOfModification)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.Tag)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Tag)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsSuspend)
+        </dt>
 
+        <dd>
+            @Html.DisplayFor(model => model.IsSuspend)
+        </dd>
+        @foreach (var item in Model.SelectedGroups)
+        {
+            <dt>Grypa:</dt>
+            <dd>@item.GroupName</dd>
+        }
     </dl>
+
+
+
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
