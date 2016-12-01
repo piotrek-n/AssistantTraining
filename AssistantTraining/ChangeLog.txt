@@ -34,16 +34,17 @@
 
 In Progress
 1.0.0.6
+-W widoku details Groups poprawak.
 *Obsługa błędów View("Error")
+*Logo ( to kosmetyczna poprawka)
+*Nazwa Medical Trainings Database
 *Weryfikacja usuniecia osoby przeszkolonej (remove)
+*Uporządkowanie ref. w trainings
 
 Future
 *Przechodzenie na widoki z raportów
-*Uporządkowanie ref. w trainings
-*Obsługa błędów View("Error")
-*Weryfikacja usuniecia osoby przeszkolonej (remove)
 
-1.       Brak logo ( to kosmetyczna poprawka)
+-|- 1.       Brak logo ( to kosmetyczna poprawka)
 
 -|- 2.       W Widoku WORKERS eksportując do excela imię i nazwisko pracownika powinno być w jednej komórce i dobrze by było gdyby eksportowały się też grupy, do których pracownik jest przypisany, a także informacja o tym czy jest zawieszony.
 

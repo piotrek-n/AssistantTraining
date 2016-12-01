@@ -16,7 +16,7 @@
 
 @if (instr != null)
 {
-    Html.Grid(instr).Columns(columns =>
+    @Html.Grid(instr).Columns(columns =>
     {
         columns.Add(foo => foo.Name).Titled("Nazwa").SetWidth(110);
         columns.Add(foo => foo.Number).Titled("Numer").SetWidth(110);
