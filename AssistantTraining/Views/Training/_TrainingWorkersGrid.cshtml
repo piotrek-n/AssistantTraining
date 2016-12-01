@@ -12,7 +12,7 @@
 }
 <div class="row top10"></div>
 <a href="@Url.Action("Excel", "Training")" class="btn btn-default">
-    Export to Excel
+    Export
     <span class="glyphicon" aria-hidden="true"></span>
 </a>
 @(
@@ -39,6 +39,12 @@
 <div class="row">
     <div class="col-md-2"></div>
     <div class="col-md-2"></div>
+    <div class="col-md-2">
+        @if (User.IsInRole("Administrator"))
+        {
+            <input type="button" class="btn btn-info col-md-10" value="Remove Training" id="RemoveTrainingToWorkerWorkersGrid" />
+        }
+    </div>
     <form id="myform">
         <div class="col-md-2">
             <span>
@@ -51,12 +57,6 @@
             </span>
         </div>
     </form>
-        <div class="col-md-2">
-@if (User.IsInRole("Administrator"))
-{
-            <input type="button" class="btn btn-info col-md-10" value="Remove Training" id="RemoveTrainingToWorkerWorkersGrid" />
-}
-        </div>
         <div class="col-md-2">
             <input type="button" class="btn btn-info col-md-10" value="Complet Training" id="SaveTrainingWorkersGrid" />
         </div>

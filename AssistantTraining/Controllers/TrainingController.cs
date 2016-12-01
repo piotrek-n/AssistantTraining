@@ -240,6 +240,55 @@ namespace AssistantTraining.Controllers
             return PartialView(GRID_WORKER_PARTIAL_PATH, grid);
         }
 
+        public ActionResult DeleteTraining(int id)
+        {
+            try
+            {
+                var tr = db.Trainings.Where(x => x.TrainingNameId.Equals(id)).ToList();
+
+                if (tr != null && tr.Count > 0)
+                {
+                    foreach (var item in tr)
+                    {
+                        db.Trainings.Attach(item);
+                        db.Trainings.Remove(item);
+                        //db.SaveChanges();
+                    }
+                }
+
+                var tg = db.TrainingGroups.Where(x => x.TrainingNameId.Equals(id)).ToList();
+                if (tg != null && tg.Count > 0)
+                {
+                    foreach (var item in tg)
+                    {
+                        db.TrainingGroups.Attach(item);
+                        db.TrainingGroups.Remove(item);
+                        //db.SaveChanges();
+                    }
+                }
+                var tn = db.TrainingNames.Where(x => x.ID.Equals(id)).ToList();
+
+                if (tn != null && tn.Count > 0)
+                {
+                    foreach (var item in tn)
+                    {
+                        db.TrainingNames.Attach(item);
+                        db.TrainingNames.Remove(item);
+                        //db.SaveChanges();
+                    }
+                }
+
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+
+                //Handle Exception;
+                return View("Error");
+            }
+        }
+
         public ActionResult Excel()
         {
             if (Session["term"] == null || Session["type"] == null || String.IsNullOrEmpty(Session["term"].ToString()) || String.IsNullOrEmpty(Session["type"].ToString()))
@@ -253,13 +302,11 @@ namespace AssistantTraining.Controllers
             {
                 ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Workers");
                 ws.Cells["A1"].LoadFromCollection(workers.Select(x => new { FullName = x.FirstName + " " + x.Name }).ToList(), true);
-                // Load your collection "accounts"
 
                 Byte[] fileBytes = pck.GetAsByteArray();
                 Response.Clear();
                 Response.Buffer = true;
                 Response.AddHeader("content-disposition", "attachment;filename=Workers.xlsx");
-                // Replace filename with your custom Excel-sheet name.
 
                 Response.Charset = "";
                 Response.ContentType = "application/vnd.ms-excel";

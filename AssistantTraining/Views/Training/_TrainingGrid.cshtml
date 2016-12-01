@@ -23,21 +23,13 @@
 
 @helper Edit(int Id)
 {          
-     <span><a href="@Id" id="untrained">Untrained</a></span>
-@:|  <span><a href="@Id" id="trained">Trained</a></span>
+         <span><a href="@Id" id="untrained">Untrained</a></span>
+    @:|  <span><a href="@Id" id="trained">Trained</a></span>
            
-
-            @*@Html.ActionLink("Untrained", "Details", new { id = Id })
-            @:| @Html.ActionLink("Trained", "Details", new { id = Id })*@
-
-if (User.IsInRole("Administrator") || User.IsInRole("Engineer"))
-{
-                @*@:| @Html.ActionLink("Edit", "Edit", new { id = Id })*@
-            }
-            if (User.IsInRole("Administrator"))
-            {
-                @*@:| @Html.ActionLink("Delete", "Delete", new { id = Id })*@
-            }
+    if (User.IsInRole("Administrator"))
+    {
+        @:| @Html.ActionLink("Delete", "DeleteTraining", new { id = Id })
+    }
 }
 
 

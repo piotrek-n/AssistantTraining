@@ -9,8 +9,6 @@
 - Poprawka na eksport pracowników z zakładki szkoleń
 - Możliwość wyszukiwania instrukcji w widoku INSTRUKCJE po numerze WG. Lub fragmencie nazwy jak Panu łatwiej.
 - Eksport pracowników złączenie kolumn imię i nazwisko na widoku szkoleń
-
-In progress
 1.0.0.4
 -Zmiana nazwy raportu RAPORTY na PRACOWNICY
 -Zmiana stylów na RAPORTY
@@ -28,12 +26,22 @@ In progress
   dobrze byłoby umieścić przycisk detale żeby zobaczyć listę pracowników przeszkolonych
 
 1.0.0.5
-* W widoku INSTRUKCJE możliwość wyszukiwania po fragmencie tekstu
+- W widoku INSTRUKCJE możliwość wyszukiwania po fragmencie tekstu
+- Poprawka JS
+- Błąd szczegółów grupach Instrukcje == null
+- W widoku „TRAININGS” pod szkoleniem powinna się wyświetlać lista sugerowanych pracowników ( podpiętych do tej grupy, do której należy instrukcja ze szkolenia), a nie lista wszystkich pracowników.
+- W widoku „TRAININGS” możliwość usunięcia szkolenia przez admina
+
+In Progress
+1.0.0.6
+*Obsługa błędów View("Error")
+*Weryfikacja usuniecia osoby przeszkolonej (remove)
 
 Future
-*I tą możliwość przejścia z widoku grup do listy osób przeszkolonych z danej instrukcji. Grupy -> details (lista instrukcji) -> tu poproszę przycisk „details”.
-*Wchodząc w grupy -> details -> nie mogę przejść do szczegółów instrukcji dobrze by było gdyby się to pojawiło
 *Przechodzenie na widoki z raportów
+*Uporządkowanie ref. w trainings
+*Obsługa błędów View("Error")
+*Weryfikacja usuniecia osoby przeszkolonej (remove)
 
 1.       Brak logo ( to kosmetyczna poprawka)
 
@@ -51,17 +59,17 @@ Future
 
 -|-  7.      W widoku WORKERS „tag” zamieniamy na „opis” i niech będzie on widoczny już w tym głównym widoku listy pracowników
 
-*|-  8.       W widoku GROUPS jak już wcześniej rozmawialiśmy po przejściu do listy instrukcji 
+-|-  8.       W widoku GROUPS jak już wcześniej rozmawialiśmy po przejściu do listy instrukcji 
 				dobrze byłoby umieścić przycisk detale żeby zobaczyć listę pracowników przeszkolonych
 
 -|- 9.       W widoku GROUPS możliwość eksportu do excela
 
 -|-10.a      W widoku GROUPS możliwość wyszukiwania po fragmencie tekstu
 
-10.b  W widoku INSTRUKCJE możliwość wyszukiwania po fragmencie tekstu
+-|- 10.b  W widoku INSTRUKCJE możliwość wyszukiwania po fragmencie tekstu
 
-11.   W widoku „TRAININGS” możliwość usunięcia szkolenia przez admina
+-|- 11.   W widoku „TRAININGS” możliwość usunięcia szkolenia przez admina
 
-12.   W widoku „TRAININGS” pod szkoleniem powinna się wyświetlać lista sugerowanych pracowników ( podpiętych do tej grupy, do której należy instrukcja ze szkolenia), a nie lista wszystkich pracowników.
+-|- 12.   W widoku „TRAININGS” pod szkoleniem powinna się wyświetlać lista sugerowanych pracowników ( podpiętych do tej grupy, do której należy instrukcja ze szkolenia), a nie lista wszystkich pracowników.
 
-Błąd szczegółów grup EL. Instrukcje == null
+-|- Błąd szczegółów grup EL. Instrukcje == null

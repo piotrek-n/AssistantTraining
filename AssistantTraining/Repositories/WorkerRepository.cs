@@ -63,6 +63,8 @@ namespace AssistantTraining.Repositories
                            WorkerLastName = t.Worker.LastName,
                            WorkerFirstMidName = t.Worker.FirstMidName,
                            DateOfTraining = t.DateOfTraining,
+                           WorkerID = t.WorkerId,
+                           TrainingNameId = t.TrainingNameId,
                            WorkerFullName = t.Worker.LastName + "  " + t.Worker.FirstMidName
                        }).Distinct();
 
@@ -72,23 +74,14 @@ namespace AssistantTraining.Repositories
             {
                 lst = (from t in db.Trainings
                        where
-                         t.DateOfTraining == new DateTime(1900, 1, 1)
-                       //select new TrainingWorkersGridData
-                       //{
-                       //    //WorkerLastName = t.Worker.LastName,
-                       //    //WorkerFirstMidName = t.Worker.FirstMidName,
-                       //    WorkerID = t.Worker.ID,
-                       //    TrainingNameId = t.TrainingNameId,
-                       //    //DateOfTraining = t.DateOfTraining,
-                       //    //TrainingNumber = t.TrainingName.Number,
-                       //    //InstructionNumber = t.Instruction.Number,
-                       //    WorkerFullName = t.Worker.LastName + "  " + t.Worker.FirstMidName
-                       //}).Distinct();
+                        t.TrainingName.ID == itemID && t.DateOfTraining == new DateTime(1900, 1, 1)
                        select new TrainingWorkersGridData
                        {
                            WorkerLastName = t.Worker.LastName,
                            WorkerFirstMidName = t.Worker.FirstMidName,
                            DateOfTraining = t.DateOfTraining,
+                           WorkerID = t.WorkerId,
+                           TrainingNameId = t.TrainingNameId,
                            WorkerFullName = t.Worker.LastName + "  " + t.Worker.FirstMidName
                        }).Distinct();
 
@@ -108,7 +101,9 @@ namespace AssistantTraining.Repositories
                        {
                            WorkerLastName = t.Worker.LastName,
                            WorkerFirstMidName = t.Worker.FirstMidName,
-                           DateOfTraining = t.DateOfTraining
+                           DateOfTraining = t.DateOfTraining,
+                           WorkerID = t.WorkerId,
+                           TrainingNameId = t.TrainingNameId
                        });
 
                 return lst;

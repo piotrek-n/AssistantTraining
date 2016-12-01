@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<AssistantTraining.ViewModel.InstructionIndexData>
 @using GridMvc.Html
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Instructions";
 }
 
-<h2>Index</h2>
+<h2>Instructions</h2>
 
 <p>
     @if (User.IsInRole("Administrator") || User.IsInRole("Engineer"))
@@ -74,4 +74,4 @@ if (User.IsInRole("Administrator"))
     @String.Join(" ", item.Items.Where(x => item.SelectedIds.Contains(x.Value)).Select(x => x.Text).ToArray())
 }
 
-<script type="text/javascript">
+
