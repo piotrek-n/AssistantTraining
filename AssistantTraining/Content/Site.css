@@ -179,4 +179,9 @@ body {
     color: #BF1B11;
     background-color: #FFFFFF;
 }
+/*Fix last input in form*/
+.input-group .form-control:last-child:first-child {
+    border-radius: 4px;
+}
+
 

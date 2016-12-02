@@ -9,6 +9,8 @@ namespace AssistantTraining
 {
     public class Global : HttpApplication
     {
+        readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private void Application_Start(object sender, EventArgs e)
         {
             // Code that runs on application startup
@@ -34,7 +36,7 @@ namespace AssistantTraining
                 var exception = Server.GetLastError();
                 if (exception == null)
                     return;
-
+                logger.ErrorFormat("Message: {0} \n StackTrace: {1}", exception.Message, exception.StackTrace);
                 //var mail = new MailMessage { From = new MailAddress("automated@contoso.com") };
                 //mail.To.Add(new MailAddress("administrator@contoso.com"));
                 //mail.Subject = "Site Error at " + DateTime.Now;
