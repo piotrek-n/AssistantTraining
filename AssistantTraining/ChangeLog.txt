@@ -39,8 +39,12 @@
 -Nazwa Medical Trainings Database
 -Uporządkowanie ref. w trainings
 
-In Progress
 1.0.0.7
+-Dodawanie pustych grup
+
+
+In Progress
+1.0.0.8
 *Weryfikacja usuniecia osoby przeszkolonej (remove)
 *Przechodzenie na widoki z raportów
 

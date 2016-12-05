@@ -112,7 +112,7 @@ namespace AssistantTraining.Controllers
                 db.Workers.Add(worker);
                 db.SaveChanges();
 
-                if (workerGroup.PostingGroups.GroupIDs != null && workerGroup.PostingGroups.GroupIDs.Count() > 0)
+                if (workerGroup.PostingGroups != null && workerGroup.PostingGroups.GroupIDs != null && workerGroup.PostingGroups.GroupIDs.Count() > 0)
                 {
                     foreach (var item in workerGroup.PostingGroups.GroupIDs)
                     {
