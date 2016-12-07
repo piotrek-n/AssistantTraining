@@ -43,6 +43,7 @@ namespace AssistantTraining.Controllers
                     Value = x.ID.ToString(),
                     Text = x.GroupName
                 });
+                workerGroup.IsSuspend = item.IsSuspend;
 
                 lstWorkerGroups.Add(workerGroup);
             }
@@ -189,7 +190,7 @@ namespace AssistantTraining.Controllers
                 db.Entry(worker).Property(X => X.TimeOfModification).IsModified = true;
                 db.Entry(worker).Property(X => X.IsSuspend).IsModified = true;
 
-                if (workerGroup.PostingGroups.GroupIDs != null && workerGroup.PostingGroups.GroupIDs.Count() > 0)
+                if (workerGroup.PostingGroups != null &&  workerGroup.PostingGroups.GroupIDs != null && workerGroup.PostingGroups.GroupIDs.Count() > 0)
                 {
                     var wGroups = db.GroupWorkers.Where(w => w.WorkerId == workerGroup.ID).ToList();
 

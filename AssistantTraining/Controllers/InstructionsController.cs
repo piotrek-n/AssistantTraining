@@ -144,7 +144,7 @@ namespace AssistantTraining.Controllers
                                     on new { InstructionId = i.ID, WorkerId = wg.WorkerId }
                                 equals new { t.InstructionId, t.WorkerId } into t_join
                               from t in t_join.DefaultIfEmpty()
-                              where i.ID == id
+                              where i.ID == id && w.IsSuspend.Equals(false)
                               select new InstructionVsTrainingData
                               {
                                   WorkerLastName = w.LastName,

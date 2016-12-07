@@ -42,9 +42,20 @@
 1.0.0.7
 -Dodawanie pustych grup
 
+1.0.0.8
+-Edycja pustych grup
+
+1.0.0.9
+-Kolumna zawieszo
+
+1.0.0.10
+-FIX do kolumny zawieszony
+-W instrukcję -> detale pokazuje mi się lista pracowników do przeszkolenia, ale nie powinno tam być zawieszonych 
+
+1.0.0.11*
 
 In Progress
-1.0.0.8
+1.0.0.X
 *Weryfikacja usuniecia osoby przeszkolonej (remove)
 *Przechodzenie na widoki z raportów
 

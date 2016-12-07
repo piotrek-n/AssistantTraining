@@ -51,8 +51,9 @@
 
 @Html.Grid(Model).Columns(columns =>
 {
-    columns.Add(foo => foo.FullName).Titled("Name").Sortable(true).Filterable(true).SetWidth(110);
-    columns.Add(foo => foo.Tag).Titled("Opis").Sortable(true).Filterable(true).SetWidth(80);
+    columns.Add(foo => foo.FullName).Titled("Nazwa").Sortable(true).Filterable(true).SetWidth(110);
+    columns.Add(foo => foo.Tag).Titled("Opis").Sortable(true).Filterable(true).SetWidth(40);
+    columns.Add(foo => foo.IsSuspend).Titled("Zawieszony").Sortable(true).Filterable(true).SetWidth(20);
     //columns.Add(foo => foo.FirstMidName).Titled("Imię").Sortable(true).Filterable(true).SetWidth(110);
     /* Adding not mapped column, that renders body, using inline Razor html helper */
     columns.Add()
@@ -86,4 +87,16 @@ if (User.IsInRole("Administrator"))
 @helper Groups(AssistantTraining.ViewModel.WorkerGroupViewModel item)
         {
     @String.Join(" ", item.Items.Where(x => item.SelectedIds.Contains(x.Value)).Select(x => x.Text).ToArray())
+}
+
+@helper IsSuspend(bool isSuspended)
+        {
+if (isSuspended)
+{
+        @Html.Label("TAK")
+}
+else
+{
+        @Html.Label("NIE")
+}
 }
