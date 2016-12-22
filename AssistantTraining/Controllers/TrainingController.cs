@@ -433,15 +433,21 @@ namespace AssistantTraining.Controllers
 
                 #region Add all workers and assigned instruction per TrainingGroup
 
+
+                //select* from[dbo].[Workers] w
+                //inner join[dbo].[GroupWorkers] gw on gw.[WorkerId] = w.ID
+                //inner join dbo.InstructionGroups ig on ig.[GroupId] = gw.[GroupId]
+
                 var instructionWorkerList =
                    (from w in db.Workers
-                    from ig in db.InstructionGroups
+                    join gw in db.GroupWorkers on w.ID equals gw.WorkerId
+                    join ig in db.InstructionGroups on gw.GroupId  equals  ig.GroupId
                     join t in db.Trainings
                           on new { WorkerId = w.ID, ID = ig.Instruction.ID }
                       equals new { t.WorkerId, ID = t.InstructionId } into t_join
                     from t in t_join.DefaultIfEmpty()
                     where
-                    w.IsSuspend == false && intInstructionIDs.Contains(ig.Instruction.ID) && t.ID == null
+                    w.IsSuspend == false && intInstructionIDs.Contains(ig.Instruction.ID) && (int?)t.ID == null
                     select new
                     {
                         WorkerID = w.ID,
