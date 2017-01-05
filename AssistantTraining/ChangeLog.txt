@@ -52,7 +52,12 @@
 -FIX do kolumny zawieszony
 -W instrukcję -> detale pokazuje mi się lista pracowników do przeszkolenia, ale nie powinno tam być zawieszonych 
 
-1.0.0.11*
+[1.0.0.11] 
+-Przypisywanie pracowników do szkolen FIX
+
+[1.0.0.12] 
+- W widoku szkoleń strona 2. nie działa poprawnie tj. odnośniki untrained/trained wyrzucają nas do strony głównej – FIX
+- W widoku raportów nie wyświetlają się szkolenia – FIX
 
 In Progress
 1.0.0.X

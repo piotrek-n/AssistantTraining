@@ -1,6 +1,10 @@
 ﻿(function () {
     LoadGrid();
 }())
+
+$(document).ajaxSuccess(function () {
+    LoadGrid();
+});
 function LoadGrid() {
     var gridName = 'TrainingGrid';
     var pagingUrl = 'Training/GridPager';

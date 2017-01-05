@@ -22,8 +22,9 @@ namespace AssistantTraining.App_Start
                      "~/Content/bootstrap.css",
                      "~/Content/site.css"));
 
-            bundles.Add(new StyleBundle("~/Content/gridmvc").Include(
-                     "~/Content/Gridmvc.css"));
+            bundles.Add(new StyleBundle("~/Content/gridmvc")
+                      .Include(
+                     "~/Content/Gridmvc.css", "~/Content/font-awesome.min.css"));
         }
 
         private static void RegisterScriptBundles(BundleCollection bundles)

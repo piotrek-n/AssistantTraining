@@ -322,7 +322,7 @@ namespace AssistantTraining.Controllers
 
                 lstWorkerGroups.Add(workerGroup);
             }
-            return View("Index", lstWorkerGroups.Where(x => x.FullName.Contains(srchtermWorkerByWorker)));
+            return View("Index", lstWorkerGroups.Where(x => x.FullName.ToUpper().Contains(srchtermWorkerByWorker.ToUpper())));
         }
 
         public ActionResult SearchByGroup(string srchtermWorkerByGroup)
@@ -338,7 +338,7 @@ namespace AssistantTraining.Controllers
                 var workerGroup = new WorkerGroupViewModel();
 
                 var lstGroups = db.GroupWorkers.Where(x => x.WorkerId.Equals(item.ID)).Select(x => x.Group.GroupName).ToList();
-                if (lstGroups.FirstOrDefault(stringToCheck => stringToCheck.Contains(srchtermWorkerByGroup)) != null)
+                if (lstGroups.FirstOrDefault(stringToCheck => stringToCheck.ToUpper().Contains(srchtermWorkerByGroup.ToUpper())) != null)
                 {
                     workerGroup.ID = item.ID;
                     workerGroup.FirstMidName = item.FirstMidName;

@@ -206,7 +206,7 @@ namespace AssistantTraining.Repositories
                   {
                       Trainings.InstructionId
                   }).Contains(new { InstructionId = i.ID }) &&
-               t.ID == null
+               t.DateOfTraining == (new System.DateTime(1900, 1, 1))
              select new
              {
                  InstructionNumber = i.Number,
