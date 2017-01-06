@@ -15,8 +15,8 @@
     Export
     <span class="glyphicon" aria-hidden="true"></span>
 </a>
-<button type="button" class="btn btn-default hidden">Select All</button>
-<button type="button" class="btn btn-default hidden">Unselect All</button>
+<button type="button" onclick="selectAll()" class="btn btn-default">Select All</button>
+<button type="button" onclick="unselectAll()" class="btn btn-default">Unselect All</button>
 @(
     Html.Grid(Model).Named("TrainingWorkersGrid")
         .Columns(columns =>
@@ -32,6 +32,11 @@
                 .Sanitized(false)
                 .SetWidth(30)
                 .RenderValueAs(o => Html.CheckBox("checked", (o.DateOfTraining == null ? false : true), new { @class = "check-item", ID = "trained" }));
+            columns.Add()
+            .Encoded(false)
+            .Sanitized(false)
+            .SetWidth(30)
+            .RenderValueAs(f => Edit(f.TrainingNameId,f.WorkerID));
         })
         .Sortable()
         .WithPaging(10))
@@ -64,4 +69,24 @@
         </div>
 
 </div>
+
+<script>
+function selectAll() {
+    $(':checkbox').prop('checked', true);
+}
+    
+
+function unselectAll() {
+    $(':checkbox').prop('checked', false);
+}
+</script>
+
+@helper Edit(int TrainingNameId, int WorkerId)
+{
+
+    if (User.IsInRole("Administrator"))
+    {
+         @Html.ActionLink("Delete", "DeleteWorkerTraining", new { TrainingNameID = TrainingNameId, WorkerID = WorkerId })
+    }
+}
 

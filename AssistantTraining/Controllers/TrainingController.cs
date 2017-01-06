@@ -289,6 +289,24 @@ namespace AssistantTraining.Controllers
             }
         }
 
+        public ActionResult DeleteWorkerTraining(int TrainingNameID,int WorkerID)
+        {
+
+            var tr = db.Trainings.Where(x => x.TrainingNameId.Equals(TrainingNameID) && x.WorkerId.Equals(WorkerID) ).ToList();
+
+            if (tr != null && tr.Count > 0)
+            {
+                foreach (var item in tr)
+                {
+                    db.Trainings.Attach(item);
+                    db.Trainings.Remove(item);                    
+                }
+
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Index");
+        }
         public ActionResult Excel()
         {
             if (Session["term"] == null || Session["type"] == null || String.IsNullOrEmpty(Session["term"].ToString()) || String.IsNullOrEmpty(Session["type"].ToString()))

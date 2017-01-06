@@ -59,6 +59,10 @@
 - W widoku szkoleń strona 2. nie działa poprawnie tj. odnośniki untrained/trained wyrzucają nas do strony głównej – FIX
 - W widoku raportów nie wyświetlają się szkolenia – FIX
 
+[1.0.0.13]
+- „Zaznacz wszystko” i „Odznacz wszystko” widok szkoleń
+- Funkcja usuwania pracowników ze szkolenia przez administrator
+
 In Progress
 1.0.0.X
 *Weryfikacja usuniecia osoby przeszkolonej (remove)
