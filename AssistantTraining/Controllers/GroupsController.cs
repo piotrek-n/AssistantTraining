@@ -159,7 +159,7 @@ namespace AssistantTraining.Controllers
 
         public ActionResult SearchByGroup(string srchtermWorkerByGroup)
         {
-            return View("Index",db.Groups.Where(x=>x.GroupName.Contains(srchtermWorkerByGroup)).ToList());
+            return View("Index",db.Groups.Where(x=>x.GroupName.ToUpper().Contains(srchtermWorkerByGroup.ToUpper())).ToList());
         }
 
         public ActionResult Excel()

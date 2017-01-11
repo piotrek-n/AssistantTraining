@@ -63,10 +63,16 @@
 - „Zaznacz wszystko” i „Odznacz wszystko” widok szkoleń
 - Funkcja usuwania pracowników ze szkolenia przez administrator
 
+[1.0.0.14]
+-Wielkość liter przy wyszukiwaniu nie powinna mieć znaczenia utrudnia to pracę z bazą
+
 In Progress
 1.0.0.X
 *Weryfikacja usuniecia osoby przeszkolonej (remove)
 *Przechodzenie na widoki z raportów
+
+·         Po utworzeniu szkolenia nie znajdujemy go na liście szkoleń, wyświetla się natomiast po wyszukaniu.
+·         Przy tworzeniu szkolenia w podpowiedziach wyświetla się nieaktualna wersja instrukcji lub instrukcja nie wyświetla się wcale, dopiero kiedy wpisze się mniejszą ilość znaków na liście można znaleźć poprawną wersję instrukcji
 
 
 

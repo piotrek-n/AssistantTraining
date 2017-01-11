@@ -123,7 +123,16 @@ namespace AssistantTraining.Controllers
         public PartialViewResult GetGridByTraining(string term)
         {
             var repos = new WorkerRepository();
-            var items = repos.GetTrainings().Where(x => x.TrainingName.Number.Contains(term)).OrderBy(p => 0);
+            IOrderedQueryable<TrainingGroup> items;
+            if (String.IsNullOrEmpty(term))
+            {
+                items = repos.GetTrainings().OrderBy(p => 0);
+            }
+            else
+            {
+                items = repos.GetTrainings().Where(x => x.TrainingName.Number.ToUpper().Contains(term.ToUpper())).OrderBy(p => 0);
+            }
+
             var grid = this.gridMvcHelper.GetAjaxGrid(items);
 
             return PartialView(GRID_PARTIAL_PATH, grid);
@@ -355,7 +364,7 @@ namespace AssistantTraining.Controllers
                      Version = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).Version
                  }
                ).Select(x => new InstructionsJson { id = x.ID.ToString(), text = x.Number, name = x.Name, version = x.Version })
-               .Where(x => x.text.Contains(q))
+               .Where(x => x.text.ToUpper().Contains(q.ToUpper()))
                .ToList();
             }
             else
@@ -375,7 +384,7 @@ namespace AssistantTraining.Controllers
                                    join tg in db.TrainingGroups on new { ID = i.ID } equals new { ID = tg.InstructionId } into tg_join
                                    from tg in tg_join.DefaultIfEmpty()
                                    where
-                                     i.Number.Contains(q)
+                                     i.Number.ToUpper().Contains(q.ToUpper())
                                      && items.Contains(i.ID)
                                      && tg.InstructionId == null
                                    select new InstructionsJson { id = i.ID.ToString(), text = i.Number, name = i.Name, version = i.Version }).ToList();

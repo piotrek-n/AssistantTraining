@@ -551,7 +551,7 @@ namespace AssistantTraining.Controllers
                          Key = groupedI.Key,
                          maxVersion = maxVersion,
                          ID = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).ID
-                     }).Where(ni => ni.Key.Contains(srchterminstructions) || String.IsNullOrEmpty(srchterminstructions)).ToList();
+                     }).Where(ni => ni.Key.ToUpper().Contains(srchterminstructions.ToUpper()) || String.IsNullOrEmpty(srchterminstructions)).ToList();
 
             var allInstructions = db.Instructions.ToList().Where(x => newInstructions.Any(ni => ni.ID == x.ID) ).ToList();
             var workerRepository = new WorkerRepository();
