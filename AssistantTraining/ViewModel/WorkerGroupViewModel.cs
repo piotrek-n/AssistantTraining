@@ -37,5 +37,10 @@ namespace AssistantTraining.ViewModel
 
         [DisplayName("Zawieszony")]
         public bool IsSuspend { get; set; }
+
+        public int RowNo { get; set; }
+
+        [DisplayName("Zawieszony")]
+        public string IsSuspendDesc { get; set; }
     }
 }

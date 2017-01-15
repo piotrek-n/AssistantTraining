@@ -38,11 +38,13 @@ namespace AssistantTraining.Controllers
             var groups = workerRepository.GetAllGroups();
 
             List<InstructionIndexData> lstInstructionGroups = new List<InstructionIndexData>();
-
+            int RowNo=0;
             foreach (var item in allInstructions)
             {
                 var instructioGroup = new InstructionIndexData();
 
+                RowNo += 1;
+                instructioGroup.RowNo = RowNo;
                 instructioGroup.ID = item.ID;
                 instructioGroup.Name = item.Name;
                 instructioGroup.Number = item.Number;
@@ -106,7 +108,17 @@ namespace AssistantTraining.Controllers
             instructionGroupViewModel.Name = instruction.Name;
             instructionGroupViewModel.Version = instruction.Version;
             instructionGroupViewModel.Groups = groups;
-            //instructionGroupViewModel.SelectedId = instruction.GroupId.ToString();
+            instructionGroupViewModel.GroupWithNumbers = groups.Select((x,i)=> new GroupViewModel()
+                                                                                    {
+                                                                                        GroupName=x.GroupName,
+                                                                                        RowNo =i+1,
+                                                                                        ID =x.ID,
+                                                                                        Instructions = x.Instructions,
+                                                                                        Tag = x.Tag,
+                                                                                        TimeOfCreation = x.TimeOfCreation,
+                                                                                        TimeOfModification = x.TimeOfModification
+                                                                                    });
+
             instructionGroupViewModel.Items = groups.Select(x => new SelectListItem
             {
                 Value = x.ID.ToString(),
@@ -132,31 +144,21 @@ namespace AssistantTraining.Controllers
                            InstructionVersion = i.Version,
                            InstructionNumber = i.Number,
                            DateOfTraining = (DateTime?)t.DateOfTraining
-                       });
+                       }).Select(x => x).AsEnumerable().Select((w, i) =>
+                           new InstructionVsTrainingData
+                           {
+                               WorkerLastName = w.WorkerLastName,
+                               WorkerFirstMidName = w.WorkerFirstMidName,
+                               WorkerFullName = w.WorkerFullName,
+                               InstructionName = w.InstructionName,
+                               GroupId = (int?)w.GroupId,
+                               InstructionVersion = w.InstructionVersion,
+                               InstructionNumber = w.InstructionNumber,
+                               DateOfTraining = (DateTime?)w.DateOfTraining,
+                               RowNo = i + 1
+                           }).ToList();
 
-
-            instructionGroupViewModel.instructionVsTrainingList =
-                             (from w in db.Workers
-                              join wg in db.GroupWorkers on w.ID equals wg.WorkerId
-                              join gi in db.InstructionGroups on wg.GroupId equals gi.GroupId
-                              join i in db.Instructions on gi.InstructionId equals i.ID
-                              join t in db.Trainings
-                                    on new { InstructionId = i.ID, WorkerId = wg.WorkerId }
-                                equals new { t.InstructionId, t.WorkerId } into t_join
-                              from t in t_join.DefaultIfEmpty()
-                              where i.ID == id && w.IsSuspend.Equals(false)
-                              select new InstructionVsTrainingData
-                              {
-                                  WorkerLastName = w.LastName,
-                                  WorkerFirstMidName = w.FirstMidName,
-                                  WorkerFullName = w.LastName + " " + w.FirstMidName,
-                                  InstructionName = i.Name,
-                                  GroupId = (int?)gi.GroupId,
-                                  InstructionVersion = i.Version,
-                                  InstructionNumber = i.Number,
-                                  DateOfTraining = (DateTime?)t.DateOfTraining
-                              }).ToList();
-
+            instructionGroupViewModel.instructionVsTrainingList = lst.ToList();
             if (instructionGroupViewModel == null)
             {
                 return HttpNotFound();

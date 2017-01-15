@@ -26,6 +26,9 @@ namespace AssistantTraining.ViewModel
         [DisplayName("Grupy")]
         public virtual ICollection<Group> Groups { get; set; }
 
+        [DisplayName("Grupy")]
+        public virtual IEnumerable<GroupViewModel> GroupWithNumbers { get; set; }
+
         public virtual ICollection<Training> Trainings { get; set; }
 
         public List<InstructionVsTrainingData> instructionVsTrainingList { get; set; }

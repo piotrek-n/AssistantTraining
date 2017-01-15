@@ -26,7 +26,7 @@ namespace AssistantTraining.Controllers
             var groups = workerRepository.GetAllGroups();
 
             List<WorkerGroupViewModel> lstWorkerGroups = new List<WorkerGroupViewModel>();
-
+            int RowNo = 0;
             foreach (var item in allWorker)
             {
                 var workerGroup = new WorkerGroupViewModel();
@@ -44,6 +44,10 @@ namespace AssistantTraining.Controllers
                     Text = x.GroupName
                 });
                 workerGroup.IsSuspend = item.IsSuspend;
+                workerGroup.IsSuspendDesc = item.IsSuspend== true? "Tak":"Nie";
+
+                RowNo += 1;
+                workerGroup.RowNo =RowNo;
 
                 lstWorkerGroups.Add(workerGroup);
             }

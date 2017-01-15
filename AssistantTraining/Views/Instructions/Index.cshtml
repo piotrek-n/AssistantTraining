@@ -35,6 +35,7 @@
 
 @Html.Grid(Model).Columns(columns =>
 {
+    columns.Add(foo => foo.RowNo).Titled("Lp.").Sortable(true).Filterable(true).SetWidth(10);
     columns.Add(foo => foo.Name).Titled("Nazwa").Sortable(true).Filterable(true).SetWidth(110);
     columns.Add(foo => foo.Number).Titled("Numer").Sortable(true).Filterable(true).SetWidth(50);
     columns.Add(foo => foo.Version).Titled("Wersja").Sortable(true).Filterable(true).SetWidth(30);

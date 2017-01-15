@@ -74,14 +74,16 @@ Po utworzeniu szkolenia nie znajdujemy go na liście szkoleń, wyświetla się n
 - Zmiana wymaganego formatu numeru instrukcji WH.01.02.03, WG.01.02, WG.01.02.03.04
 - Jeśli pracownik jest zawieszony niech jego imię i nazwisko wyświetla się na czerwono.
 
+[1.0.0.17]
+-Dodanie liczby porządkowej na każdej listach
+
 In Progress
 1.0.0.X
 *Weryfikacja usuniecia osoby przeszkolonej (remove)
 *Przechodzenie na widoki z raportów
 *Problem filtrów
 
-
-- Dodanie liczby porządkowej na każdej liście jakiej to możliwe
+***Dodanie liczby porządkowej na każdej liście jakiej to możliwe
 
 
 

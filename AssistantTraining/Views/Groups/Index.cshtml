@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AssistantTraining.Models.Group>
+﻿@model IEnumerable<AssistantTraining.ViewModel.GroupViewModel>
 @using GridMvc.Html
 
 @{
@@ -38,8 +38,9 @@
 
 
 
-    @Html.Grid(Model).Columns(columns =>
+@Html.Grid(Model).Columns(columns =>
 {
+    columns.Add(foo => foo.RowNo).Titled("Lp.").SetWidth(5);
     columns.Add(foo => foo.GroupName).Titled("Nazwa").Sortable(true).Filterable(true).SetWidth(110);
     /* Adding not mapped column, that renders body, using inline Razor html helper */
     columns.Add()

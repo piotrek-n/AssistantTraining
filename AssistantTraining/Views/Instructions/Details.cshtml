@@ -43,23 +43,20 @@
 
     </dl>
 
-@Html.Grid(Model.Groups.ToList()).Columns(columns =>
+@Html.Grid(Model.GroupWithNumbers.ToList()).Columns(columns =>
 {
+    columns.Add(foo => foo.RowNo).Titled("Lp.").Sortable(true).Filterable(true).SetWidth(10);
     columns.Add(foo => foo.GroupName).Titled("Grupy").Sortable(true).Filterable(true).SetWidth(110);
 
 }).WithPaging(10)
 
 @Html.Grid(Model.instructionVsTrainingList.ToList()).Columns(columns =>
 {
-    //columns.Add(foo => foo.WorkerLastName).Titled("Nazwisko").Sortable(true).Filterable(true).SetWidth(110);
-    //columns.Add(foo => foo.WorkerFirstMidName).Titled("Imię").Sortable(true).Filterable(true).SetWidth(110);
+    columns.Add(foo => foo.RowNo).Titled("Lp.").Sortable(true).Filterable(true).SetWidth(10);
     columns.Add(foo => foo.WorkerFullName).Titled("Nazwisko").Sortable(true).Filterable(true).SetWidth(110);
-    //columns.Add(foo => foo.InstructionName).Titled("Numer instrukcji").Sortable(true).Filterable(true).SetWidth(110);
-    //columns.Add(foo => foo.InstructionVersion).Titled("Wersja instrukcji").Sortable(true).Filterable(true).SetWidth(110);
-    //columns.Add(foo => foo.InstructionNumber).Titled("Numer instrukcji").Sortable(true).Filterable(true).SetWidth(110);
     columns.Add(foo => foo.DateOfTran).Titled("Data szkolenia").Sortable(true).Filterable(true).SetWidth(110);
 
-}).WithPaging(10)
+}).WithPaging(50)
 
 </div>
 <p>

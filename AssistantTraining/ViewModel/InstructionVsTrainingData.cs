@@ -19,5 +19,7 @@ namespace AssistantTraining.ViewModel
 
         public string  DateOfTran { get { return DateOfTraining != null ? DateOfTraining.Value.ToShortDateString() : String.Empty; } }
 
+        public int RowNo { get; set; }
+
     }
 }

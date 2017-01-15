@@ -48,5 +48,7 @@ namespace AssistantTraining.ViewModel
 
         public string TimeOfCreation { get; set; }
 
+        public int RowNo { get; set; }
+
     }
 }

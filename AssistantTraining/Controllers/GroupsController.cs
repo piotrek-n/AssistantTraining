@@ -20,7 +20,21 @@ namespace AssistantTraining.Controllers
         // GET: Groups
         public ActionResult Index()
         {
-            return View(db.Groups.ToList());
+            //LINQ to Entities does not recognize the method 'System.Linq.IQueryable`
+            //FIX Select(x => x).AsEnumerable()
+            var result =
+                db.Groups.Select(x => x).AsEnumerable().Select((x, index) => new GroupViewModel()
+                {
+                    RowNo = index + 1,
+                    GroupName = x.GroupName,
+                    ID = x.ID,
+                    Instructions = x.Instructions,
+                    Tag = x.Tag,
+                    TimeOfCreation = x.TimeOfCreation,
+                    TimeOfModification = x.TimeOfModification
+                }).ToList();
+
+            return View(result);
         }
 
         // GET: Groups/Details/5

@@ -51,11 +51,11 @@
 
 @Html.Grid(Model).Columns(columns =>
 {
+    columns.Add(foo => foo.RowNo).Titled("No.").SetWidth(20);
     columns.Add(foo => foo.FullName).Titled("Nazwa").Sortable(true).Filterable(true).SetWidth(110);
     columns.Add(foo => foo.Tag).Titled("Opis").Sortable(true).Filterable(true).SetWidth(10);
-    columns.Add(foo => foo.IsSuspend).Titled("Zawieszony").Sortable(true).Filterable(true).SetWidth(10);
-    //columns.Add(foo => foo.FirstMidName).Titled("Imię").Sortable(true).Filterable(true).SetWidth(110);
-    /* Adding not mapped column, that renders body, using inline Razor html helper */
+    columns.Add(foo => foo.IsSuspendDesc).Titled("Zawieszony").Sortable(true).Filterable(true).SetWidth(10);
+
     columns.Add()
     .Encoded(false)
     .Sanitized(false)
