@@ -52,14 +52,14 @@
 @Html.Grid(Model).Columns(columns =>
 {
     columns.Add(foo => foo.FullName).Titled("Nazwa").Sortable(true).Filterable(true).SetWidth(110);
-    columns.Add(foo => foo.Tag).Titled("Opis").Sortable(true).Filterable(true).SetWidth(40);
-    columns.Add(foo => foo.IsSuspend).Titled("Zawieszony").Sortable(true).Filterable(true).SetWidth(20);
+    columns.Add(foo => foo.Tag).Titled("Opis").Sortable(true).Filterable(true).SetWidth(10);
+    columns.Add(foo => foo.IsSuspend).Titled("Zawieszony").Sortable(true).Filterable(true).SetWidth(10);
     //columns.Add(foo => foo.FirstMidName).Titled("Imię").Sortable(true).Filterable(true).SetWidth(110);
     /* Adding not mapped column, that renders body, using inline Razor html helper */
     columns.Add()
     .Encoded(false)
     .Sanitized(false)
-    .SetWidth(30)
+    .SetWidth(40)
     .RenderValueAs(foo => Groups(foo));
 
     columns.Add()
@@ -99,4 +99,8 @@ else
 {
         @Html.Label("NIE")
 }
+}
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/application/workers")
 }

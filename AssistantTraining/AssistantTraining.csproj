@@ -394,6 +394,7 @@
     <Content Include="Models\Scripts\Rep_1_Training.sql" />
     <Content Include="Scripts\Application\Reports.js" />
     <Content Include="Scripts\Application\Training.js" />
+    <Content Include="Scripts\Application\Workers.js" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap-datepicker.min.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />

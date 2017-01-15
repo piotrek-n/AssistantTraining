@@ -1,6 +1,10 @@
-﻿@using GridMvc.Html
+﻿@*@using GridMvc.Html
 @using GridMvc.Sorting
-@model Grid.Mvc.Ajax.GridExtensions.AjaxGrid<AssistantTraining.Models.TrainingGroup>
+@model Grid.Mvc.Ajax.GridExtensions.AjaxGrid<AssistantTraining.Models.TrainingGroup>*@
+
+@model IEnumerable<AssistantTraining.Models.TrainingGroup>
+@using GridMvc.Html
+
 
 
 @(
@@ -17,9 +21,8 @@
                     .SetWidth(30)
                     .RenderValueAs(f => Edit(f.TrainingNameId));
         })
-        .Filterable()
         .Sortable()
-        .WithPaging(10))
+        .WithPaging(50))
 
 @helper Edit(int Id)
 {          

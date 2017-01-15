@@ -53,6 +53,9 @@ namespace AssistantTraining.App_Start
 
             bundles.Add(new ScriptBundle("~/bundles/typeahead").Include(
                       "~/Scripts/bootstrap3-typeahead.min.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/application/Workers").Include(
+            "~/Scripts/Application/Workers.js"));
         }
     }
 }

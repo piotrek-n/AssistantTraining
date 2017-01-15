@@ -6,19 +6,19 @@ $(document).ajaxSuccess(function () {
     LoadGrid();
 });
 function LoadGrid() {
-    var gridName = 'TrainingGrid';
-    var pagingUrl = 'Training/GridPager';
+    //var gridName = 'TrainingGrid';
+    //var pagingUrl = 'Training/GridPager';
 
-    $('.grid-mvc').gridmvc();
-    pageGrids[gridName].ajaxify({
-        getData: pagingUrl,
-        getPagedData: pagingUrl
-    });
+    //$('.grid-mvc').gridmvc();
+    //pageGrids[gridName].ajaxify({
+    //    getData: pagingUrl,
+    //    getPagedData: pagingUrl
+    //});
 
     var gridName2 = 'TrainingWorkersGrid';
     var pagingUrl2 = 'Training/GridWorkerPager';
 
-    //$('.grid-mvc').gridmvc();
+    $('#refWorkerGrid > .grid-mvc').gridmvc();
     pageGrids[gridName2].ajaxify({
         getData: pagingUrl2,
         getPagedData: pagingUrl2
@@ -318,7 +318,7 @@ $("#sel").select2({
                 }
             };
         },
-        cache: true
+        cache: false
     },
     escapeMarkup: function (markup) {
         return markup;
@@ -349,3 +349,7 @@ function ShowModal()
 {
     $('#myModal').modal('show');
 }
+
+$('#myModal').on('shown.bs.modal', function () {
+    $("#sel").val('').trigger('change');
+})

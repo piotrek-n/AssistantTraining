@@ -66,13 +66,23 @@
 [1.0.0.14]
 -Wielkość liter przy wyszukiwaniu nie powinna mieć znaczenia utrudnia to pracę z bazą
 
+[1.0.0.15]
+Po utworzeniu szkolenia nie znajdujemy go na liście szkoleń, wyświetla się natomiast po wyszukaniu.
+
+[1.0.0.16]
+- Przy tworzeniu szkolenia w podpowiedziach wyświetla się nieaktualna wersja instrukcji lub instrukcja nie wyświetla się wcale
+- Zmiana wymaganego formatu numeru instrukcji WH.01.02.03, WG.01.02, WG.01.02.03.04
+- Jeśli pracownik jest zawieszony niech jego imię i nazwisko wyświetla się na czerwono.
+
 In Progress
 1.0.0.X
 *Weryfikacja usuniecia osoby przeszkolonej (remove)
 *Przechodzenie na widoki z raportów
+*Problem filtrów
 
-·         Po utworzeniu szkolenia nie znajdujemy go na liście szkoleń, wyświetla się natomiast po wyszukaniu.
-·         Przy tworzeniu szkolenia w podpowiedziach wyświetla się nieaktualna wersja instrukcji lub instrukcja nie wyświetla się wcale, dopiero kiedy wpisze się mniejszą ilość znaków na liście można znaleźć poprawną wersję instrukcji
+
+- Dodanie liczby porządkowej na każdej liście jakiej to możliwe
+
 
 
 

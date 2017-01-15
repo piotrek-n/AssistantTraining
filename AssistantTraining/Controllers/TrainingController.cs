@@ -103,10 +103,12 @@ namespace AssistantTraining.Controllers
         public PartialViewResult GetGrid(string term)
         {
             var repos = new WorkerRepository();
-            var items = repos.GetTrainings().OrderBy(p => 0);
-            var grid = this.gridMvcHelper.GetAjaxGrid(items);
+            //var items = repos.GetTrainings().OrderBy(p => 0);
+            //var grid = this.gridMvcHelper.GetAjaxGrid(items);
 
-            return PartialView(GRID_PARTIAL_PATH, grid);
+            var items = repos.GetTrainings().AsEnumerable();
+
+            return PartialView(GRID_PARTIAL_PATH, items);
         }
 
         [AjaxChildActionOnly]
@@ -123,19 +125,27 @@ namespace AssistantTraining.Controllers
         public PartialViewResult GetGridByTraining(string term)
         {
             var repos = new WorkerRepository();
-            IOrderedQueryable<TrainingGroup> items;
+            //IOrderedQueryable<TrainingGroup> items;
+            //if (String.IsNullOrEmpty(term))
+            //{
+            //    items = repos.GetTrainings().OrderBy(p => 0);
+            //}
+            //else
+            //{
+            //    items = repos.GetTrainings().Where(x => x.TrainingName.Number.ToUpper().Contains(term.ToUpper())).OrderBy(p => 0);
+            //}
+
+            IEnumerable<TrainingGroup> items;
             if (String.IsNullOrEmpty(term))
             {
-                items = repos.GetTrainings().OrderBy(p => 0);
+                items = repos.GetTrainings().AsEnumerable();
             }
             else
             {
-                items = repos.GetTrainings().Where(x => x.TrainingName.Number.ToUpper().Contains(term.ToUpper())).OrderBy(p => 0);
+                items = repos.GetTrainings().Where(x => x.TrainingName.Number.ToUpper().Contains(term.ToUpper())).AsEnumerable();
             }
 
-            var grid = this.gridMvcHelper.GetAjaxGrid(items);
-
-            return PartialView(GRID_PARTIAL_PATH, grid);
+            return PartialView(GRID_PARTIAL_PATH, items);
         }
 
         [AjaxChildActionOnly]
