@@ -1,7 +1,4 @@
-﻿@*@using GridMvc.Html
-@using GridMvc.Sorting
-@model Grid.Mvc.Ajax.GridExtensions.AjaxGrid<AssistantTraining.Models.TrainingGroup>*@
-
+﻿
 @model IEnumerable<AssistantTraining.Models.TrainingGroup>
 @using GridMvc.Html
 
@@ -11,6 +8,12 @@
     Html.Grid(Model).Named("TrainingGrid")
         .Columns(columns =>
         {
+            columns.Add()
+                    .Encoded(false)
+                    .Sanitized(false)
+                    .SetWidth(40)
+                    .RenderValueAs(f => index(f));
+
             columns.Add(f => f.TrainingName.Number).Titled("Training Number").SetWidth(110);
             columns.Add(f => f.Instruction.Number).Titled("Instruction Number").SetWidth(110);
             columns.Add(f => f.Instruction.Version).Titled("Version").SetWidth(110);
@@ -33,6 +36,72 @@
     {
         @:| @Html.ActionLink("Delete", "DeleteTraining", new { id = Id })
     }
+}
+
+@helper index(AssistantTraining.Models.TrainingGroup item)
+{
+
+object column=String.Empty;
+object dir = String.Empty;
+int index = 0;
+
+if (!String.IsNullOrEmpty(Request.QueryString["grid-column"]))
+{
+    column = Request.QueryString["grid-column"];
+
+    if (!String.IsNullOrEmpty(Request.QueryString["grid-column"]))
+    {
+        dir = Request.QueryString["grid-dir"];
+    }
+
+    switch (column.ToString())
+    {
+        case "Instruction.Version":
+
+            if (!String.IsNullOrEmpty(dir.ToString()) && dir.ToString().Equals("1"))
+            {
+                index = Model.OrderByDescending(x => x.Instruction.Version).ToList().FindIndex(x => x.Instruction.Number == item.Instruction.Number) + 1;
+            }
+            else
+            {
+                index = Model.OrderBy(x => x.Instruction.Version).ToList().FindIndex(x => x.Instruction.Number == item.Instruction.Number) + 1;
+            }
+            break;
+
+        case "TrainingName.Number":
+
+            if (!String.IsNullOrEmpty(dir.ToString()) && dir.ToString().Equals("1"))
+            {
+                index = Model.OrderByDescending(x => x.TrainingName.Number).ToList().FindIndex(x => x.Instruction.Number == item.Instruction.Number) + 1;
+            }
+            else
+            {
+                index = Model.OrderBy(x => x.TrainingName.Number).ToList().FindIndex(x => x.Instruction.Number == item.Instruction.Number) + 1;
+            }
+
+            break;
+        case "Instruction.Number":
+
+            if (!String.IsNullOrEmpty(dir.ToString()) && dir.ToString().Equals("1"))
+            {
+                index = Model.OrderByDescending(x => x.Instruction.Number).ToList().FindIndex(x => x.Instruction.Number == item.Instruction.Number) + 1;
+            }
+            else
+            {
+                index = Model.OrderBy(x => x.Instruction.Number).ToList().FindIndex(x => x.Instruction.Number == item.Instruction.Number) + 1;
+            }
+
+            break;
+        default:
+            break;
+    }
+
+}
+else
+{
+    index = Model.ToList().FindIndex(x => x.Instruction.Number == item.Instruction.Number) + 1;
+}
+ @Html.Label(index.ToString());
 }
 
 

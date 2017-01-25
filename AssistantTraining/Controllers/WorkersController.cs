@@ -21,6 +21,12 @@ namespace AssistantTraining.Controllers
         // GET: Workers
         public ActionResult Index()
         {
+            List<WorkerGroupViewModel> lstWorkerGroups = GetIndexData();
+            return View(lstWorkerGroups);
+        }
+
+        private List<WorkerGroupViewModel> GetIndexData()
+        {
             var allWorker = db.Workers.ToList();
             var workerRepository = new WorkerRepository();
             var groups = workerRepository.GetAllGroups();
@@ -44,14 +50,15 @@ namespace AssistantTraining.Controllers
                     Text = x.GroupName
                 });
                 workerGroup.IsSuspend = item.IsSuspend;
-                workerGroup.IsSuspendDesc = item.IsSuspend== true? "Tak":"Nie";
+                workerGroup.IsSuspendDesc = item.IsSuspend == true ? "Tak" : "Nie";
 
                 RowNo += 1;
-                workerGroup.RowNo =RowNo;
+                workerGroup.RowNo = RowNo;
 
                 lstWorkerGroups.Add(workerGroup);
             }
-            return View(lstWorkerGroups);
+
+            return lstWorkerGroups.OrderBy(x=> x.LastName).ToList();
         }
 
         // GET: Workers/Details/5
@@ -236,7 +243,7 @@ namespace AssistantTraining.Controllers
                 }
 
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return View("Index", GetIndexData());
             }
             return View(workerGroup);
         }

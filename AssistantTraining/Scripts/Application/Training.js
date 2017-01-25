@@ -30,8 +30,8 @@ function LoadGrid() {
         autoclose: true
     });
 
-    $('[data-gridname="TrainingWorkersGrid"]').unbind('click');
-    $('[data-gridname="TrainingWorkersGrid"]').click(function () {
+    $('[data-gridname="TrainingWorkersGrid"]').children('tbody').unbind('click');
+    $('[data-gridname="TrainingWorkersGrid"]').children('tbody').click(function () {
 
     });
 

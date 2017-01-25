@@ -51,7 +51,12 @@
 
 @Html.Grid(Model).Columns(columns =>
 {
-    columns.Add(foo => foo.RowNo).Titled("No.").SetWidth(20);
+    columns.Add()
+    .Encoded(false)
+    .Sanitized(false)
+    .SetWidth(40)
+    .RenderValueAs(foo => index(foo));
+
     columns.Add(foo => foo.FullName).Titled("Nazwa").Sortable(true).Filterable(true).SetWidth(110);
     columns.Add(foo => foo.Tag).Titled("Opis").Sortable(true).Filterable(true).SetWidth(10);
     columns.Add(foo => foo.IsSuspendDesc).Titled("Zawieszony").Sortable(true).Filterable(true).SetWidth(10);
@@ -99,6 +104,73 @@ else
 {
         @Html.Label("NIE")
 }
+}
+
+@helper index(AssistantTraining.ViewModel.WorkerGroupViewModel item)
+{
+
+object column ;
+object dir;
+int index = 0;
+
+if (!String.IsNullOrEmpty(Request.QueryString["grid-column"]))
+{
+    column = Request.QueryString["grid-column"];
+
+    if (!String.IsNullOrEmpty(Request.QueryString["grid-column"]))
+    {
+        dir = Request.QueryString["grid-dir"];
+    }
+
+    switch (column.ToString())
+    {
+        case "FullName":
+
+            if (!String.IsNullOrEmpty(dir.ToString()) && dir.ToString().Equals("1"))
+            {
+                index = Model.OrderByDescending(x => x.FullName).ToList().FindIndex(x => x.ID == item.ID) + 1;
+            }
+            else
+            {
+                index = Model.OrderBy(x => x.FullName).ToList().FindIndex(x => x.ID == item.ID) + 1;
+            }
+            break;
+
+        case "Tag":
+
+            if (!String.IsNullOrEmpty(dir.ToString()) && dir.ToString().Equals("1"))
+            {
+                index = Model.OrderByDescending(x => x.Tag).ToList().FindIndex(x => x.ID == item.ID) + 1;
+            }
+            else
+            {
+                index = Model.OrderBy(x => x.Tag).ToList().FindIndex(x => x.ID == item.ID) + 1;
+            }
+
+            break;
+        case "IsSuspendDesc":
+
+            if (!String.IsNullOrEmpty(dir.ToString()) && dir.ToString().Equals("1"))
+            {
+                index = Model.OrderByDescending(x => x.IsSuspendDesc).ToList().FindIndex(x => x.ID == item.ID) + 1;
+            }
+            else
+            {
+                index = Model.OrderBy(x => x.IsSuspendDesc).ToList().FindIndex(x => x.ID == item.ID) + 1;
+            }
+
+            break;
+        default:
+            break;
+    }
+
+}
+else
+{
+    index = Model.ToList().FindIndex(x => x.ID == item.ID) + 1;
+}
+
+@Html.Label(index.ToString())
 }
 @section scripts {
     @Scripts.Render("~/bundles/jqueryval")

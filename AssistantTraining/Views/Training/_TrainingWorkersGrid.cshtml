@@ -21,6 +21,12 @@
     Html.Grid(Model).Named("TrainingWorkersGrid")
         .Columns(columns =>
         {
+            columns.Add()
+            .Encoded(false)
+            .Sanitized(false)
+            .SetWidth(30)
+            .RenderValueAs(f => index(f));
+
             columns.Add(f => f.WorkerID, true);
             columns.Add(f => f.TrainingNameId, true);
             columns.Add(f => f.WorkerFullName).Titled("Nazwisko").Sortable(true).Filterable(true).SetWidth(110);
@@ -88,5 +94,19 @@ function unselectAll() {
     {
          @Html.ActionLink("Delete", "DeleteWorkerTraining", new { TrainingNameID = TrainingNameId, WorkerID = WorkerId })
     }
+}
+
+@helper index(AssistantTraining.ViewModel.TrainingWorkersGridData item)
+{
+
+object column;
+object dir;
+int index = 0;
+
+
+    index = Model.GridItems.ToList().FindIndex(x => x.WorkerID == item.WorkerID) + 1;
+
+
+    @Html.Label(index.ToString())
 }
 
