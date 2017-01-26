@@ -77,6 +77,11 @@ Po utworzeniu szkolenia nie znajdujemy go na liście szkoleń, wyświetla się n
 [1.0.0.17]
 -Dodanie liczby porządkowej na każdej listach
 
+[1.0.0.18]
+* Numerowanie list
+* Edycja pracowanika
+* Dynamiczny filtr na szkoleniach
+
 In Progress
 1.0.0.X
 *Weryfikacja usuniecia osoby przeszkolonej (remove)
