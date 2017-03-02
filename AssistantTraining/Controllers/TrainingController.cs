@@ -115,25 +115,24 @@ namespace AssistantTraining.Controllers
         public PartialViewResult GetGridByInstruction(string term)
         {
             var repos = new WorkerRepository();
-            var items = repos.GetTrainings().Where(x => x.Instruction.Number.Contains(term)).OrderBy(p => 0);
-            var grid = this.gridMvcHelper.GetAjaxGrid(items);
 
-            return PartialView(GRID_PARTIAL_PATH, grid);
+            IEnumerable<TrainingGroup> items;
+            if (String.IsNullOrEmpty(term))
+            {
+                items = repos.GetTrainings().AsEnumerable();
+            }
+            else
+            {
+                items = repos.GetTrainings().Where(x => x.Instruction.Number.Contains(term)).AsEnumerable();
+            }
+
+            return PartialView(GRID_PARTIAL_PATH, items);
         }
 
         [AjaxChildActionOnly]
         public PartialViewResult GetGridByTraining(string term)
         {
             var repos = new WorkerRepository();
-            //IOrderedQueryable<TrainingGroup> items;
-            //if (String.IsNullOrEmpty(term))
-            //{
-            //    items = repos.GetTrainings().OrderBy(p => 0);
-            //}
-            //else
-            //{
-            //    items = repos.GetTrainings().Where(x => x.TrainingName.Number.ToUpper().Contains(term.ToUpper())).OrderBy(p => 0);
-            //}
 
             IEnumerable<TrainingGroup> items;
             if (String.IsNullOrEmpty(term))
@@ -302,23 +301,21 @@ namespace AssistantTraining.Controllers
             }
             catch (Exception ex)
             {
-
                 //Handle Exception;
                 return View("Error");
             }
         }
 
-        public ActionResult DeleteWorkerTraining(int TrainingNameID,int WorkerID)
+        public ActionResult DeleteWorkerTraining(int TrainingNameID, int WorkerID)
         {
-
-            var tr = db.Trainings.Where(x => x.TrainingNameId.Equals(TrainingNameID) && x.WorkerId.Equals(WorkerID) ).ToList();
+            var tr = db.Trainings.Where(x => x.TrainingNameId.Equals(TrainingNameID) && x.WorkerId.Equals(WorkerID)).ToList();
 
             if (tr != null && tr.Count > 0)
             {
                 foreach (var item in tr)
                 {
                     db.Trainings.Attach(item);
-                    db.Trainings.Remove(item);                    
+                    db.Trainings.Remove(item);
                 }
 
                 db.SaveChanges();
@@ -326,6 +323,7 @@ namespace AssistantTraining.Controllers
 
             return RedirectToAction("Index");
         }
+
         public ActionResult Excel()
         {
             if (Session["term"] == null || Session["type"] == null || String.IsNullOrEmpty(Session["term"].ToString()) || String.IsNullOrEmpty(Session["type"].ToString()))
@@ -415,7 +413,6 @@ namespace AssistantTraining.Controllers
                       w.IsSuspend == false
                       && items.Contains(i.ID)
                     select new InstructionsJson { id = i.ID.ToString(), text = i.Number, name = i.Name, version = i.Version }).Distinct().ToList();
-
                 }
             }
             var countInstructions = lstInstructions.Count();
@@ -470,7 +467,6 @@ namespace AssistantTraining.Controllers
 
                 #region Add all workers and assigned instruction per TrainingGroup
 
-
                 //select* from[dbo].[Workers] w
                 //inner join[dbo].[GroupWorkers] gw on gw.[WorkerId] = w.ID
                 //inner join dbo.InstructionGroups ig on ig.[GroupId] = gw.[GroupId]
@@ -478,7 +474,7 @@ namespace AssistantTraining.Controllers
                 var instructionWorkerList =
                    (from w in db.Workers
                     join gw in db.GroupWorkers on w.ID equals gw.WorkerId
-                    join ig in db.InstructionGroups on gw.GroupId  equals  ig.GroupId
+                    join ig in db.InstructionGroups on gw.GroupId equals ig.GroupId
                     join t in db.Trainings
                           on new { WorkerId = w.ID, ID = ig.Instruction.ID }
                       equals new { t.WorkerId, ID = t.InstructionId } into t_join
@@ -529,6 +525,6 @@ namespace AssistantTraining.Controllers
         public string id;
         public string text;
         public string name;
-        public string version;
+        public int version;
     }
 }

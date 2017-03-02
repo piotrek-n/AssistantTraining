@@ -13,9 +13,11 @@ namespace AssistantTraining.ViewModel
 
         public string InstructionName { get; set; }
         public int? GroupId { get; set; }
-        public string InstructionVersion { get; set; }
+        public int InstructionVersion { get; set; }
         public string InstructionNumber { get; set; }
         public DateTime? DateOfTraining { get; set; }
+
+        public string TrainingName { get; set; }
 
         public string  DateOfTran { get { return DateOfTraining != null ? DateOfTraining.Value.ToShortDateString() : String.Empty; } }
 

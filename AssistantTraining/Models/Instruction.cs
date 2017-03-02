@@ -14,7 +14,7 @@ namespace AssistantTraining.Models
         public string Number { get; set; }
 
         [DisplayName("Wersja")]
-        public string Version { get; set; }
+        public int Version { get; set; }
 
         public DateTime TimeOfCreation { get; set; }
         public DateTime TimeOfModification { get; set; }

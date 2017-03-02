@@ -31,7 +31,7 @@ namespace AssistantTraining.ViewModel
         [DisplayName("Wersja")]
         [RegularExpression(@"^\d{1,3}$", ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "NumberFormat")]
         [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "RequiredFiled")]
-        public string Version { get; set; }
+        public int Version { get; set; }
 
         [DisplayName("Grupy")]
         public virtual ICollection<Group> Groups { get; set; }

@@ -180,6 +180,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Migrations\201702272249463_ChangeVersionFromStringToInt.cs" />
+    <Compile Include="Migrations\201702272249463_ChangeVersionFromStringToInt.Designer.cs">
+      <DependentUpon>201702272249463_ChangeVersionFromStringToInt.cs</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\GroupViewModel.cs" />
     <Compile Include="ViewModel\WorkerViewModel.cs" />
     <Content Include="ChangeLog.txt" />
@@ -741,6 +745,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610201918365_AddingColumnIsSuspendTableWorkers.resx">
       <DependentUpon>201610201918365_AddingColumnIsSuspendTableWorkers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702272249463_ChangeVersionFromStringToInt.resx">
+      <DependentUpon>201702272249463_ChangeVersionFromStringToInt.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

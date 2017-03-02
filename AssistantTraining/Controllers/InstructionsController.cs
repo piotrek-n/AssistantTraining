@@ -7,6 +7,7 @@ using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity.SqlServer;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -22,11 +23,26 @@ namespace AssistantTraining.Controllers
         // GET: Instructions
         public ActionResult Index()
         {
+
+            int temp;
+            //int max = numbers.Select(n => int.TryParse(n, out temp) ? temp : 0).Max();
+
+            var q = from t in db.Instructions.SqlQuery("SELECT ID,Name,Number, Cast(Version as INT) as Version,TimeOfCreation,TimeOfModification,Tag,CreatedByUserId from Instructions")
+                    group t by t.Number
+                    into g
+                    select new
+                    {
+                        Key = g.Key,
+                        maxVersion = g.Select(n => n.Version).Max()
+              //(from t2 in g select ((int)(object)(t2.Version)) ).Max()
+                                                                                                     //ID = g.FirstOrDefault(gt2 => gt2.Version == (from t2 in g select int.Parse(t2.Version)).Max().ToString()).ID
+        };
+
             var newInstructions =
                                 (from i in db.Instructions
                                  group i by i.Number into groupedI
-                                 let maxVersion = groupedI.Max(gt => gt.Version)
-                                 select new InstructionLatestVersion
+                                 let maxVersion = groupedI.Max(v => v.Version)
+            select new InstructionLatestVersion
                                  {
                                      Key = groupedI.Key,
                                      maxVersion = maxVersion,
@@ -143,7 +159,8 @@ namespace AssistantTraining.Controllers
                            GroupId = (int?)gi.GroupId,
                            InstructionVersion = i.Version,
                            InstructionNumber = i.Number,
-                           DateOfTraining = (DateTime?)t.DateOfTraining
+                           DateOfTraining = (DateTime?)t.DateOfTraining,
+                           TrainingName = t.TrainingName.Number
                        }).Select(x => x).AsEnumerable().Select((w, i) =>
                            new InstructionVsTrainingData
                            {
@@ -155,6 +172,7 @@ namespace AssistantTraining.Controllers
                                InstructionVersion = w.InstructionVersion,
                                InstructionNumber = w.InstructionNumber,
                                DateOfTraining = (DateTime?)w.DateOfTraining,
+                               TrainingName = w.TrainingName,
                                RowNo = i + 1
                            }).ToList();
 
@@ -375,7 +393,7 @@ namespace AssistantTraining.Controllers
             var groups = workerRepository.GetAllGroups();
 
             instructionGroupViewModel.Name = instruction.Name;
-            instructionGroupViewModel.Version = instruction.Version;
+            instructionGroupViewModel.Version = instruction.Version ;
             //instructionGroupViewModel.SelectedId = instruction.GroupId.ToString();
 
             instructionGroupViewModel.Items = groups.Select(x => new SelectListItem
@@ -425,16 +443,16 @@ namespace AssistantTraining.Controllers
             {
                 return HttpNotFound();
             }
-            int presetVersion = Int32.Parse(instruction.Version);
+            int presetVersion = instruction.Version;
             int newVersion = Int32.Parse(version);
 
-            if (instruction.Version == version || (newVersion != presetVersion + 1))
+            if (instruction.Version == Int32.Parse(version) || (newVersion != presetVersion + 1))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Instruction newInstruction = new Instruction();
             newInstruction.Name = instruction.Name;
-            newInstruction.Version = version;
+            newInstruction.Version = Int32.Parse(version);
             newInstruction.TimeOfCreation = DateTime.Now;
             newInstruction.TimeOfModification = DateTime.Now;
             newInstruction.Number = instruction.Number;
@@ -516,7 +534,8 @@ namespace AssistantTraining.Controllers
                                   GroupId = (int?)gi.GroupId,
                                   InstructionVersion = i.Version,
                                   InstructionNumber = i.Number,
-                                  DateOfTraining = (DateTime?)t.DateOfTraining
+                                  DateOfTraining = (DateTime?)t.DateOfTraining,
+                                  TrainingName = t.TrainingName.Number
                               }).ToList();
 
             using (ExcelPackage pck = new ExcelPackage())

@@ -25,7 +25,7 @@ namespace AssistantTraining.ViewModel
         public string Number { get; set; }
 
         [DisplayName("Wersja")]
-        public string Version { get; set; }
+        public int Version { get; set; }
 
         [DisplayName("ID")]
         public int ID { get; set; }

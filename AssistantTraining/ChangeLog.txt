@@ -82,6 +82,14 @@ Po utworzeniu szkolenia nie znajdujemy go na liście szkoleń, wyświetla się n
 * Edycja pracowanika
 * Dynamiczny filtr na szkoleniach
 
+[1.0.0.19]
+*Umieszczenie kolumny z numerem szkolenia, które odbył pracownik w widoku Instrukcje ->details
+*W widoku trainings nie mogę wyszukać szkolenia wpisując numer instrukcji.
+
+[1.0.0.20]
+*Numer wersji. Zmiany w bazie danych oraz w aplikacji
+
+
 In Progress
 1.0.0.X
 *Weryfikacja usuniecia osoby przeszkolonej (remove)

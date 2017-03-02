@@ -55,6 +55,7 @@
     columns.Add(foo => foo.RowNo).Titled("Lp.").Sortable(true).Filterable(true).SetWidth(10);
     columns.Add(foo => foo.WorkerFullName).Titled("Nazwisko").Sortable(true).Filterable(true).SetWidth(110);
     columns.Add(foo => foo.DateOfTran).Titled("Data szkolenia").Sortable(true).Filterable(true).SetWidth(110);
+    columns.Add(foo => foo.TrainingName).Titled("Numer szkolenia").Sortable(true).Filterable(true).SetWidth(110);
 
 }).WithPaging(50)
 

@@ -160,7 +160,7 @@ namespace AssistantTraining.Controllers
             return View(Tuple.Create(users, roles));
         }
 
-        // POST: Workers/Delete/5
+        // POST: Workers/Delete/5`
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
