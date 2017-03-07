@@ -77,10 +77,10 @@
 
 @helper Edit(int Id)
         {
-    @Html.ActionLink("Details", "Details", new { id = Id })
 
 if (User.IsInRole("Administrator"))
 {
+        @Html.ActionLink("Details", "Details", new { id = Id })
         @:| @Html.ActionLink("Edit", "Edit", new { id = Id })
     }
     if (User.IsInRole("Administrator"))

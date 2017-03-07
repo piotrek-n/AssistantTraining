@@ -89,6 +89,9 @@ Po utworzeniu szkolenia nie znajdujemy go na liście szkoleń, wyświetla się n
 [1.0.0.20]
 *Numer wersji. Zmiany w bazie danych oraz w aplikacji
 
+[1.0.0.21]
+*Przygotowuję właśnie instrukcję użytkowania bazy i natknęłam się na jedną niezgodność. Inżynier może edytować umiejętności pracowników, a nie powinien.
+*W widoku raportowym w szkoleniach wyświetlają mi się szkolenia, które są zakończone albo takie, których nie ma wcale. 
 
 In Progress
 1.0.0.X

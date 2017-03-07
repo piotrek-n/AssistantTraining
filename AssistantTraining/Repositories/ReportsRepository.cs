@@ -199,6 +199,7 @@ namespace AssistantTraining.Repositories
                    on new { WorkerId = w.ID, i.ID }
                equals new { t.WorkerId, ID = t.InstructionId } into t_join
              from t in t_join.DefaultIfEmpty()
+             join tn in db.TrainingNames on t.TrainingNameId equals tn.ID
              where
                w.IsSuspend == false &&
                  (from Trainings in db.Trainings
@@ -210,16 +211,16 @@ namespace AssistantTraining.Repositories
              select new
              {
                  InstructionNumber = i.Number,
-                 TrainingName =
-                 ((from TrainingGroups in db.TrainingGroups
-                   where
-        TrainingGroups.InstructionId == i.ID
-                   orderby
-        TrainingGroups.TimeOfCreation descending
-                   select new
-                   {
-                       TrainingGroups.TrainingName.Number
-                   }).Select(x => x.Number).FirstOrDefault())
+                 TrainingName = tn.Number
+                 //((from TrainingGroups in db.TrainingGroups
+                 //  where
+                 //        TrainingGroups.InstructionId == i.ID
+                 //  orderby
+                 //        TrainingGroups.TimeOfCreation descending
+                 //  select new
+                 //  {
+                 //      TrainingGroups.TrainingName.Number
+                 //  }).Select(x => x.Number).FirstOrDefault())
              }).Distinct()
               .ToList()
               .Select((currRow, index) => new { TrainingNumber = currRow.TrainingName, InstructionNumber = currRow.InstructionNumber, DT_RowId = index + 1 });
@@ -246,6 +247,5 @@ namespace AssistantTraining.Repositories
 
             return json;
         }
-
     }
 }
