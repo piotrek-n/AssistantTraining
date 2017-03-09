@@ -93,6 +93,9 @@ Po utworzeniu szkolenia nie znajdujemy go na liście szkoleń, wyświetla się n
 *Przygotowuję właśnie instrukcję użytkowania bazy i natknęłam się na jedną niezgodność. Inżynier może edytować umiejętności pracowników, a nie powinien.
 *W widoku raportowym w szkoleniach wyświetlają mi się szkolenia, które są zakończone albo takie, których nie ma wcale. 
 
+[1.0.0.22]
+*Operator może wejść na Details z Workers
+
 In Progress
 1.0.0.X
 *Weryfikacja usuniecia osoby przeszkolonej (remove)
