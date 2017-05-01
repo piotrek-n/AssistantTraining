@@ -96,6 +96,15 @@ Po utworzeniu szkolenia nie znajdujemy go na liście szkoleń, wyświetla się n
 [1.0.0.22]
 *Operator może wejść na Details z Workers
 
+[1.0.0.23]
+*Operator może wejść na Raporty
+
+[1.0.0.24]
+*Operatora ma teraz pole wyszukiwania instrukcji.
+
+[1.0.0.25]
+*FIX. Poprawka do raportu procownicy.
+
 In Progress
 1.0.0.X
 *Weryfikacja usuniecia osoby przeszkolonej (remove)
@@ -103,6 +112,7 @@ In Progress
 *Problem filtrów
 
 ***Dodanie liczby porządkowej na każdej liście jakiej to możliwe
+****Panie Piotrze chciałabym poprosić o modyfikację. Przy zmianie wersji instrukcji wyrzucić okienko „numer szkolenia” tak naprawdę jest dla nas bezużyteczne.
 
 
 

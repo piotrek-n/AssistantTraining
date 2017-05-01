@@ -140,8 +140,7 @@ namespace AssistantTraining.Repositories
                           from t in t_join.DefaultIfEmpty()
                           where
                             w.IsSuspend == false &&
-                            (t.ID == null ||
-                            t.DateOfTraining == new System.DateTime(1900, 1, 1))
+                            (t.DateOfTraining == new System.DateTime(1900, 1, 1))
                           orderby
                             ei.InstructionId
                           select new

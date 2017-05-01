@@ -36,7 +36,7 @@
                         }
                         <li>@Html.ActionLink("Instructions", "Index", "Instructions")</li>
                         <li>@Html.ActionLink("Trainings", "Index", "Training")</li>
-                        @if (User.IsInRole("Administrator"))
+                        @if (User.IsInRole("Administrator") || User.IsInRole("Operator"))
                         {
                             <li>@Html.ActionLink("Reports", "Index", "Reports")</li>
                         }
