@@ -105,6 +105,10 @@ Po utworzeniu szkolenia nie znajdujemy go na liście szkoleń, wyświetla się n
 [1.0.0.25]
 *FIX. Poprawka do raportu procownicy.
 
+[1.0.0.26]
+*FIX. Modyfikacja do zmiany wersji instrukcji.
+
+
 In Progress
 1.0.0.X
 *Weryfikacja usuniecia osoby przeszkolonej (remove)
