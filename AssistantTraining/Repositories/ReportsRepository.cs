@@ -100,6 +100,7 @@ namespace AssistantTraining.Repositories
 
         public static string WorkersWithoutTrainingJSON()
         {
+            db.Database.CommandTimeout = 180;
             var result = (from w in db.Workers
                           join gw in db.GroupWorkers on w.ID equals gw.WorkerId
                           join g in db.Groups on gw.GroupId equals g.ID
@@ -140,7 +141,7 @@ namespace AssistantTraining.Repositories
                           from t in t_join.DefaultIfEmpty()
                           where
                             w.IsSuspend == false &&
-                            (t.DateOfTraining == new System.DateTime(1900, 1, 1))
+                            (t.DateOfTraining == new System.DateTime(1900, 1, 1) || t.DateOfTraining == null)
                           orderby
                             ei.InstructionId
                           select new
