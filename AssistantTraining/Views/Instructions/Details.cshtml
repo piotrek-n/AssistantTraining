@@ -20,46 +20,44 @@
         <dt>
             Nazwa
         </dt>
-
         <dd>
             @Html.DisplayFor(model => Model.instructionVsTrainingList.First().InstructionName)
         </dd>
-
         <dt>
-           Numer
+            Numer
         </dt>
-
         <dd>
             @Html.DisplayFor(model => Model.instructionVsTrainingList.First().InstructionNumber)
         </dd>
-
         <dt>
             Wersja
         </dt>
-
         <dd>
             @Html.DisplayFor(model => Model.instructionVsTrainingList.First().InstructionVersion)
         </dd>
-
     </dl>
+    @Html.Grid(Model.GroupWithNumbers.ToList()).Columns(columns =>
+    {
+        columns.Add(foo => foo.RowNo).Titled("Lp.").Sortable(true).Filterable(true).SetWidth(10);
+        columns.Add(foo => foo.GroupName).Titled("Grupy").Sortable(true).Filterable(true).SetWidth(110);
 
-@Html.Grid(Model.GroupWithNumbers.ToList()).Columns(columns =>
-{
-    columns.Add(foo => foo.RowNo).Titled("Lp.").Sortable(true).Filterable(true).SetWidth(10);
-    columns.Add(foo => foo.GroupName).Titled("Grupy").Sortable(true).Filterable(true).SetWidth(110);
-
-}).WithPaging(10)
-
-@Html.Grid(Model.instructionVsTrainingList.ToList()).Columns(columns =>
-{
+    }).WithPaging(10)
+    @Html.Grid(Model.instructionVsTrainingList.ToList()).Columns(columns =>
+    {
     columns.Add(foo => foo.RowNo).Titled("Lp.").Sortable(true).Filterable(true).SetWidth(10);
     columns.Add(foo => foo.WorkerFullName).Titled("Nazwisko").Sortable(true).Filterable(true).SetWidth(110);
+    columns.Add(foo => foo.WorkerIsSuspendedDesc).Titled("Zawieszony").Sortable(true).Filterable(true).SetWidth(10);
     columns.Add(foo => foo.DateOfTran).Titled("Data szkolenia").Sortable(true).Filterable(true).SetWidth(110);
     columns.Add(foo => foo.TrainingName).Titled("Numer szkolenia").Sortable(true).Filterable(true).SetWidth(110);
 
-}).WithPaging(50)
+    }).WithPaging(50)
 
 </div>
 <p>
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/application/InstructionDetails")
+}

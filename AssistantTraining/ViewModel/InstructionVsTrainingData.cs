@@ -10,7 +10,7 @@ namespace AssistantTraining.ViewModel
         public string WorkerLastName { get; set; }
         public string WorkerFirstMidName { get; set; }
         public string WorkerFullName{ get; set; }
-
+        public string WorkerIsSuspendedDesc { get; set; }
         public string InstructionName { get; set; }
         public int? GroupId { get; set; }
         public int InstructionVersion { get; set; }

@@ -19,7 +19,7 @@ namespace AssistantTraining.ViewModel
         public string Name { get; set; }
 
         [DisplayName("Numer")]
-        [RegularExpression(@"^[A-Z]{2}.\d{2}.\d{2}(.\d{2})?(.\d{2})?$", ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "NumberFormat")]
+        [RegularExpression(@"^[A-Z]{2}.\d{2}.\d{2}(.\d{2,3})?(.\d{2,3})?$", ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "NumberFormat")]
         [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "RequiredFiled")]
         public string Number { get; set; }
 
