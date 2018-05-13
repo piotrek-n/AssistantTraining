@@ -282,7 +282,8 @@ namespace AssistantTraining.Controllers
              (from w in db.Workers
               join gw in db.GroupWorkers on w.ID equals gw.WorkerId
               join g in db.Groups on gw.GroupId equals g.ID
-              select new { FullName = w.FirstMidName + " " + w.LastName, IsSuspend = w.IsSuspend, GroupName = g.GroupName }
+              orderby w.LastName, w.FirstMidName
+              select new { FullName = w.FirstMidName + " " + w.LastName, IsSuspend = w.IsSuspend, GroupName = g.GroupName }          
               ).ToList();
 
             using (ExcelPackage pck = new ExcelPackage())
