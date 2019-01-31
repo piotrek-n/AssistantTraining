@@ -153,7 +153,7 @@ namespace AssistantTraining.Controllers
                     InstructionNumber = i.Number,
                     DateOfTraining = (DateTime?) t.DateOfTraining,
                     TrainingName = t.TrainingName.Number
-                }).Select(x => x).AsEnumerable().Select((w, i) =>
+                }).Select(x => x).AsEnumerable().GroupBy(p => new { p.WorkerFullName, p.InstructionNumber }).Select(x => x.First()).Select((w, i) =>
                 new InstructionVsTrainingData
                 {
                     WorkerLastName = w.WorkerLastName,
