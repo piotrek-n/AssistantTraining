@@ -56,6 +56,7 @@ namespace AssistantTraining.Repositories
             if (!string.IsNullOrEmpty(type) && type.Equals("trained") && res)
             {
                 lst = (from t in db.Trainings
+                       orderby t.Worker.LastName + "  " + t.Worker.FirstMidName
                        where
                          t.TrainingName.ID == itemID && t.DateOfTraining > dateForNull
                        select new TrainingWorkersGridData
@@ -73,6 +74,7 @@ namespace AssistantTraining.Repositories
             else if (!string.IsNullOrEmpty(type) && type.Equals("untrained") && res)
             {
                 lst = (from t in db.Trainings
+                       orderby t.Worker.LastName + "  " + t.Worker.FirstMidName
                        where
                         t.TrainingName.ID == itemID && t.DateOfTraining == new DateTime(1900, 1, 1)
                        select new TrainingWorkersGridData
@@ -87,7 +89,7 @@ namespace AssistantTraining.Repositories
 
                 return lst;
             }
-            return lst;
+            return lst.OrderBy(x => x.WorkerFullName);
         }
 
         public IQueryable<TrainingWorkersGridData> GetWorkersByTraining()

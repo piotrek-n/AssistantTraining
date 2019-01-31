@@ -111,6 +111,15 @@ Po utworzeniu szkolenia nie znajdujemy go na liście szkoleń, wyświetla się n
 [1.0.0.27]
 *FIX. Raport pracownikow.
 
+[1.0.0.28]
+TRA-2
+Workers - Export - Dodałem sportowanie "orderby w.LastName, w.FirstMidName"
+TRA-3 
+INSTRUCTION 
+-	Format – widok dodaj szkolenie numer szkolenia i. obecnie jest: AA.00/AA.00.00/AA.00.00.00/AA.00.00.00.00, powinno być również: AA.00.00.000, np.
+-	Nr szkolenia – usunąć
+-	Lista z instrukcjami – najnowsze instrukcje powinny być widoczne na początku strony – najnowsza dodana instrukcja na szczycie listy; sortowanie grup nie działa
+-	Details – puste miejsca: osoby usunięte ze szkolenia lub zawieszone -> zaznaczyć nazwisko na czerwono (żeby było wiadomo, że dana osoba jest zawieszona); 1900-01-01: szkolenie nieukończone -> zmienić na: puste
 
 In Progress
 1.0.0.X
