@@ -173,7 +173,26 @@ namespace AssistantTraining.Controllers
 
         public ActionResult SearchByGroup(string srchtermWorkerByGroup)
         {
-            return View("Index",db.Groups.Where(x=>x.GroupName.ToUpper().Contains(srchtermWorkerByGroup.ToUpper())).ToList());
+            //var items = db.Groups.Where(x => x.GroupName.ToUpper().Contains(srchtermWorkerByGroup.ToUpper())).ToList();
+
+            ////LINQ to Entities does not recognize the method 'System.Linq.IQueryable`
+            ////FIX Select(x => x).AsEnumerable()
+            var result =
+                db.Groups.Where(x => x.GroupName.ToUpper().Contains(srchtermWorkerByGroup.ToUpper())).Select(x => x).AsEnumerable().Select((x, index) => new GroupViewModel()
+                {
+                    RowNo = index + 1,
+                    GroupName = x.GroupName,
+                    ID = x.ID,
+                    Instructions = x.Instructions,
+                    Tag = x.Tag,
+                    TimeOfCreation = x.TimeOfCreation,
+                    TimeOfModification = x.TimeOfModification
+                }).ToList();
+            //return View("Groups/Index", result);
+            //LINQ to Entities does not recognize the method 'System.Linq.IQueryable`
+            //FIX Select(x => x).AsEnumerable()
+
+            return View("Index", result);
         }
 
         public ActionResult Excel()
