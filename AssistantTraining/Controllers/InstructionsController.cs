@@ -387,13 +387,32 @@ namespace AssistantTraining.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            var instructionGroup = db.InstructionGroups.Where(x => x.InstructionId == id).ToList();
-            db.InstructionGroups.RemoveRange(instructionGroup);
-            var instruction = db.Instructions.Find(id);
-            db.Instructions.Remove(instruction);
+            //var instructionGroup = db.InstructionGroups.Where(x => x.InstructionId == id).ToList();
+            //db.InstructionGroups.RemoveRange(instructionGroup);
+            //var instruction = db.Instructions.Find(id);
+            //db.Instructions.Remove(instruction);
 
-            db.SaveChanges();
+            //db.SaveChanges();
+            //return RedirectToAction("Index");
+
+            var lstInstructions = db.Instructions.Where(x => x.ID == id).ToList();
+            var number = lstInstructions.First().Number;
+            var lstInstructions2 = db.Instructions.Where(x => x.Number == number).ToList();
+
+            foreach(var item in lstInstructions2)
+            {
+
+                var instructionGroup = db.InstructionGroups.Where(x => x.InstructionId == item.ID).ToList();
+                db.InstructionGroups.RemoveRange(instructionGroup);
+
+                var instruction = db.Instructions.Find(item.ID);
+                db.Instructions.Remove(instruction);
+
+                db.SaveChanges();
+
+            }
             return RedirectToAction("Index");
+
         }
 
         protected override void Dispose(bool disposing)
