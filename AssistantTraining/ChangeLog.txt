@@ -121,6 +121,17 @@ INSTRUCTION
 -	Lista z instrukcjami – najnowsze instrukcje powinny być widoczne na początku strony – najnowsza dodana instrukcja na szczycie listy; sortowanie grup nie działa
 -	Details – puste miejsca: osoby usunięte ze szkolenia lub zawieszone -> zaznaczyć nazwisko na czerwono (żeby było wiadomo, że dana osoba jest zawieszona); 1900-01-01: szkolenie nieukończone -> zmienić na: puste
 
+[1.0.0.29]
+TRA-5
+-jeżeli instrukcja obejmuje kilka grup i ktoś jest przypisany do kilku grup  to w liście wyświetla się kilka razy.
+TRA-6
+-Usuwaja instrukcje to czasem zdarza się tak, że nie usuwa się cała instrukcja tylko aktualna wersja
+TRA-7
+- Sortowanie w zakładce Trainings.
+TRA-8
+- Znów dziala wyszukiwarka w Groups.
+TRA-9
+- W zakładce Instruction najnowsze instrukcje powinny być widoczne na początku strony
 In Progress
 1.0.0.X
 *Weryfikacja usuniecia osoby przeszkolonej (remove)

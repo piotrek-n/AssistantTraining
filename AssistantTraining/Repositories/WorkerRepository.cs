@@ -41,7 +41,7 @@ namespace AssistantTraining.Repositories
              }).ToList();
 
             var trainings = db.TrainingGroups.Include("Instruction").Include("TrainingNames")
-                              .ToList().Where(x => newInstructions.Any(ni => ni.ID == x.InstructionId)).AsQueryable<TrainingGroup>();
+                              .ToList().Where(x => newInstructions.Any(ni => ni.ID == x.InstructionId)).AsQueryable<TrainingGroup>().OrderByDescending(o => o.TimeOfCreation);
 
             return trainings;
         }
