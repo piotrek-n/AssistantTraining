@@ -132,6 +132,11 @@ TRA-8
 - Znów dziala wyszukiwarka w Groups.
 TRA-9
 - W zakładce Instruction najnowsze instrukcje powinny być widoczne na początku strony
+[1.0.0.30]
+TRA-10
+- najnowsze szkolenia powinny być dodawane na samym początku
+- W zakładce Trainings undefined – gdy aktualizujemy instrukcję do nowej wersji, a poprzednie szkolenie nie zostało jeszcze zakończone
+
 In Progress
 1.0.0.X
 *Weryfikacja usuniecia osoby przeszkolonej (remove)
