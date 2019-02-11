@@ -68,7 +68,7 @@ namespace AssistantTraining.Repositories
                            WorkerID = t.WorkerId,
                            TrainingNameId = t.TrainingNameId,
                            WorkerFullName = t.Worker.LastName + "  " + t.Worker.FirstMidName
-                       }).Distinct();
+                       }).Distinct().OrderBy(x => x.WorkerLastName).ThenBy(n => n.WorkerFirstMidName);
 
                 return lst;
             }
@@ -86,11 +86,11 @@ namespace AssistantTraining.Repositories
                            WorkerID = t.WorkerId,
                            TrainingNameId = t.TrainingNameId,
                            WorkerFullName = t.Worker.LastName + "  " + t.Worker.FirstMidName
-                       }).Distinct();
+                       }).Distinct().OrderBy(x => x.WorkerLastName).ThenBy(n => n.WorkerFirstMidName);
 
                 return lst;
             }
-            return lst.OrderBy(x => x.WorkerFullName);
+            return lst;
         }
 
         public IQueryable<TrainingWorkersGridData> GetWorkersByTraining()

@@ -138,7 +138,7 @@ TRA-10
 - W zakładce Trainings undefined – gdy aktualizujemy instrukcję do nowej wersji, a poprzednie szkolenie nie zostało jeszcze zakończone
 
 In Progress
-1.0.0.X
+1.0.0.X--
 *Weryfikacja usuniecia osoby przeszkolonej (remove)
 *Przechodzenie na widoki z raportów
 *Problem filtrów

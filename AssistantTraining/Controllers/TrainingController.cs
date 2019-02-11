@@ -153,7 +153,7 @@ namespace AssistantTraining.Controllers
             Session["term"] = term;
             Session["type"] = type;
 
-            var items = repos.GetWorkersByTraining(term, type).OrderBy(p => 0);
+            var items = repos.GetWorkersByTraining(term, type).OrderBy(p => 0).OrderBy(x=>x.WorkerFullName);
             var grid = this.gridMvcHelper.GetAjaxGrid(items);
 
             return PartialView(GRID_WORKER_PARTIAL_PATH, grid);
@@ -335,7 +335,7 @@ namespace AssistantTraining.Controllers
             using (ExcelPackage pck = new ExcelPackage())
             {
                 ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Workers");
-                ws.Cells["A1"].LoadFromCollection(workers.Select(x => new { FullName = x.FirstName + " " + x.Name }).ToList(), true);
+                ws.Cells["A1"].LoadFromCollection(workers.Select(x => new { FullName = x.Name + " " + x.FirstName }).ToList().OrderBy(x => x.FullName), true);
 
                 Byte[] fileBytes = pck.GetAsByteArray();
                 Response.Clear();
