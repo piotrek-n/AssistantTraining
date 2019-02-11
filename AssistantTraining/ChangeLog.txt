@@ -136,7 +136,10 @@ TRA-9
 TRA-10
 - najnowsze szkolenia powinny być dodawane na samym początku
 - W zakładce Trainings undefined – gdy aktualizujemy instrukcję do nowej wersji, a poprzednie szkolenie nie zostało jeszcze zakończone
-
+[1.0.0.31]
+TRA-11
+Przy eksporcie danych jak w liście osób przeszkolonych/nieprzeszkolonych w zakładce „trainings” nie poprawienie wyświetla się lista nazwisk,
+która nie wyświetla się alfabetycznie, tylko wg kolejności dodania do bazy.
 In Progress
 1.0.0.X--
 *Weryfikacja usuniecia osoby przeszkolonej (remove)
