@@ -107,8 +107,7 @@ namespace AssistantTraining.Controllers
             //var grid = this.gridMvcHelper.GetAjaxGrid(items);
 
             var items = repos.GetTrainings().AsEnumerable();
-            var clearedItems = items.Where(tt => tt.TrainingName.Number != "undefined");
-            return PartialView(GRID_PARTIAL_PATH, clearedItems); 
+            return PartialView(GRID_PARTIAL_PATH, items); 
         }
 
         [AjaxChildActionOnly]

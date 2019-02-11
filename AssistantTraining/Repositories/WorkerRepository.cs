@@ -43,7 +43,8 @@ namespace AssistantTraining.Repositories
             var trainings = db.TrainingGroups.Include("Instruction").Include("TrainingNames")
                               .ToList().Where(x => newInstructions.Any(ni => ni.ID == x.InstructionId)).AsQueryable<TrainingGroup>().OrderByDescending(o => o.TimeOfCreation);
 
-            return trainings;
+            return trainings.Where(tt => !tt.TrainingName.Number.Equals("undefined"));
+            //return trainings;
         }
 
         public IQueryable<TrainingWorkersGridData> GetWorkersByTraining(string term, string type)
