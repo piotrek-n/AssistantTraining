@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Kendo.Mvc.UI;
 
 namespace AssistantTraining.ViewModel
 {
@@ -41,6 +42,7 @@ namespace AssistantTraining.ViewModel
         [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "RequiredFiled")]
         public string[] SelectedIds { get; set; }
 
+        //We want to replace it by ItemsList
         [DisplayName("Grupy")]
         public IEnumerable<SelectListItem> Items { get; set; }
 
@@ -49,6 +51,11 @@ namespace AssistantTraining.ViewModel
         public string TimeOfCreation { get; set; }
 
         public int RowNo { get; set; }
+
+        public List<IInputGroupItem> ItemsList;
+        
+        //[Required]
+        public string[] CheckBoxGroupValue { get; set; }
 
     }
 }

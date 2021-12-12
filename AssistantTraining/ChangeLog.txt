@@ -143,6 +143,10 @@ która nie wyświetla się alfabetycznie, tylko wg kolejności dodania do bazy.
 In Progress
 [1.0.0.32]
 Hot Fix dla usuniecia osoby przeszkolonej (remove)
+[1.0.0.33]
+Dodanie Telerika oraz zmiana w tworzeniu instrukcji - wyswietlanie grup checkbox group
+
+
 1.0.0.X--
 *Weryfikacja usuniecia osoby przeszkolonej (remove)
 *Przechodzenie na widoki z raportów

@@ -1,15 +1,16 @@
-﻿using System;
+﻿using AssistantTraining.DAL;
+using AssistantTraining.Models;
+using AssistantTraining.Repositories;
+using AssistantTraining.ViewModel;
+using Kendo.Mvc.UI;
+using Microsoft.AspNet.Identity;
+using OfficeOpenXml;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using AssistantTraining.DAL;
-using AssistantTraining.Models;
-using AssistantTraining.Repositories;
-using AssistantTraining.ViewModel;
-using Microsoft.AspNet.Identity;
-using OfficeOpenXml;
 
 namespace AssistantTraining.Controllers
 {
@@ -25,28 +26,28 @@ namespace AssistantTraining.Controllers
 
             var q = from t in db.Instructions.SqlQuery(
                     "SELECT ID,Name,Number, Cast(Version as INT) as Version,TimeOfCreation,TimeOfModification,Tag,CreatedByUserId from Instructions order by TimeOfCreation desc")
-                group t by t.Number
+                    group t by t.Number
                 into g
-                select new
-                {
-                    g.Key,
-                    maxVersion = g.Select(n => n.Version).Max()
-                };
+                    select new
+                    {
+                        g.Key,
+                        maxVersion = g.Select(n => n.Version).Max()
+                    };
 
             var newInstructions =
                 (from i in db.Instructions
-                    group i by i.Number
+                 group i by i.Number
                     into groupedI
-                    let maxVersion = groupedI.Max(v => v.Version)
-                    select new InstructionLatestVersion
-                    {
-                        Key = groupedI.Key,
-                        maxVersion = maxVersion,
-                        ID = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).ID
-                    }).ToList();
+                 let maxVersion = groupedI.Max(v => v.Version)
+                 select new InstructionLatestVersion
+                 {
+                     Key = groupedI.Key,
+                     maxVersion = maxVersion,
+                     ID = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).ID
+                 }).ToList();
 
             var allInstructions =
-                db.Instructions.ToList().Where(x => newInstructions.Any(ni => ni.ID == x.ID)).OrderByDescending(ins=>ins.TimeOfCreation).ToList();
+                db.Instructions.ToList().Where(x => newInstructions.Any(ni => ni.ID == x.ID)).OrderByDescending(ins => ins.TimeOfCreation).ToList();
             var workerRepository = new WorkerRepository();
             var groups = workerRepository.GetAllGroups();
 
@@ -68,13 +69,13 @@ namespace AssistantTraining.Controllers
                 instructioGroup.TimeOfCreation = item.TimeOfCreation.ToShortDateString();
 
                 var lstGroupIds = (from InstructionGroups in db.InstructionGroups
-                    where
-                        InstructionGroups.GroupId != null &&
-                        InstructionGroups.InstructionId == item.ID
-                    select new
-                    {
-                        val = InstructionGroups.GroupId ?? 0
-                    }).Select(x => x.val.ToString()).ToList();
+                                   where
+                                       InstructionGroups.GroupId != null &&
+                                       InstructionGroups.InstructionId == item.ID
+                                   select new
+                                   {
+                                       val = InstructionGroups.GroupId ?? 0
+                                   }).Select(x => x.val.ToString()).ToList();
                 instructioGroup.SelectedIds = lstGroupIds.ToArray();
 
                 instructioGroup.Items = groups.Select(x => new SelectListItem
@@ -102,13 +103,13 @@ namespace AssistantTraining.Controllers
             var idsGroups = new List<int>();
 
             idsGroups = (from InstructionGroups in db.InstructionGroups
-                where
-                    InstructionGroups.GroupId != null &&
-                    InstructionGroups.InstructionId == id
-                select new
-                {
-                    val = InstructionGroups.GroupId ?? 0
-                }).Select(x => x.val).ToList();
+                         where
+                             InstructionGroups.GroupId != null &&
+                             InstructionGroups.InstructionId == id
+                         select new
+                         {
+                             val = InstructionGroups.GroupId ?? 0
+                         }).Select(x => x.val).ToList();
 
             var groups = workerRepository.GetGroupsById(idsGroups);
 
@@ -133,41 +134,41 @@ namespace AssistantTraining.Controllers
             });
 
             var lst = (from w in db.Workers
-                join wg in db.GroupWorkers on w.ID equals wg.WorkerId
-                join gi in db.InstructionGroups on wg.GroupId equals gi.GroupId
-                join i in db.Instructions on gi.InstructionId equals i.ID
-                join t in db.Trainings
-                    on new {InstructionId = i.ID, wg.WorkerId}
-                    equals new {t.InstructionId, t.WorkerId} into t_join
-                from t in t_join.DefaultIfEmpty()
-                where i.ID == id
-                select new InstructionVsTrainingData
-                {
-                    WorkerLastName = w.LastName,
-                    WorkerFirstMidName = w.FirstMidName,
-                    WorkerFullName = w.LastName + " " + w.FirstMidName,
-                    WorkerIsSuspendedDesc = (w.IsSuspend == true ? "Tak" : "Nie"),
-                    InstructionName = i.Name,
-                    GroupId = gi.GroupId,
-                    InstructionVersion = i.Version,
-                    InstructionNumber = i.Number,
-                    DateOfTraining = (DateTime?) t.DateOfTraining,
-                    TrainingName = t.TrainingName.Number
-                }).Select(x => x).AsEnumerable().GroupBy(p => new { p.WorkerFullName, p.InstructionNumber }).Select(x => x.First()).Select((w, i) =>
-                new InstructionVsTrainingData
-                {
-                    WorkerLastName = w.WorkerLastName,
-                    WorkerFirstMidName = w.WorkerFirstMidName,
-                    WorkerFullName = w.WorkerFullName,
-                    WorkerIsSuspendedDesc = w.WorkerIsSuspendedDesc,
-                    InstructionName = w.InstructionName,
-                    GroupId = w.GroupId,
-                    InstructionVersion = w.InstructionVersion,
-                    InstructionNumber = w.InstructionNumber,
-                    DateOfTraining = w.DateOfTraining,
-                    TrainingName = w.TrainingName,
-                    RowNo = i + 1
-                }).ToList();
+                       join wg in db.GroupWorkers on w.ID equals wg.WorkerId
+                       join gi in db.InstructionGroups on wg.GroupId equals gi.GroupId
+                       join i in db.Instructions on gi.InstructionId equals i.ID
+                       join t in db.Trainings
+                           on new { InstructionId = i.ID, wg.WorkerId }
+                           equals new { t.InstructionId, t.WorkerId } into t_join
+                       from t in t_join.DefaultIfEmpty()
+                       where i.ID == id
+                       select new InstructionVsTrainingData
+                       {
+                           WorkerLastName = w.LastName,
+                           WorkerFirstMidName = w.FirstMidName,
+                           WorkerFullName = w.LastName + " " + w.FirstMidName,
+                           WorkerIsSuspendedDesc = (w.IsSuspend == true ? "Tak" : "Nie"),
+                           InstructionName = i.Name,
+                           GroupId = gi.GroupId,
+                           InstructionVersion = i.Version,
+                           InstructionNumber = i.Number,
+                           DateOfTraining = (DateTime?)t.DateOfTraining,
+                           TrainingName = t.TrainingName.Number
+                       }).Select(x => x).AsEnumerable().GroupBy(p => new { p.WorkerFullName, p.InstructionNumber }).Select(x => x.First()).Select((w, i) =>
+                       new InstructionVsTrainingData
+                       {
+                           WorkerLastName = w.WorkerLastName,
+                           WorkerFirstMidName = w.WorkerFirstMidName,
+                           WorkerFullName = w.WorkerFullName,
+                           WorkerIsSuspendedDesc = w.WorkerIsSuspendedDesc,
+                           InstructionName = w.InstructionName,
+                           GroupId = w.GroupId,
+                           InstructionVersion = w.InstructionVersion,
+                           InstructionNumber = w.InstructionNumber,
+                           DateOfTraining = w.DateOfTraining,
+                           TrainingName = w.TrainingName,
+                           RowNo = i + 1
+                       }).ToList();
 
             instructionGroupViewModel.instructionVsTrainingList = lst.ToList();
             if (instructionGroupViewModel == null) return HttpNotFound();
@@ -181,11 +182,17 @@ namespace AssistantTraining.Controllers
             var workerRepository = new WorkerRepository();
             var groups = workerRepository.GetAllGroups();
 
-            instructionGroup.Items = groups.Select(x => new SelectListItem
+            instructionGroup.CheckBoxGroupValue = new string[] { "" };
+
+            instructionGroup.ItemsList = groups.Select(x => new InputGroupItemModel
             {
                 Value = x.ID.ToString(),
-                Text = x.GroupName
-            });
+                Label = x.GroupName,
+                Enabled = true,
+                Encoded = false,
+                CssClass = "test",
+                HtmlAttributes = new Dictionary<string, object>() { { "data-custom", "custom" } }
+            }).ToList<IInputGroupItem>();
 
             return View(instructionGroup);
         }
@@ -197,7 +204,7 @@ namespace AssistantTraining.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(InstructionIndexData instructionGroupViewModel)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid || instructionGroupViewModel.SelectedIds == null)
             {
                 //db.InstructionGroupViewModels.Add(instructionGroupViewModel);
                 var instruction = new Instruction();
@@ -230,8 +237,8 @@ namespace AssistantTraining.Controllers
                     db.SaveChanges();
                 }
 
-                if (instructionGroupViewModel.SelectedIds != null && instructionGroupViewModel.SelectedIds.Count() > 0)
-                    foreach (var item in instructionGroupViewModel.SelectedIds)
+                if (instructionGroupViewModel.CheckBoxGroupValue != null && instructionGroupViewModel.CheckBoxGroupValue.Count() > 0)
+                    foreach (var item in instructionGroupViewModel.CheckBoxGroupValue)
                     {
                         var groupInstructions = new InstructionGroup
                         {
@@ -270,13 +277,13 @@ namespace AssistantTraining.Controllers
 
             instructionGroupViewModel.SelectedIds =
                 (from InstructionGroups in db.InstructionGroups
-                    where
-                        InstructionGroups.GroupId != null &&
-                        InstructionGroups.InstructionId == id
-                    select new
-                    {
-                        val = InstructionGroups.GroupId ?? 0
-                    }).Select(x => x.val.ToString()).ToList().ToArray();
+                 where
+                     InstructionGroups.GroupId != null &&
+                     InstructionGroups.InstructionId == id
+                 select new
+                 {
+                     val = InstructionGroups.GroupId ?? 0
+                 }).Select(x => x.val.ToString()).ToList().ToArray();
 
             instructionGroupViewModel.Items = groups.Select(x => new SelectListItem
             {
@@ -399,9 +406,8 @@ namespace AssistantTraining.Controllers
             var number = lstInstructions.First().Number;
             var lstInstructions2 = db.Instructions.Where(x => x.Number == number).ToList();
 
-            foreach(var item in lstInstructions2)
+            foreach (var item in lstInstructions2)
             {
-
                 var instructionGroup = db.InstructionGroups.Where(x => x.InstructionId == item.ID).ToList();
                 db.InstructionGroups.RemoveRange(instructionGroup);
 
@@ -409,10 +415,8 @@ namespace AssistantTraining.Controllers
                 db.Instructions.Remove(instruction);
 
                 db.SaveChanges();
-
             }
             return RedirectToAction("Index");
-
         }
 
         protected override void Dispose(bool disposing)
@@ -463,13 +467,13 @@ namespace AssistantTraining.Controllers
 
             var ids =
                 (from InstructionGroups in db.InstructionGroups
-                    where
-                        InstructionGroups.GroupId != null &&
-                        InstructionGroups.InstructionId == id
-                    select new
-                    {
-                        val = InstructionGroups.GroupId ?? 0
-                    }).Select(x => x.val.ToString()).ToList();
+                 where
+                     InstructionGroups.GroupId != null &&
+                     InstructionGroups.InstructionId == id
+                 select new
+                 {
+                     val = InstructionGroups.GroupId ?? 0
+                 }).Select(x => x.val.ToString()).ToList();
 
             if (ids != null && ids.Count() > 0)
                 foreach (var item in ids)
@@ -485,36 +489,35 @@ namespace AssistantTraining.Controllers
                     db.SaveChanges();
                 }
 
-            return RedirectToAction("Details", new {id = newInstruction.ID});
+            return RedirectToAction("Details", new { id = newInstruction.ID });
         }
 
         public ActionResult Excel(int? id)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-
             var instructionVsTrainingList =
                 (from w in db.Workers
-                    join wg in db.GroupWorkers on w.ID equals wg.WorkerId
-                    join gi in db.InstructionGroups on wg.GroupId equals gi.GroupId
-                    join i in db.Instructions on gi.InstructionId equals i.ID
-                    join t in db.Trainings
-                        on new {InstructionId = i.ID, wg.WorkerId}
-                        equals new {t.InstructionId, t.WorkerId} into t_join
-                    from t in t_join.DefaultIfEmpty()
-                    where i.ID == id
-                    select new InstructionVsTrainingData
-                    {
-                        WorkerLastName = w.LastName,
-                        WorkerFirstMidName = w.FirstMidName,
-                        WorkerFullName = w.LastName + " " + w.FirstMidName,
-                        InstructionName = i.Name,
-                        GroupId = gi.GroupId,
-                        InstructionVersion = i.Version,
-                        InstructionNumber = i.Number,
-                        DateOfTraining = (DateTime?) t.DateOfTraining,
-                        TrainingName = t.TrainingName.Number
-                    }).ToList();
+                 join wg in db.GroupWorkers on w.ID equals wg.WorkerId
+                 join gi in db.InstructionGroups on wg.GroupId equals gi.GroupId
+                 join i in db.Instructions on gi.InstructionId equals i.ID
+                 join t in db.Trainings
+                     on new { InstructionId = i.ID, wg.WorkerId }
+                     equals new { t.InstructionId, t.WorkerId } into t_join
+                 from t in t_join.DefaultIfEmpty()
+                 where i.ID == id
+                 select new InstructionVsTrainingData
+                 {
+                     WorkerLastName = w.LastName,
+                     WorkerFirstMidName = w.FirstMidName,
+                     WorkerFullName = w.LastName + " " + w.FirstMidName,
+                     InstructionName = i.Name,
+                     GroupId = gi.GroupId,
+                     InstructionVersion = i.Version,
+                     InstructionNumber = i.Number,
+                     DateOfTraining = (DateTime?)t.DateOfTraining,
+                     TrainingName = t.TrainingName.Number
+                 }).ToList();
 
             using (var pck = new ExcelPackage())
             {
@@ -538,22 +541,21 @@ namespace AssistantTraining.Controllers
             return RedirectToAction("Index");
         }
 
-
         public ActionResult Search(string srchterminstructions)
         {
             var newInstructions =
                 (from i in db.Instructions
-                    group i by i.Number
+                 group i by i.Number
                     into groupedI
-                    let maxVersion = groupedI.Max(gt => gt.Version)
-                    select new InstructionLatestVersion
-                    {
-                        Key = groupedI.Key,
-                        maxVersion = maxVersion,
-                        ID = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).ID
-                    }).Where(ni =>
-                    ni.Key.ToUpper().Contains(srchterminstructions.ToUpper()) ||
-                    string.IsNullOrEmpty(srchterminstructions)).ToList();
+                 let maxVersion = groupedI.Max(gt => gt.Version)
+                 select new InstructionLatestVersion
+                 {
+                     Key = groupedI.Key,
+                     maxVersion = maxVersion,
+                     ID = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).ID
+                 }).Where(ni =>
+                 ni.Key.ToUpper().Contains(srchterminstructions.ToUpper()) ||
+                 string.IsNullOrEmpty(srchterminstructions)).ToList();
 
             var allInstructions =
                 db.Instructions.ToList().Where(x => newInstructions.Any(ni => ni.ID == x.ID)).ToList();
@@ -576,13 +578,13 @@ namespace AssistantTraining.Controllers
                 instructioGroup.TimeOfCreation = item.TimeOfCreation.ToShortDateString();
 
                 var lstGroupIds = (from InstructionGroups in db.InstructionGroups
-                    where
-                        InstructionGroups.GroupId != null &&
-                        InstructionGroups.InstructionId == item.ID
-                    select new
-                    {
-                        val = InstructionGroups.GroupId ?? 0
-                    }).Select(x => x.val.ToString()).ToList();
+                                   where
+                                       InstructionGroups.GroupId != null &&
+                                       InstructionGroups.InstructionId == item.ID
+                                   select new
+                                   {
+                                       val = InstructionGroups.GroupId ?? 0
+                                   }).Select(x => x.val.ToString()).ToList();
                 instructioGroup.SelectedIds = lstGroupIds.ToArray();
 
                 instructioGroup.Items = groups.Select(x => new SelectListItem
@@ -596,5 +598,20 @@ namespace AssistantTraining.Controllers
 
             return View("Index", lstInstructionGroups);
         }
+    }
+
+    public class InputGroupItemModel : IInputGroupItem
+    {
+        public IDictionary<string, object> HtmlAttributes { get; set; }
+
+        public string CssClass { get; set; }
+
+        public bool? Enabled { get; set; }
+
+        public bool? Encoded { get; set; }
+
+        public string Label { get; set; }
+
+        public string Value { get; set; }
     }
 }

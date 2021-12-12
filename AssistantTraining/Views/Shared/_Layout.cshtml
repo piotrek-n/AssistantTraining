@@ -4,16 +4,26 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Assistant Training</title>
-    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <script src="~/Scripts/modernizr-2.6.2.js"></script>
-    <link href="~/Content/dataTables.bootstrap.css" rel="stylesheet" />
+    	<link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+	<link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/modernizr-2.6.2.js"></script>
+    @*<link href="~/Content/dataTables.bootstrap.css" rel="stylesheet" />*@
+    
+    	<link href="https://cdn.kendostatic.com/2021.3.1207/styles/kendo.bootstrap-v4.min.css" rel="stylesheet" type="text/css" />
+	<script src="https://cdn.kendostatic.com/2021.3.1207/js/jquery.min.js"></script>
+	<script src="https://cdn.kendostatic.com/2021.3.1207/js/jszip.min.js"></script>
+	<script src="https://cdn.kendostatic.com/2021.3.1207/js/kendo.all.min.js"></script>
+	<script src="https://cdn.kendostatic.com/2021.3.1207/js/kendo.aspnetmvc.min.js"></script>
+@* Add the bootstrap.min.js script: *@
+    	<script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+<link href="~/Content/DataTables/css/dataTables.bootstrap.css" rel="stylesheet" />
     <link href="@Url.Content("~/Content/Gridmvc.css")" rel="stylesheet" type="text/css" />
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     @*<link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />*@
 
 </head>
 <body>
+
     <div class="example3">
         <nav class="navbar navbar-custom  navbar-static-top">
             <div class="container">
@@ -25,7 +35,8 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand" href="#">
-                        <img src="~/Content/images/cmyk_r.jpg"  /></a>
+                        <img src="~/Content/images/cmyk_r.jpg" />
+                    </a>
                 </div>
                 <div id="navbar3" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -46,7 +57,7 @@
                         }
                         @Html.Partial("_LoginPartial")
                     </ul>
-                   
+
 
                     </ul>
                 </div>
@@ -64,7 +75,7 @@
         </footer>
     </div>
 
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    @* <script src="~/Scripts/jquery-1.10.2.min.js"></script> *@
     <script src="~/Scripts/bootstrap.min.js"></script>
 
     <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>

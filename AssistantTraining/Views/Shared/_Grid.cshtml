@@ -1,5 +1,6 @@
 ﻿@using GridMvc.Columns
 @model GridMvc.IGrid
+@using IGridColumn = GridMvc.Columns.IGridColumn;
 @if (Model == null) { return; }
 @if (Model.RenderOptions.RenderRowsOnly)
 {
