@@ -2,6 +2,7 @@
 using AssistantTraining.Models;
 using AssistantTraining.Repositories;
 using AssistantTraining.ViewModel;
+using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using Microsoft.AspNet.Identity;
 using OfficeOpenXml;
@@ -18,6 +19,70 @@ namespace AssistantTraining.Controllers
     public class InstructionsController : Controller
     {
         private readonly AssistantTrainingContext db = new AssistantTrainingContext();
+
+
+        public ActionResult Select([DataSourceRequest] DataSourceRequest request)
+        {
+            var newInstructions =
+                (from i in db.Instructions
+                 group i by i.Number
+                    into groupedI
+                 let maxVersion = groupedI.Max(v => v.Version)
+                 select new InstructionLatestVersion
+                 {
+                     Key = groupedI.Key,
+                     maxVersion = maxVersion,
+                     ID = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).ID
+                 }).ToList();
+
+            var allInstructions =
+                db.Instructions.ToList().Where(x => newInstructions.Any(ni => ni.ID == x.ID)).OrderByDescending(ins => ins.TimeOfCreation).ToList();
+            var workerRepository = new WorkerRepository();
+            var groups = workerRepository.GetAllGroups();
+
+            var lstInstructionGroups = new List<InstructionIndexData>();
+            var RowNo = 0;
+            foreach (var item in allInstructions)
+            {
+                var instructioGroup = new InstructionIndexData();
+
+                RowNo += 1;
+                instructioGroup.RowNo = RowNo; //+ ((request.Page - 1) * request.PageSize);
+                instructioGroup.ID = item.ID;
+                instructioGroup.Name = item.Name;
+                instructioGroup.Number = item.Number;
+                instructioGroup.Version = item.Version;
+                instructioGroup.UserName = item.CreatedByUserId;
+                if (item.CreatedByUserId != null && db.Users.Find(item.CreatedByUserId) != null)
+                    instructioGroup.UserName = db.Users.Find(item.CreatedByUserId).UserName;
+                instructioGroup.TimeOfCreation = item.TimeOfCreation.ToShortDateString();
+
+                var lstGroupIds = (from InstructionGroups in db.InstructionGroups
+                                   where
+                                       InstructionGroups.GroupId != null &&
+                                       InstructionGroups.InstructionId == item.ID
+                                   select new
+                                   {
+                                       val = InstructionGroups.GroupId ?? 0
+                                   }).Select(x => x.val.ToString()).ToList();
+                instructioGroup.SelectedIds = lstGroupIds.ToArray();
+
+                instructioGroup.Items = groups.Select(x => new SelectListItem
+                {
+                    Value = x.ID.ToString(),
+                    Text = x.GroupName
+                });
+
+                instructioGroup.GrupsInString = String.Join("\n", instructioGroup.Items.Where(x => instructioGroup.SelectedIds.Contains(x.Value)).Select(x => x.Text).ToArray());
+
+                lstInstructionGroups.Add(instructioGroup);
+            }
+            var result = lstInstructionGroups.ToDataSourceResult(request);
+            //result.Total = total;
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        
 
         // GET: Instructions
         public ActionResult Index()
@@ -614,4 +679,70 @@ namespace AssistantTraining.Controllers
 
         public string Value { get; set; }
     }
+
+    /*
+             public ActionResult Select([DataSourceRequest] DataSourceRequest request)
+        {
+            var newInstructions =
+                (from i in db.Instructions
+                 group i by i.Number
+                    into groupedI
+                 let maxVersion = groupedI.Max(v => v.Version)
+                 select new InstructionLatestVersion
+                 {
+                     Key = groupedI.Key,
+                     maxVersion = maxVersion,
+                     ID = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).ID
+                 }).ToList().Select( x => x.ID);
+
+            var allInstructions =
+                db.Instructions.Where(x => newInstructions.Any(ni => ni == x.ID)).OrderBy(ins => ins.TimeOfCreation);
+
+            var result = allInstructions.ToDataSourceResult(request);
+
+            var workerRepository = new WorkerRepository();
+            var groups = workerRepository.GetAllGroups();
+
+            var lstInstructionGroups = new List<InstructionIndexData>();
+            var RowNo = 0;
+            foreach (Instruction item in result.Data)
+            {
+                var instructioGroup = new InstructionIndexData();
+
+                RowNo += 1;
+                instructioGroup.RowNo = RowNo + ((request.Page - 1) * request.PageSize);
+                instructioGroup.ID = item.ID;
+                instructioGroup.Name = item.Name;
+                instructioGroup.Number = item.Number;
+                instructioGroup.Version = item.Version;
+                instructioGroup.UserName = item.CreatedByUserId;
+                if (item.CreatedByUserId != null && db.Users.Find(item.CreatedByUserId) != null)
+                    instructioGroup.UserName = db.Users.Find(item.CreatedByUserId).UserName;
+                instructioGroup.TimeOfCreation = item.TimeOfCreation.ToShortDateString();
+
+                var lstGroupIds = (from InstructionGroups in db.InstructionGroups
+                                   where
+                                       InstructionGroups.GroupId != null &&
+                                       InstructionGroups.InstructionId == item.ID
+                                   select new
+                                   {
+                                       val = InstructionGroups.GroupId ?? 0
+                                   }).Select(x => x.val.ToString()).ToList();
+                instructioGroup.SelectedIds = lstGroupIds.ToArray();
+
+                instructioGroup.Items = groups.Select(x => new SelectListItem
+                {
+                    Value = x.ID.ToString(),
+                    Text = x.GroupName
+                });
+
+                instructioGroup.GrupsInString = String.Join(" | ", instructioGroup.Items.Where(x => instructioGroup.SelectedIds.Contains(x.Value)).Select(x => x.Text).ToArray());
+
+                lstInstructionGroups.Add(instructioGroup);
+            }
+            result.Data = lstInstructionGroups.ToList();
+            //result.Total = total;
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }*/
 }

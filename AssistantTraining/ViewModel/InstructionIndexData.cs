@@ -52,10 +52,13 @@ namespace AssistantTraining.ViewModel
 
         public int RowNo { get; set; }
 
-        public List<IInputGroupItem> ItemsList;
-        
+        [DisplayName("Lista Grup")]
+        public List<IInputGroupItem> ItemsList { get; set; }
+
         //[Required]
         public string[] CheckBoxGroupValue { get; set; }
+
+        public string GrupsInString { get; set; }
 
     }
 }

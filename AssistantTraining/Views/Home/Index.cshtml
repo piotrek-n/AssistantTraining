@@ -4,22 +4,3 @@
 }
 
 <h2>Trainings Database</h2>
-
-@*<div class="text-center">
-    <h2>Kendo UI Grid</h2>
-    @(Html.Kendo().Grid<AssistantTraining.Models.Worker>()
-        .Name("grid")
-        .ToolBar(t => t.Search())
-        .Columns(columns =>
-        {
-            columns.Bound(c => c.FirstMidName).Width(100);
-            columns.Bound(c => c.LastName).Width(300);
-            columns.Bound(c => c.Tag).Width(100);
-            columns.Bound(c => c.ID).Width(200);
-        })
-        .DataSource(dataSource => dataSource
-            .Ajax()
-            .Read(read => read.Action("Select", "Home"))
-        )
-        )
-</div>*@

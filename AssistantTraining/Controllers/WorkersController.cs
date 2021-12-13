@@ -244,7 +244,7 @@ namespace AssistantTraining.Controllers
                 }
 
                 db.SaveChanges();
-                return View("Index", GetIndexData());
+                return RedirectToAction("Index", "Workers", new { area = "" });
             }
             return View(workerGroup);
         }
