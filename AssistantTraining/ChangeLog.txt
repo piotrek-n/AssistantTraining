@@ -145,6 +145,13 @@ In Progress
 Hot Fix dla usuniecia osoby przeszkolonej (remove)
 [1.0.0.33]
 Dodanie Telerika oraz zmiana w tworzeniu instrukcji - wyswietlanie grup checkbox group
+[1.0.0.34]
+Dodanie Telerik Grid do Instrukcji oraz
+Fix przechodzenia przez Uzytkownikow
+Fix wyswietlania uzytkonikow
+[1.0.0.35]
+- Fix modala tworzenia szkolen
+- Fix raportow szkolen
 
 
 1.0.0.X--

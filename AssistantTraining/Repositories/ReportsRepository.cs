@@ -36,6 +36,8 @@ namespace AssistantTraining.Repositories
 
         public static string InstructionsWithoutTrainingJSON()
         {
+            db.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
+
             var result =
                 (from max_ins in (
                 (from i in db.Instructions
@@ -100,6 +102,8 @@ namespace AssistantTraining.Repositories
 
         public static string WorkersWithoutTrainingJSON()
         {
+            db.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
+
             db.Database.CommandTimeout = 180;
             var result = (from w in db.Workers
                           join gw in db.GroupWorkers on w.ID equals gw.WorkerId
@@ -187,41 +191,75 @@ namespace AssistantTraining.Repositories
                     );
         }
 
+        /// <summary>
+        /// Szkolenia
+        /// </summary>
+        /// <returns></returns>
         public static string IncompleteTrainingJSON()
         {
-            var result =
-            (from w in db.Workers
-             join gw in db.GroupWorkers on w.ID equals gw.WorkerId
-             join g in db.Groups on gw.GroupId equals g.ID
-             join ig in db.InstructionGroups on g.ID equals ig.GroupId
-             join i in db.Instructions on ig.InstructionId equals i.ID
-             join t in db.Trainings
-                   on new { WorkerId = w.ID, i.ID }
-               equals new { t.WorkerId, ID = t.InstructionId } into t_join
-             from t in t_join.DefaultIfEmpty()
-             join tn in db.TrainingNames on t.TrainingNameId equals tn.ID
-             where
-               w.IsSuspend == false &&
-                 (from Trainings in db.Trainings
-                  select new
-                  {
-                      Trainings.InstructionId
-                  }).Contains(new { InstructionId = i.ID }) &&
-               t.DateOfTraining == (new System.DateTime(1900, 1, 1))
-             select new
-             {
-                 InstructionNumber = i.Number,
-                 TrainingName = tn.Number
-                 //((from TrainingGroups in db.TrainingGroups
-                 //  where
-                 //        TrainingGroups.InstructionId == i.ID
-                 //  orderby
-                 //        TrainingGroups.TimeOfCreation descending
-                 //  select new
-                 //  {
-                 //      TrainingGroups.TrainingName.Number
-                 //  }).Select(x => x.Number).FirstOrDefault())
-             }).Distinct()
+            db.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
+
+            var result = (from w in db.Workers
+                          join gw in db.GroupWorkers on w.ID equals gw.WorkerId
+                          join g in db.Groups on gw.GroupId equals g.ID
+                          join ig in db.InstructionGroups on g.ID equals ig.GroupId
+                          join ei in (
+                              (from max_ins in (
+                                  (from ii in db.Instructions
+                                   join ig in (
+                                     (from Instructions in db.Instructions
+                                      group Instructions by new
+                                      {
+                                          Instructions.Number
+                                      } into g
+                                      select new
+                                      {
+                                          Ver = g.Max(p => p.Version),
+                                          g.Key.Number
+                                      }))
+                                           on new { ii.Version, ii.Number }
+                                       equals new { Version = ig.Ver, ig.Number }
+                                   select new
+                                   {
+                                       ii.ID,
+                                       ii.Version,
+                                       ii.Number
+                                   }))
+                               select new
+                               {
+                                   InstructionId = max_ins.ID,
+                                   max_ins.Number,
+                                   max_ins.Version
+                               })
+                          )
+                          on ig.InstructionId equals ei.InstructionId
+                          join t in db.Trainings
+                                on new { WorkerId = w.ID, ID = ei.InstructionId }
+                            equals new { t.WorkerId, ID = t.InstructionId } into t_join
+                          from t in t_join.DefaultIfEmpty()
+                          join tn in db.TrainingNames on t.TrainingNameId equals tn.ID
+                          where
+                            w.IsSuspend == false &&
+                              (from Trainings in db.Trainings
+                               select new
+                               {
+                                   Trainings.InstructionId
+                               }).Contains(new { InstructionId = ei.InstructionId }) &&
+                            t.DateOfTraining == (new System.DateTime(1900, 1, 1))
+                          select new
+                          {
+                              InstructionNumber = ei.Number,
+                              TrainingName = tn.Number
+                              //((from TrainingGroups in db.TrainingGroups
+                              //  where
+                              //        TrainingGroups.InstructionId == i.ID
+                              //  orderby
+                              //        TrainingGroups.TimeOfCreation descending
+                              //  select new
+                              //  {
+                              //      TrainingGroups.TrainingName.Number
+                              //  }).Select(x => x.Number).FirstOrDefault())
+                          }).Distinct()
               .ToList()
               .Select((currRow, index) => new { TrainingNumber = currRow.TrainingName, InstructionNumber = currRow.InstructionNumber, DT_RowId = index + 1 });
 

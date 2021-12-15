@@ -169,7 +169,7 @@ namespace AssistantTraining.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Excel(int id)
+        public FileResult GetExcelFile(int id)
         {
             string fileName = String.Empty;
 
@@ -189,15 +189,8 @@ namespace AssistantTraining.Controllers
                     ws.Cells["A1"].LoadFromDataTable(dt, true);
 
                     Byte[] fileBytes = pck.GetAsByteArray();
-                    Response.Clear();
-                    Response.Buffer = true;
-                    Response.AddHeader("content-disposition", "attachment;filename=" + fileName + ".xlsx");
 
-                    Response.Charset = "";
-                    Response.ContentType = "application/vnd.ms-excel";
-                    StringWriter sw = new StringWriter();
-                    Response.BinaryWrite(fileBytes);
-                    Response.End();
+                    return File(new MemoryStream(fileBytes, 0, fileBytes.Length), "application/octet-stream", $"" + fileName + ".xlsx");
                 }
                 catch (System.Web.HttpException ex)
                 {
@@ -210,8 +203,7 @@ namespace AssistantTraining.Controllers
                 {
                 }
             }
-
-            return RedirectToAction("Index");
+            return null;
         }
 
         private static void GenerateReport(int id, ref string fileName, ref string json)

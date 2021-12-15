@@ -12,7 +12,7 @@
         @Html.Label("Raporty", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DropDownListFor(x => x.SelectedId, Model.Items, new { @class = "form-control", @style = "display:inline-block;" })
-            <a href="" onclick="return getReport();" id="ReportLink" class="btn btn-default">
+            <a href="" id="ReportLink" class="btn btn-default">
                 Export to Excel
                 <span class="glyphicon" aria-hidden="true"></span>
             </a>
@@ -36,19 +36,14 @@
 }
 
 <script type="text/javascript">
-    function getReport() {
-        var str = "";
+    jQuery(document).ready(function () {
 
-        str = $("select option:selected").val();
+        $("#SelectedId").change(function () {
+            var url = '@Url.Action("GetExcelFile", "Reports")';
+            url += '/' + $(this).val();
+            var link = document.getElementById("ReportLink");
+            link.setAttribute("href", url);
+        });
 
-        var url = '@Url.Action("Excel", "Reports")';
-        url += '/' + str;
-
-        var link = document.getElementById("ReportLink");
-        link.setAttribute("href", url);
-
-        $("a.btn").trigger("click");
-
-        return false;
-    }
+        });
 </script>

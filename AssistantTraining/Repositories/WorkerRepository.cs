@@ -29,6 +29,8 @@ namespace AssistantTraining.Repositories
 
         public IQueryable<TrainingGroup> GetTrainings()
         {
+            db.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
+
             var newInstructions =
             (from i in db.Instructions
              group i by i.Number into groupedI

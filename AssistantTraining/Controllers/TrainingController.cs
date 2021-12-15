@@ -136,7 +136,7 @@ namespace AssistantTraining.Controllers
             IEnumerable<TrainingGroup> items;
             if (String.IsNullOrEmpty(term))
             {
-                items = repos.GetTrainings().AsEnumerable();
+                items = repos.GetTrainings().ToList();
             }
             else
             {
