@@ -20,6 +20,42 @@ namespace AssistantTraining.Controllers
     {
         private readonly AssistantTrainingContext db = new AssistantTrainingContext();
 
+        public ActionResult SelectWorkersByGroup([DataSourceRequest] DataSourceRequest request, string groupName) {
+
+            var itemExt = request as DataSourceRequestExt;
+            var allWorker = db.Workers.ToList();
+            var workerRepository = new WorkerRepository();
+            var groups = workerRepository.GetAllGroups();
+
+            List<WorkerGroupViewModel> lstWorkerGroups = new List<WorkerGroupViewModel>();
+            int RowNo = 0;
+            foreach (var item in allWorker)
+            {
+                var workerGroup = new WorkerGroupViewModel();
+
+                workerGroup.ID = item.ID;
+                workerGroup.FirstMidName = item.FirstMidName;
+                workerGroup.LastName = item.LastName;
+                workerGroup.FullName = item.LastName + " " + item.FirstMidName;
+                workerGroup.Tag = item.Tag;
+                workerGroup.SelectedIds = db.GroupWorkers.Where(x => x.WorkerId.Equals(item.ID)).Select(x => x.GroupId.ToString()).ToArray();
+                workerGroup.WorkerGroups = groups;
+                workerGroup.Items = groups.Select(x => new SelectListItem
+                {
+                    Value = x.ID.ToString(),
+                    Text = x.GroupName
+                });
+                workerGroup.IsSuspend = item.IsSuspend;
+                workerGroup.IsSuspendDesc = item.IsSuspend == true ? "Tak" : "Nie";
+
+                RowNo += 1;
+                workerGroup.RowNo = RowNo;
+
+                lstWorkerGroups.Add(workerGroup);
+            }
+            var r = lstWorkerGroups.Where(wg => wg.WorkerGroups.Any(g => g.GroupName == groupName) && wg.IsSuspend == false).GroupBy(p => p.ID).Select(g => g.FirstOrDefault()).ToList(); ;
+            return Json(r.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+        }
         public ActionResult Select([DataSourceRequest] DataSourceRequest request)
         {
             var newInstructions =
@@ -611,6 +647,11 @@ namespace AssistantTraining.Controllers
         public string Label { get; set; }
 
         public string Value { get; set; }
+    }
+
+    public class DataSourceRequestExt : DataSourceRequest
+    {
+        public string GroupName { get; set; }
     }
 
     /*

@@ -246,7 +246,7 @@ namespace AssistantTraining.Controllers
                 var manager = new UserManager<ApplicationUser>(store);
                 var user = new ApplicationUser { UserName = userName };
 
-                manager.Create(user, "ChangeItAsap!");
+                manager.Create(user, "ChangeItAsap123!");
                 manager.AddToRole(user.Id, roleName);
             }
             roleName = "Operator";

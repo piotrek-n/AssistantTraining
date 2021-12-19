@@ -152,7 +152,8 @@ Fix wyswietlania uzytkonikow
 [1.0.0.35]
 - Fix modala tworzenia szkolen
 - Fix raportow szkolen
-
+[1.0.0.36]
+- Demo Create
 
 1.0.0.X--
 *Weryfikacja usuniecia osoby przeszkolonej (remove)

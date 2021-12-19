@@ -60,5 +60,7 @@ namespace AssistantTraining.ViewModel
 
         public string GrupsInString { get; set; }
 
+        public string HiddenWorkersString { get; set; }
+
     }
 }
