@@ -188,6 +188,10 @@
     <Compile Include="Migrations\201702272249463_ChangeVersionFromStringToInt.Designer.cs">
       <DependentUpon>201702272249463_ChangeVersionFromStringToInt.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202201031709052_InstructionReminder.cs" />
+    <Compile Include="Migrations\202201031709052_InstructionReminder.designer.cs">
+      <DependentUpon>202201031709052_InstructionReminder.cs</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\GroupViewModel.cs" />
     <Compile Include="ViewModel\WorkerViewModel.cs" />
     <Content Include="ChangeLog.txt" />
@@ -3557,6 +3561,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702272249463_ChangeVersionFromStringToInt.resx">
       <DependentUpon>201702272249463_ChangeVersionFromStringToInt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201031709052_InstructionReminder.resx">
+      <DependentUpon>202201031709052_InstructionReminder.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

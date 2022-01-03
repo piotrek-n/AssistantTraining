@@ -311,7 +311,10 @@ $("#sel").select2({
 
             params.page = params.page || 1;
 
+            console.log(data.items);
+
             return {
+                
                 results: data.items,
                 pagination: {
                     more: (params.page * 30) < data.total_count
@@ -331,6 +334,8 @@ $("#sel").select2({
 function formatRepo(repo) {
     if (repo.loading) return repo.text;
 
+    console.log(repo.version);
+
     var markup = "<div class='select2-result-repository clearfix'>" +
         "<div class='select2-result-repository__meta'>" +
         "<div class='select2-result-repository__title'>" + repo.text + ' v.' + repo.version + "</div>";
@@ -342,6 +347,23 @@ function formatRepo(repo) {
 }
 
 function formatRepoSelection(repo) {
+    if (repo.reminder) {
+
+        var name = repo.text || repo.id;
+        var contains = false;
+        var div = $('<div></div>').addClass('reminder-row').text(repo.text || repo.id);
+
+        $('#remainders').children().each(function () {
+            var $this = $(this);
+            console.log($this.text());
+            if (name == $this.text()) {
+                contains = true;
+            }
+        });
+        if (contains == false) {
+            $(div).appendTo($('#remainders'));
+        }
+    }
     return repo.text || repo.id;
 }
 

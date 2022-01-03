@@ -368,7 +368,8 @@ namespace AssistantTraining.Controllers
                      ID = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).ID,
                      Number = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).Number,
                      Name = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).Name,
-                     Version = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).Version
+                     Version = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).Version,
+                     Reminder = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).Reminder
                  }
                ).Select(x => new InstructionsJson { id = x.ID.ToString(), text = x.Number, name = x.Name, version = x.Version })
                .Where(x => x.text.ToUpper().Contains(q.ToUpper()))
@@ -394,7 +395,7 @@ namespace AssistantTraining.Controllers
                                      i.Number.ToUpper().Contains(q.ToUpper())
                                      && items.Contains(i.ID)
                                      && tg.InstructionId == null
-                                   select new InstructionsJson { id = i.ID.ToString(), text = i.Number, name = i.Name, version = i.Version }).ToList();
+                                   select new InstructionsJson { id = i.ID.ToString(), text = i.Number, name = i.Name, version = i.Version, reminder = i.Reminder }).ToList();
                 //**FIX
                 //If a new worker was added.
                 if (lstInstructions.Count() == 0)
@@ -411,7 +412,7 @@ namespace AssistantTraining.Controllers
                     where
                       w.IsSuspend == false
                       && items.Contains(i.ID)
-                    select new InstructionsJson { id = i.ID.ToString(), text = i.Number, name = i.Name, version = i.Version }).Distinct().ToList();
+                    select new InstructionsJson { id = i.ID.ToString(), text = i.Number, name = i.Name, version = i.Version, reminder = i.Reminder }).Distinct().ToList();
                 }
             }
             var countInstructions = lstInstructions.Count();
@@ -525,5 +526,6 @@ namespace AssistantTraining.Controllers
         public string text;
         public string name;
         public int version;
+        public bool reminder;
     }
 }

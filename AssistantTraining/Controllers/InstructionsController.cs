@@ -241,12 +241,15 @@ namespace AssistantTraining.Controllers
             if (ModelState.IsValid || instructionGroupViewModel.SelectedIds == null)
             {
                 //db.InstructionGroupViewModels.Add(instructionGroupViewModel);
-                var instruction = new Instruction();
-                instruction.Number = instructionGroupViewModel.Number;
-                instruction.Name = instructionGroupViewModel.Name;
-                instruction.Version = instructionGroupViewModel.Version;
-                instruction.TimeOfCreation = DateTime.Now;
-                instruction.TimeOfModification = DateTime.Now;
+                Instruction instruction = new Instruction
+                {
+                    Number = instructionGroupViewModel.Number,
+                    Name = instructionGroupViewModel.Name,
+                    Version = instructionGroupViewModel.Version,
+                    Reminder = instructionGroupViewModel.Reminder,
+                    TimeOfCreation = DateTime.Now,
+                    TimeOfModification = DateTime.Now
+                };
                 var currentUserId = User.Identity.GetUserId();
                 instruction.CreatedByUserId = currentUserId;
                 //instruction.GroupId = Int32.Parse(instructionGroupViewModel.SelectedId);

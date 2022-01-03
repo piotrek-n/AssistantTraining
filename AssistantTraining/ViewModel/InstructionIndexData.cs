@@ -62,5 +62,7 @@ namespace AssistantTraining.ViewModel
 
         public string HiddenWorkersString { get; set; }
 
-    }
+        public bool Reminder { get; set; }
+
+}
 }
