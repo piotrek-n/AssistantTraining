@@ -1,14 +1,12 @@
-﻿@{
-    ViewBag.Title = "Home Page";
-}
+﻿@{ ViewBag.Title = "Home Page"; }
 @section styles {
     @Styles.Render("~/Content/gridmvc")
 }
 <!-- Input Group -->
 <script language="javascript">
-  function test() {
-      $('#myModal').modal('show');
-  }
+    function test() {
+        $('#myModal').modal('show');
+    }
 </script>
 <div class="row">
     <div class="col-md-2">
@@ -31,18 +29,28 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <input type="text" class="form-control"  placeholder="Training Number" name="newTrainingNumber" id="newTrainingNumber">
+                                    <input type="text" class="form-control" placeholder="Training Number" name="newTrainingNumber" id="newTrainingNumber">
                                 </div>
                             </div>
+                        </div>
+                        <div class="row top10">
+                            <div class="col-md-8">
+                                <select id="sel" multiple="multiple" class="col-md-12" style="width: 100%; height: auto"></select>
                             </div>
-                            <div class="row top10">
-                                <div class="col-md-8">
-                                    <select id="sel" multiple="multiple" class="col-md-12" style="width: 100%; height: auto"></select>
+                            <div class="col-md-4">
+                                <div style="width: 100%; height: auto;">
+                                    <input type="checkbox" id="searchTermCheckbox" />
+                                    <label for="searchTerm">ALL</label>
                                 </div>
-                                <div class="col-md-4">
-                                    <div style="width: 100%; height: auto;">
-                                        <input type="checkbox" id="searchTermCheckbox" />
-                                        <label for="searchTerm">ALL</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                Przypomnienie - Wersja Papierowa
+                            </div>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <div id="remainders"></div>
                                     </div>
                                 </div>
                             </div>
@@ -52,7 +60,6 @@
                         <button type="button" class="btn btn-primary" id="save-new-training">Yes</button>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -69,7 +76,6 @@
                 </div>
             </div>
         </form>
-
     </div>
     <div class="col-md-4">
         <form class="navbar-form" role="search" id="idTrainingForm" method="POST">
@@ -80,12 +86,8 @@
                 </div>
             </div>
         </form>
-
     </div>
-
 </div>
-
-
 
 <div class="row" id="refGrid">
     @Html.Action("GetGrid")
@@ -105,24 +107,15 @@
     <script src="~/Scripts/locales/bootstrap-datepicker.pl.min.js"></script>
 
     @*<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2-rc.1/css/select2.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2-rc.1/js/select2.min.js"></script>
-    <link href="https://select2.github.io/css/s2-docs.css" rel="stylesheet">*@
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2-rc.1/js/select2.min.js"></script>
+        <link href="https://select2.github.io/css/s2-docs.css" rel="stylesheet">*@
 
-<link href="~/Content/css/s2/select2.min.css" rel="stylesheet" />
-<script src="~/Scripts/select2.min.js"></script>
-<link href="~/Content/css/s2/s2-docs.css" rel="stylesheet" />
+    <link href="~/Content/css/s2/select2.min.css" rel="stylesheet" />
+    <script src="~/Scripts/select2.min.js"></script>
+    <link href="~/Content/css/s2/s2-docs.css" rel="stylesheet" />
 
-@Scripts.Render("~/bundles/application/Training")
+    @Scripts.Render("~/bundles/application/Training")
 }
-
-
-
-
-
-
-
-
-
 
 @*<script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script src="~/Scripts/jquery.validate.min.js"></script>
@@ -134,4 +127,3 @@
     <script src="~/Scripts/gridmvc-ext.js"></script>
     <script src="~/Scripts/bootstrap3-typeahead.min.js"></script>
     <script src="~/Scripts/Application/Training.js"></script>*@
-

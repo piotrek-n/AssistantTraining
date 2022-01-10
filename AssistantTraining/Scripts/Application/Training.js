@@ -311,7 +311,10 @@ $("#sel").select2({
 
             params.page = params.page || 1;
 
+            console.log(data.items);
+
             return {
+                
                 results: data.items,
                 pagination: {
                     more: (params.page * 30) < data.total_count
@@ -328,9 +331,24 @@ $("#sel").select2({
     templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
 });
 
+
+$("#sel").on("select2:unselect", function(e){
+    //return true; // I don't use this unselecting event but here is how you could use it to get the ID of the one you are trying to remove.
+    var contains = false;
+    $('#remainders').children().each(function () {
+        var $this = $(this);
+        if (name == e.params.data.text) {
+            contains = true;
+        }
+    });
+    if (contains == true) {
+        $( $this )[0].remove();
+    }
+});
+
 function formatRepo(repo) {
     if (repo.loading) return repo.text;
-
+    
     var markup = "<div class='select2-result-repository clearfix'>" +
         "<div class='select2-result-repository__meta'>" +
         "<div class='select2-result-repository__title'>" + repo.text + ' v.' + repo.version + "</div>";
@@ -342,6 +360,22 @@ function formatRepo(repo) {
 }
 
 function formatRepoSelection(repo) {
+    if (repo.reminder) {
+
+        var name = repo.text || repo.id;
+        var contains = false;
+        var div = $('<div></div>').addClass('reminder-row').text(repo.text || repo.id);
+
+        $('#remainders').children().each(function () {
+            var $this = $(this);
+            if (name == $this.text()) {
+                contains = true;
+            }
+        });
+        if (contains == false) {
+            $(div).appendTo($('#remainders'));
+        }
+    }
     return repo.text || repo.id;
 }
 

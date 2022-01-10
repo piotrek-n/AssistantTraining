@@ -1,11 +1,4 @@
-﻿using AssistantTraining.DAL;
-using AssistantTraining.Helpers;
-using AssistantTraining.Models;
-using AssistantTraining.Repositories;
-using AssistantTraining.ViewModel;
-using Newtonsoft.Json;
-using OfficeOpenXml;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -13,6 +6,13 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using AssistantTraining.DAL;
+using AssistantTraining.Helpers;
+using AssistantTraining.Models;
+using AssistantTraining.Repositories;
+using AssistantTraining.ViewModel;
+using Newtonsoft.Json;
+using OfficeOpenXml;
 
 namespace AssistantTraining.Controllers
 {
@@ -107,7 +107,7 @@ namespace AssistantTraining.Controllers
             //var grid = this.gridMvcHelper.GetAjaxGrid(items);
 
             var items = repos.GetTrainings().AsEnumerable();
-            return PartialView(GRID_PARTIAL_PATH, items); 
+            return PartialView(GRID_PARTIAL_PATH, items);
         }
 
         [AjaxChildActionOnly]
@@ -153,7 +153,7 @@ namespace AssistantTraining.Controllers
             Session["term"] = term;
             Session["type"] = type;
 
-            var items = repos.GetWorkersByTraining(term, type).OrderBy(p => 0).OrderBy(x=>x.WorkerFullName);
+            var items = repos.GetWorkersByTraining(term, type).OrderBy(p => 0).OrderBy(x => x.WorkerFullName);
             var grid = this.gridMvcHelper.GetAjaxGrid(items);
 
             return PartialView(GRID_WORKER_PARTIAL_PATH, grid);
@@ -368,7 +368,8 @@ namespace AssistantTraining.Controllers
                      ID = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).ID,
                      Number = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).Number,
                      Name = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).Name,
-                     Version = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).Version
+                     Version = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).Version,
+                     Reminder = groupedI.Any(gt2 => gt2.Reminder == true)
                  }
                ).Select(x => new InstructionsJson { id = x.ID.ToString(), text = x.Number, name = x.Name, version = x.Version })
                .Where(x => x.text.ToUpper().Contains(q.ToUpper()))
@@ -394,7 +395,7 @@ namespace AssistantTraining.Controllers
                                      i.Number.ToUpper().Contains(q.ToUpper())
                                      && items.Contains(i.ID)
                                      && tg.InstructionId == null
-                                   select new InstructionsJson { id = i.ID.ToString(), text = i.Number, name = i.Name, version = i.Version }).ToList();
+                                   select new InstructionsJson { id = i.ID.ToString(), text = i.Number, name = i.Name, version = i.Version, reminder = i.Reminder }).ToList();
                 //**FIX
                 //If a new worker was added.
                 if (lstInstructions.Count() == 0)
@@ -411,7 +412,7 @@ namespace AssistantTraining.Controllers
                     where
                       w.IsSuspend == false
                       && items.Contains(i.ID)
-                    select new InstructionsJson { id = i.ID.ToString(), text = i.Number, name = i.Name, version = i.Version }).Distinct().ToList();
+                    select new InstructionsJson { id = i.ID.ToString(), text = i.Number, name = i.Name, version = i.Version, reminder = i.Reminder }).Distinct().ToList();
                 }
             }
             var countInstructions = lstInstructions.Count();
@@ -525,5 +526,6 @@ namespace AssistantTraining.Controllers
         public string text;
         public string name;
         public int version;
+        public bool reminder;
     }
 }

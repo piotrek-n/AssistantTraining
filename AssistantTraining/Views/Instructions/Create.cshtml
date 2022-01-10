@@ -10,79 +10,86 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4>New Instruction</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Number, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Number, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Number, "", new { @class = "text-danger" })
-            </div>
+<div class="form-horizontal">
+    <h4>New Instruction</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.Number, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Number, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Number, "", new { @class = "text-danger" })
         </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
         </div>
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Version, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Version, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Version, "", new { @class = "text-danger" })
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Version, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Version, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Version, "", new { @class = "text-danger" })
         </div>
-        <div style="display:inline">
-            <div class="form-group col-md-6">
-                @Html.LabelFor(model => model.ItemsList, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @(Html.Kendo().CheckBoxGroup()
+    </div>
+    <div class="form-group">
+        @* @Html.LabelFor(model => model.Reminder, htmlAttributes: new { @class = "control-label col-md-2" }) *@
+        <div class="control-label col-md-2"></div>
+        <div class="col-md-10">
+            @(Html.Kendo().CheckBoxFor(m=>m.Reminder))
+        </div>
+    </div>
+    <div style="display:inline">
+        <div class="form-group col-md-12">
+            @Html.LabelFor(model => model.ItemsList, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @(Html.Kendo().CheckBoxGroup()
                     .Name("CheckBoxGroupValue")
                     .Value(Model.CheckBoxGroupValue)
-                    .Items(i => { foreach (var l in Model.ItemsList) { i.Add().Label("<span style=\"border-bottom-width: 1px solid #000;\">" + l.Label + "<a style=\"float:right;\" href=\"#\" onClick=\"showInstructionWorkers('" + l.Label + "')\"> Pracownicy </a><span>").Encoded(false).Enabled(true).Value(l.Value); } })
+                    .Items(i => { foreach (var l in Model.ItemsList) { i.Add().Label("<span style=\"border-bottom-width: 1px solid #000;\">" + l.Label  /* +"<a style=\"float:right;\" href=\"#\" onClick=\"showInstructionWorkers('" + l.Label + "')\"> Pracownicy </a><span>"*/).Encoded(false).Enabled(true).Value(l.Value); } })
                         )
-                </div>
             </div>
-            <div class="form-group col-md-6">
-                <div id="selectedWorkersGroup" style="width: 100%;text-align: center;"></div>
+        </div>
+        <div class="form-group col-md-6">
+            <div id="selectedWorkersGroup" style="width: 100%;text-align: center;"></div>
 
-                @(Html.Kendo().Grid<AssistantTraining.ViewModel.WorkerViewModel>()
-                        .Name("InstructionWorkersGird")
-                        .Columns(columns => {
-                            columns.Select().Width(50);
-                            columns.Bound(p => p.FullName);
-                        })
+            @*@(Html.Kendo().Grid<AssistantTraining.ViewModel.WorkerViewModel>()
+                    .Name("InstructionWorkersGird")
+                    .Columns(columns => {
+                        columns.Select().Width(50);
+                        columns.Bound(p => p.FullName);
+                    })
 
-                        .Pageable()
-                        .Sortable()
-                        .Events(ev=>
-                        { ev.Change("onChange"); ev.DataBinding("onDataBound"); ev.DataBound("onDataBinding");})
-                        .PersistSelection()
-                        .DataSource(dataSource => dataSource
-                            .Ajax()
-                            .PageSize(100)
-                            .Model(model => model.Id(p => p.FullName))
-                            .Read(read => read.Action("SelectWorkersByGroup", "Instructions").Data("onRead"))
-                        )
+                    .Pageable()
+                    .Sortable()
+                    .Events(ev=>
+                    { ev.Change("onChange"); ev.DataBinding("onDataBound"); ev.DataBound("onDataBinding");})
+                    .PersistSelection()
+                    .DataSource(dataSource => dataSource
+                        .Ajax()
+                        .PageSize(100)
+                        .Model(model => model.Id(p => p.FullName))
+                        .Read(read => read.Action("SelectWorkersByGroup", "Instructions").Data("onRead"))
                     )
-            </div>
+                )*@
         </div>
-        <input type="hidden" value="7" name="HiddenWorkersString" id="HiddenWorkersString" />
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10" style="color:red;">
-                *Wybór pracowników jest obecnie wyłączony.
-            </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Create" class="btn btn-default" />
-                </div>
-            </div>
+    </div>
+    @*<input type="hidden" value="7" name="HiddenWorkersString" id="HiddenWorkersString" />*@
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10" style="color:red;">
+            @**Wybór pracowników jest obecnie wyłączony.*@
         </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+</div>
 }
 <script>
     jQuery(document).ready(function () {
@@ -107,38 +114,38 @@
 </div>
 <script>
 
-    function onDataBound(arg) {
-    }
+    //function onDataBound(arg) {
+    //}
 
-    function onDataBinding(arg) {
-        var grid = $("#InstructionWorkersGird").data("kendoGrid");
-        var dataSource = grid.dataSource;
-        var total = dataSource.total();
+    //function onDataBinding(arg) {
+    //    var grid = $("#InstructionWorkersGird").data("kendoGrid");
+    //    var dataSource = grid.dataSource;
+    //    var total = dataSource.total();
 
-        var selectedIdsLength = Object.values(this.selectedKeyNames()).filter(function (item) {
-            return (parseInt(item) == item);
-        }).length;
+    //    var selectedIdsLength = Object.values(this.selectedKeyNames()).filter(function (item) {
+    //        return (parseInt(item) == item);
+    //    }).length;
 
-        var isChecked = $("#InstructionWorkersGird .k-header input:checkbox").prop("checked");
+    //    var isChecked = $("#InstructionWorkersGird .k-header input:checkbox").prop("checked");
 
-        var pageSizeLength = grid.dataSource.data().length;
-        var pageSelectLength = grid.select().length;
+    //    var pageSizeLength = grid.dataSource.data().length;
+    //    var pageSelectLength = grid.select().length;
 
-        //selectedIdsLength === total
-        if (!isChecked && (0 == pageSelectLength)) {
-            $("#InstructionWorkersGird .k-header input:checkbox").trigger("click");
-        }
+    //    //selectedIdsLength === total
+    //    if (!isChecked && (0 == pageSelectLength)) {
+    //        $("#InstructionWorkersGird .k-header input:checkbox").trigger("click");
+    //    }
 
-        $(':checkbox').change(function () {
-            $(this).blur();
-        })
-    }
+    //    $(':checkbox').change(function () {
+    //        $(this).blur();
+    //    })
+    //}
 
-    function onRead() {
-        return {
-            groupName: window.sessionStorage.getItem('instructionWorkers')
-        };
-    }
+    //function onRead() {
+    //    return {
+    //        groupName: window.sessionStorage.getItem('instructionWorkers')
+    //    };
+    //}
     var oldPageSize = 0;
 
     function onChange(e) {
@@ -147,39 +154,39 @@
         }).join(", ");
     };
 
-    function onSelectAll() {
-        var grid = $("#InstructionWorkersGird").data("kendoGrid");
-        var dataSource = grid.dataSource;
-        var total = dataSource.total();
+    //function onSelectAll() {
+    //    var grid = $("#InstructionWorkersGird").data("kendoGrid");
+    //    var dataSource = grid.dataSource;
+    //    var total = dataSource.total();
 
-        debugger;
+    //    debugger;
 
-        if (dataSource.pageSize() === grid.select().length) {
-            grid._selectedIds = {};
-        } else {
-            for (var i = 1; i <= total; i++) {
-                grid._selectedIds[i] = true;
-            };
-        }
-        $("#InstructionWorkersGird tbody input:checkbox").prop("checked", true);
-    };
-    function showInstructionWorkers(groupName) {
-        $("#selectedWorkersGroup").text(groupName);
-        window.sessionStorage.setItem('instructionWorkers', groupName);
+    //    if (dataSource.pageSize() === grid.select().length) {
+    //        grid._selectedIds = {};
+    //    } else {
+    //        for (var i = 1; i <= total; i++) {
+    //            grid._selectedIds[i] = true;
+    //        };
+    //    }
+    //    $("#InstructionWorkersGird tbody input:checkbox").prop("checked", true);
+    //};
+    //function showInstructionWorkers(groupName) {
+    //    $("#selectedWorkersGroup").text(groupName);
+    //    window.sessionStorage.setItem('instructionWorkers', groupName);
 
-        var grid = $("#InstructionWorkersGird").data("kendoGrid");
-        grid.dataSource.read();
-    }
+    //    var grid = $("#InstructionWorkersGird").data("kendoGrid");
+    //    grid.dataSource.read();
+    //}
 
     $('#creasteinstructionform').submit(function () {
 
-        var grid = $("#InstructionWorkersGird").data("kendoGrid");
-        var selectedIds = Object.values(grid.selectedKeyNames()).filter(function (item) {
-            return (parseInt(item) == item);
-        });
+        //var grid = $("#InstructionWorkersGird").data("kendoGrid");
+        //var selectedIds = Object.values(grid.selectedKeyNames()).filter(function (item) {
+        //    return (parseInt(item) == item);
+        //});
 
-        var data = window.sessionStorage.getItem('instructionWorkers');
-        $("#HiddenWorkersString").val(selectedIds.join(", "));
+        //var data = window.sessionStorage.getItem('instructionWorkers');
+        //$("#HiddenWorkersString").val(selectedIds.join(", "));
         return true;
     });
 </script>
