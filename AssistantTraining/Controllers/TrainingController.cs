@@ -1,11 +1,4 @@
-﻿using AssistantTraining.DAL;
-using AssistantTraining.Helpers;
-using AssistantTraining.Models;
-using AssistantTraining.Repositories;
-using AssistantTraining.ViewModel;
-using Newtonsoft.Json;
-using OfficeOpenXml;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -13,6 +6,13 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using AssistantTraining.DAL;
+using AssistantTraining.Helpers;
+using AssistantTraining.Models;
+using AssistantTraining.Repositories;
+using AssistantTraining.ViewModel;
+using Newtonsoft.Json;
+using OfficeOpenXml;
 
 namespace AssistantTraining.Controllers
 {
@@ -107,7 +107,7 @@ namespace AssistantTraining.Controllers
             //var grid = this.gridMvcHelper.GetAjaxGrid(items);
 
             var items = repos.GetTrainings().AsEnumerable();
-            return PartialView(GRID_PARTIAL_PATH, items); 
+            return PartialView(GRID_PARTIAL_PATH, items);
         }
 
         [AjaxChildActionOnly]
@@ -153,7 +153,7 @@ namespace AssistantTraining.Controllers
             Session["term"] = term;
             Session["type"] = type;
 
-            var items = repos.GetWorkersByTraining(term, type).OrderBy(p => 0).OrderBy(x=>x.WorkerFullName);
+            var items = repos.GetWorkersByTraining(term, type).OrderBy(p => 0).OrderBy(x => x.WorkerFullName);
             var grid = this.gridMvcHelper.GetAjaxGrid(items);
 
             return PartialView(GRID_WORKER_PARTIAL_PATH, grid);
@@ -369,7 +369,7 @@ namespace AssistantTraining.Controllers
                      Number = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).Number,
                      Name = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).Name,
                      Version = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).Version,
-                     Reminder = groupedI.FirstOrDefault(gt2 => gt2.Version == maxVersion).Reminder
+                     Reminder = groupedI.Any(gt2 => gt2.Reminder == true)
                  }
                ).Select(x => new InstructionsJson { id = x.ID.ToString(), text = x.Number, name = x.Name, version = x.Version })
                .Where(x => x.text.ToUpper().Contains(q.ToUpper()))

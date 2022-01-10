@@ -28,7 +28,7 @@ namespace AssistantTraining.Controllers
                     RowNo = index + 1,
                     GroupName = x.GroupName,
                     ID = x.ID,
-                    Instructions = x.Instructions,
+                    //Instructions = x.Instructions,
                     Tag = x.Tag,
                     TimeOfCreation = x.TimeOfCreation,
                     TimeOfModification = x.TimeOfModification
@@ -183,7 +183,7 @@ namespace AssistantTraining.Controllers
                     RowNo = index + 1,
                     GroupName = x.GroupName,
                     ID = x.ID,
-                    Instructions = x.Instructions,
+                    //Instructions = x.Instructions,
                     Tag = x.Tag,
                     TimeOfCreation = x.TimeOfCreation,
                     TimeOfModification = x.TimeOfModification

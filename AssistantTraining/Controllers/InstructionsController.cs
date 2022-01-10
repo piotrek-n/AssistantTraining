@@ -155,7 +155,7 @@ namespace AssistantTraining.Controllers
                 GroupName = x.GroupName,
                 RowNo = i + 1,
                 ID = x.ID,
-                Instructions = x.Instructions,
+                //Instructions = x.Instructions,
                 Tag = x.Tag,
                 TimeOfCreation = x.TimeOfCreation,
                 TimeOfModification = x.TimeOfModification

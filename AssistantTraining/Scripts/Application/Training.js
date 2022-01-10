@@ -331,11 +331,24 @@ $("#sel").select2({
     templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
 });
 
+
+$("#sel").on("select2:unselect", function(e){
+    //return true; // I don't use this unselecting event but here is how you could use it to get the ID of the one you are trying to remove.
+    var contains = false;
+    $('#remainders').children().each(function () {
+        var $this = $(this);
+        if (name == e.params.data.text) {
+            contains = true;
+        }
+    });
+    if (contains == true) {
+        $( $this )[0].remove();
+    }
+});
+
 function formatRepo(repo) {
     if (repo.loading) return repo.text;
-
-    console.log(repo.version);
-
+    
     var markup = "<div class='select2-result-repository clearfix'>" +
         "<div class='select2-result-repository__meta'>" +
         "<div class='select2-result-repository__title'>" + repo.text + ' v.' + repo.version + "</div>";
@@ -355,7 +368,6 @@ function formatRepoSelection(repo) {
 
         $('#remainders').children().each(function () {
             var $this = $(this);
-            console.log($this.text());
             if (name == $this.text()) {
                 contains = true;
             }

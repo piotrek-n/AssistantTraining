@@ -23,34 +23,34 @@ namespace AssistantTraining
         void Application_Error(object sender, EventArgs e)
         {
          
-            Response.Clear();
+            //Response.Clear();
 
 
-            if (IsAjaxRequest())
-            {
-                Response.Write("Application_Error");
-            }
-            else
-            {
+            //if (IsAjaxRequest())
+            //{
+            //    Response.Write("Application_Error");
+            //}
+            //else
+            //{
 
-                var exception = Server.GetLastError();
-                if (exception == null)
-                    return;
-                logger.ErrorFormat("Message: {0} \n StackTrace: {1}", exception.Message, exception.StackTrace);
-                //var mail = new MailMessage { From = new MailAddress("automated@contoso.com") };
-                //mail.To.Add(new MailAddress("administrator@contoso.com"));
-                //mail.Subject = "Site Error at " + DateTime.Now;
-                //mail.Body = "Error Description: " + exception.Message;
-                //var server = new SmtpClient { Host = "your.smtp.server" };
-                //server.Send(mail);
+            //    var exception = Server.GetLastError();
+            //    if (exception == null)
+            //        return;
+            //    logger.ErrorFormat("Message: {0} \n StackTrace: {1}", exception.Message, exception.StackTrace);
+            //    //var mail = new MailMessage { From = new MailAddress("automated@contoso.com") };
+            //    //mail.To.Add(new MailAddress("administrator@contoso.com"));
+            //    //mail.Subject = "Site Error at " + DateTime.Now;
+            //    //mail.Body = "Error Description: " + exception.Message;
+            //    //var server = new SmtpClient { Host = "your.smtp.server" };
+            //    //server.Send(mail);
 
-                //Redirect to an error page
-                Response.Redirect("/Home/Index");
-                Response.End();
+            //    //Redirect to an error page
+            //    Response.Redirect("/Home/Index");
+            //    Response.End();
 
-            }
+            //}
 
-            Server.ClearError();
+            //Server.ClearError();
         }
 
         private bool IsAjaxRequest()

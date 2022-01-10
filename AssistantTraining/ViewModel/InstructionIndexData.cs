@@ -62,6 +62,7 @@ namespace AssistantTraining.ViewModel
 
         public string HiddenWorkersString { get; set; }
 
+        [DisplayName("Wersja Papierowa")]
         public bool Reminder { get; set; }
 
 }
