@@ -32,7 +32,6 @@ function LoadGrid() {
 
     $('[data-gridname="TrainingWorkersGrid"]').children('tbody').unbind('click');
     $('[data-gridname="TrainingWorkersGrid"]').children('tbody').click(function () {
-
     });
 
     $('#myform').validate({ // initialize the plugin
@@ -49,62 +48,59 @@ function LoadGrid() {
 
     $("#RemoveTrainingToWorkerWorkersGrid").unbind('click');
     $('#RemoveTrainingToWorkerWorkersGrid').click(
-            function ()
-            {
-                if ($('[data-gridname="TrainingWorkersGrid"]').find("table>tbody>tr").find('[type=checkbox]').size() == 0)
-                    return;
+        function () {
+            if ($('[data-gridname="TrainingWorkersGrid"]').find("table>tbody>tr").find('[type=checkbox]').size() == 0)
+                return;
 
-                var trainingWorkersGrid = {};
-                var workers = [];
-                trainingWorkersGrid.Workers = workers;
-                trainingWorkersGrid.TrainingDate = "";
-                trainingWorkersGrid.TrainingNumber = "";
+            var trainingWorkersGrid = {};
+            var workers = [];
+            trainingWorkersGrid.Workers = workers;
+            trainingWorkersGrid.TrainingDate = "";
+            trainingWorkersGrid.TrainingNumber = "";
 
-                var $row = $('[data-gridname="TrainingWorkersGrid"]').find("table>tbody>tr").each(function (i, row) {
+            var $row = $('[data-gridname="TrainingWorkersGrid"]').find("table>tbody>tr").each(function (i, row) {
+                var checked = $(row).find('[type=checkbox]').prop('checked');
+                var workerID = $(row).find('[data-name="WorkerID"]').html();
+                var trainingNameId = $(row).find('[data-name="TrainingNameId"]').html();
 
-                    var checked = $(row).find('[type=checkbox]').prop('checked');
-                    var workerID = $(row).find('[data-name="WorkerID"]').html();
-                    var trainingNameId = $(row).find('[data-name="TrainingNameId"]').html();
+                var worker = {
+                    "WorkerID": workerID,
+                    "TrainingNameId": trainingNameId,
+                    "Checked": checked
+                };
+                trainingWorkersGrid.Workers.push(worker);
+            });
+            var trainingDate = $('#TrainingDate').val();
+            var trainingNumber = $('#TrainingNumber').val();
 
-                    var worker = {
-                        "WorkerID": workerID,
-                        "TrainingNameId": trainingNameId,
-                        "Checked": checked
-                    };
-                    trainingWorkersGrid.Workers.push(worker);
-                });
-                var trainingDate = $('#TrainingDate').val();
-                var trainingNumber = $('#TrainingNumber').val();
+            trainingWorkersGrid.TrainingDate = trainingDate;
+            trainingWorkersGrid.TrainingNumber = trainingNumber;
 
-                trainingWorkersGrid.TrainingDate = trainingDate;
-                trainingWorkersGrid.TrainingNumber = trainingNumber;
+            console.log(JSON.stringify(trainingWorkersGrid));
 
-                console.log(JSON.stringify(trainingWorkersGrid));
-
-                $.ajax({
-                    url: "Training/RemoveTrainings",
-                    type: "POST",
-                    data: JSON.stringify(trainingWorkersGrid),
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        $("#refWorkerGrid").html(jqXHR.responseText);
-                        LoadGrid();
-                    },
-                    success: function (response) {
-                        $("#refWorkerGrid").html(partialViewResult);
-                        LoadGrid();
-                    }
-                });
-            }
-        );
+            $.ajax({
+                url: "Training/RemoveTrainings",
+                type: "POST",
+                data: JSON.stringify(trainingWorkersGrid),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                error: function (jqXHR, textStatus, errorThrown) {
+                    $("#refWorkerGrid").html(jqXHR.responseText);
+                    LoadGrid();
+                },
+                success: function (response) {
+                    $("#refWorkerGrid").html(partialViewResult);
+                    LoadGrid();
+                }
+            });
+        }
+    );
     $("#SaveTrainingWorkersGrid").unbind('click');
     $('#SaveTrainingWorkersGrid').click(
         function () {
             if ($('[data-gridname="TrainingWorkersGrid"]').find("table>tbody>tr").find('[type=checkbox]').size() == 0)
                 return;
             if ($('#myform').valid()) {
-                
                 var trainingWorkersGrid = {};
                 var workers = [];
                 trainingWorkersGrid.Workers = workers;
@@ -112,7 +108,6 @@ function LoadGrid() {
                 trainingWorkersGrid.TrainingNumber = "";
 
                 var $row = $('[data-gridname="TrainingWorkersGrid"]').find("table>tbody>tr").each(function (i, row) {
-
                     var checked = $(row).find('[type=checkbox]').prop('checked');
                     var workerID = $(row).find('[data-name="WorkerID"]').html();
                     var trainingNameId = $(row).find('[data-name="TrainingNameId"]').html();
@@ -138,7 +133,7 @@ function LoadGrid() {
                     data: JSON.stringify(trainingWorkersGrid),
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    error: function(jqXHR, textStatus, errorThrown) {
+                    error: function (jqXHR, textStatus, errorThrown) {
                         $("#refWorkerGrid").html(jqXHR.responseText);
                         LoadGrid();
                     },
@@ -147,13 +142,9 @@ function LoadGrid() {
                         LoadGrid();
                     }
                 });
-
             } else {
-               // alert('form is not valid');
+                // alert('form is not valid');
             }
-
-
-
         }
     );
 
@@ -170,10 +161,10 @@ function LoadGrid() {
                 type: "POST",
                 data: { term: value, type: 'untrained' }
             })
-            .done(function (partialViewResult) {
-                $("#refWorkerGrid").html(partialViewResult);
-                LoadGrid();
-            });
+                .done(function (partialViewResult) {
+                    $("#refWorkerGrid").html(partialViewResult);
+                    LoadGrid();
+                });
             //return false; //for good measure
         }
         else if (id === 'trained') {
@@ -182,10 +173,10 @@ function LoadGrid() {
                 type: "POST",
                 data: { term: value, type: 'trained' }
             })
-            .done(function (partialViewResult) {
-                $("#refWorkerGrid").html(partialViewResult);
-                LoadGrid();
-            });
+                .done(function (partialViewResult) {
+                    $("#refWorkerGrid").html(partialViewResult);
+                    LoadGrid();
+                });
             //return false; //for good measure
         }
     });
@@ -221,10 +212,10 @@ $(document).ready(function () {
             type: "POST",
             data: { term: val }
         })
-        .done(function (partialViewResult) {
-            $("#refGrid").html(partialViewResult);
-            LoadGrid();
-        });
+            .done(function (partialViewResult) {
+                $("#refGrid").html(partialViewResult);
+                LoadGrid();
+            });
         e.preventDefault(); //STOP default action
     });
     $("#idTrainingForm").submit(function (e) {
@@ -234,10 +225,10 @@ $(document).ready(function () {
             type: "POST",
             data: { term: val }
         })
-        .done(function (partialViewResult) {
-            $("#refGrid").html(partialViewResult);
-            LoadGrid();
-        });
+            .done(function (partialViewResult) {
+                $("#refGrid").html(partialViewResult);
+                LoadGrid();
+            });
         e.preventDefault(); //STOP default action
     });
     $('span > a').click(function (event) {
@@ -245,17 +236,17 @@ $(document).ready(function () {
         var value = $(this).attr("href");
 
         var id = $(this).attr("id");
-      
+
         if (id === 'untrained') {
             $.ajax({
                 url: "Training/GetWorkerGrid",
                 type: "POST",
                 data: { term: value, type: 'untrained' }
             })
-            .done(function (partialViewResult) {
-                $("#refWorkerGrid").html(partialViewResult);
-                LoadGrid();
-            });
+                .done(function (partialViewResult) {
+                    $("#refWorkerGrid").html(partialViewResult);
+                    LoadGrid();
+                });
             //return false; //for good measure
         }
         else if (id === 'trained') {
@@ -264,10 +255,10 @@ $(document).ready(function () {
                 type: "POST",
                 data: { term: value, type: 'trained' }
             })
-            .done(function (partialViewResult) {
-                $("#refWorkerGrid").html(partialViewResult);
-                LoadGrid();
-            });
+                .done(function (partialViewResult) {
+                    $("#refWorkerGrid").html(partialViewResult);
+                    LoadGrid();
+                });
             //return false; //for good measure
         }
     });
@@ -285,13 +276,13 @@ $(document).ready(function () {
                     type: "POST",
                     data: { term: number }
                 })
-                .done(function (partialViewResult) {
-                    $("#refGrid").html(partialViewResult);
-                    LoadGrid();
-                });
+                    .done(function (partialViewResult) {
+                        $("#refGrid").html(partialViewResult);
+                        LoadGrid();
+                    });
             }
         });
-    });  
+    });
 });
 
 $("#sel").select2({
@@ -300,7 +291,6 @@ $("#sel").select2({
         dataType: 'json',
         delay: 250,
         data: function (params) {
-
             return {
                 q: params.term, // search term
                 t: $("#searchTermCheckbox").is(":checked")
@@ -308,13 +298,11 @@ $("#sel").select2({
             };
         },
         processResults: function (data, params) {
-
             params.page = params.page || 1;
 
             console.log(data.items);
 
             return {
-                
                 results: data.items,
                 pagination: {
                     more: (params.page * 30) < data.total_count
@@ -331,24 +319,17 @@ $("#sel").select2({
     templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
 });
 
-
-$("#sel").on("select2:unselect", function(e){
-    //return true; // I don't use this unselecting event but here is how you could use it to get the ID of the one you are trying to remove.
-    var contains = false;
+$("#sel").on("select2:unselect", function (e) {
     $('#remainders').children().each(function () {
-        var $this = $(this);
-        if (name == e.params.data.text) {
-            contains = true;
+        if ($(this)[0].innerText.includes('Wersja Papierowa:' + e.params.data.text)) {
+            $(this)[0].remove();
         }
     });
-    if (contains == true) {
-        $( $this )[0].remove();
-    }
 });
 
 function formatRepo(repo) {
     if (repo.loading) return repo.text;
-    
+
     var markup = "<div class='select2-result-repository clearfix'>" +
         "<div class='select2-result-repository__meta'>" +
         "<div class='select2-result-repository__title'>" + repo.text + ' v.' + repo.version + "</div>";
@@ -361,14 +342,12 @@ function formatRepo(repo) {
 
 function formatRepoSelection(repo) {
     if (repo.reminder) {
-
         var name = repo.text || repo.id;
         var contains = false;
-        var div = $('<div></div>').addClass('reminder-row').text(repo.text || repo.id);
+        var div = $('<div></div>').addClass('reminder-row').text('Wersja Papierowa:' + repo.text || repo.id);
 
         $('#remainders').children().each(function () {
-            var $this = $(this);
-            if (name == $this.text()) {
+            if ($(this)[0].innerText.includes('Wersja Papierowa:' + name)) {
                 contains = true;
             }
         });
@@ -379,8 +358,7 @@ function formatRepoSelection(repo) {
     return repo.text || repo.id;
 }
 
-function ShowModal()
-{
+function ShowModal() {
     $('#myModal').modal('show');
 }
 

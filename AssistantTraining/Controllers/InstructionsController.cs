@@ -304,15 +304,17 @@ namespace AssistantTraining.Controllers
 
             if (instruction == null) return HttpNotFound();
 
-            var instructionGroupViewModel = new InstructionEditData();
             var workerRepository = new WorkerRepository();
             var groups = workerRepository.GetAllGroups();
 
-            instructionGroupViewModel.Name = instruction.Name;
-            instructionGroupViewModel.Version = instruction.Version;
-            instructionGroupViewModel.Number = instruction.Number;
+            var instructionGroupViewModel = new InstructionEditData
+            {
+                Name = instruction.Name,
+                Version = instruction.Version,
+                Number = instruction.Number,
+                Reminder = instruction.Reminder,
 
-            instructionGroupViewModel.SelectedIds =
+                SelectedIds =
                 (from InstructionGroups in db.InstructionGroups
                  where
                      InstructionGroups.GroupId != null &&
@@ -320,13 +322,14 @@ namespace AssistantTraining.Controllers
                  select new
                  {
                      val = InstructionGroups.GroupId ?? 0
-                 }).Select(x => x.val.ToString()).ToList().ToArray();
+                 }).Select(x => x.val.ToString()).ToList().ToArray(),
 
-            instructionGroupViewModel.Items = groups.Select(x => new SelectListItem
-            {
-                Value = x.ID.ToString(),
-                Text = x.GroupName
-            });
+                Items = groups.Select(x => new SelectListItem
+                {
+                    Value = x.ID.ToString(),
+                    Text = x.GroupName
+                })
+            };
 
             return View(instructionGroupViewModel);
         }
@@ -335,22 +338,25 @@ namespace AssistantTraining.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,Number,Version,SelectedIds")]
-            InstructionEditData instructionGroupViewModel)
+        public ActionResult Edit(InstructionEditData instructionGroupViewModel)
         {
             if (ModelState.IsValid)
             {
-                var instruction = new Instruction();
-                instruction.ID = instructionGroupViewModel.ID;
-                instruction.TimeOfModification = DateTime.Now;
-                instruction.Name = instructionGroupViewModel.Name;
-                instruction.Version = instructionGroupViewModel.Version;
+                var instruction = new Instruction
+                {
+                    ID = instructionGroupViewModel.ID,
+                    TimeOfModification = DateTime.Now,
+                    Name = instructionGroupViewModel.Name,
+                    Version = instructionGroupViewModel.Version,
+                    Reminder = instructionGroupViewModel.Reminder
+                };
                 //instruction.GroupId = Int32.Parse(instructionGroupViewModel.SelectedId);
 
                 db.Instructions.Attach(instruction);
                 db.Entry(instruction).Property(X => X.Name).IsModified = true;
                 db.Entry(instruction).Property(X => X.Version).IsModified = true;
+                db.Entry(instruction).Property(X => X.Reminder).IsModified = true;
+
                 //db.Entry(instruction).Property(X => X.GroupId).IsModified = true;
                 db.Entry(instruction).Property(X => X.Tag).IsModified = true;
                 db.Entry(instruction).Property(X => X.TimeOfModification).IsModified = true;

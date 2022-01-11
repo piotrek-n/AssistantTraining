@@ -160,6 +160,7 @@ Fix wyswietlania uzytkonikow
 [1.0.0.38]
 - Zmiany w Reminder
 - Clean Up: tabeli Instruction
+- Edycja Remiders
 
 1.0.0.X--
 *Weryfikacja usuniecia osoby przeszkolonej (remove)
